@@ -1,7 +1,8 @@
 import classes from "./SignUpForm.module.scss";
-import { Button } from "@radix-ui/themes";
+import { Box, Button } from "@radix-ui/themes";
 import { Input } from "@/components/Input/Input";
 import {
+    SIGN_UP_DATE_OF_BIRTH_REQUIREMENT,
     SIGN_UP_FIRST_NAME_REQUIREMENT,
     SIGN_UP_LAST_NAME_REQUIREMENT,
     SIGN_UP_LOGIN_REQUIREMENT,
@@ -20,25 +21,38 @@ export const SignUpForm = ({ onSubmit, isLoading }: SignUpFormProps) => {
 
     return (
         <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
-            <Input
-                {...register("firstName")}
-                label="Imię"
-                help={SIGN_UP_FIRST_NAME_REQUIREMENT}
-                error={formState.errors?.login?.message}
-            />
-            <Input
-                {...register("lastName")}
-                label="Nazwisko"
-                help={SIGN_UP_LAST_NAME_REQUIREMENT}
-                error={formState.errors?.login?.message}
-            />
+            <Box className={classes.row}>
+                <Input
+                    {...register("firstName")}
+                    label="Imię"
+                    help={SIGN_UP_FIRST_NAME_REQUIREMENT}
+                    error={formState.errors?.login?.message}
+                />
+                <Input
+                    {...register("lastName")}
+                    label="Nazwisko"
+                    help={SIGN_UP_LAST_NAME_REQUIREMENT}
+                    error={formState.errors?.login?.message}
+                />
+            </Box>
 
-            <Input
-                {...register("login")}
-                label="Login"
-                help={SIGN_UP_LOGIN_REQUIREMENT}
-                error={formState.errors?.login?.message}
-            />
+            <Box className={classes.row}>
+                <Input
+                    {...register("login")}
+                    label="Login"
+                    help={SIGN_UP_LOGIN_REQUIREMENT}
+                    error={formState.errors?.login?.message}
+                />
+
+                <Input
+                    {...register("dateOfBirth")}
+                    label="Data urodzenia"
+                    type="date"
+                    help={SIGN_UP_DATE_OF_BIRTH_REQUIREMENT}
+                    error={formState.errors?.dateOfBirth?.message}
+                />
+            </Box>
+
             <Input
                 {...register("password")}
                 label="Hasło"
@@ -46,6 +60,7 @@ export const SignUpForm = ({ onSubmit, isLoading }: SignUpFormProps) => {
                 help={SIGN_UP_PASSWORD_REQUIREMENT}
                 error={formState.errors?.password?.message}
             />
+
             <Button loading={isLoading} className={classes.submitButton}>
                 Zarejestruj
             </Button>

@@ -1,0 +1,49 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-4);
+  gap: var(--space-4);
+  width: fit-content;
+  
+  .footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-2);
+  }
+  
+  .row {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .group {
+    display: flex;
+    flex-direction: column;
+
+    .label {
+      color: var(--gray-11);
+      font-weight: bold;
+      font-size: var(--font-size-1);
+    }
+
+    .valueWrapper {
+      display: flex;
+      gap: var(--space-4);
+      align-items: center;
+    }
+    
+    .value {
+      color: var(--gray-12);
+      font-weight: bold;
+      font-size: var(--font-size-5);
+    }
+
+    &.number {
+      .value {
+        font-size: var(--font-size-7);
+      }
+    }
+  }
+}
+
+

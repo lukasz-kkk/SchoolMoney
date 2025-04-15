@@ -11,9 +11,9 @@ export const SignUpPage = () => {
     const { mutateAsync: signUp, isPending } = useSignUp();
     const navigate = useNavigate();
 
-    const register = async ({ password, login, firstName, lastName }: SignUpFormInputs) => {
+    const register = async ({ password, login, firstName, lastName, dateOfBirth }: SignUpFormInputs) => {
         try {
-            await signUp({ password, username: login, firstName, lastName });
+            await signUp({ password, username: login, firstName, lastName, dateOfBirth: dateOfBirth.toISOString() });
             navigate(AppRoute.FINANCES);
             toast.success("Rejestracja pomyślna.");
         } catch (e) {

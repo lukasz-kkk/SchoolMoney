@@ -10,6 +10,9 @@ interface InputProps {
     help?: string;
     type?: "password" | "email" | "textarea" | "text" | "date" | "number";
     error?: string;
+    disabled?: boolean;
+    max?: number | string;
+    min?: number | string;
 }
 
 export const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(
