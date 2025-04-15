@@ -2,10 +2,12 @@ import { User, UserRole } from "@/types/User";
 import { requestClient } from "@/lib/request/requestClient";
 
 type UserDTO = {
-    id: string;
-    displayName: string;
-    name: string;
+    id: number;
+    firstName: string;
+    lastName: string;
+    login: string;
     role: UserRole;
+    dateOfBirth: string;
     isActive: boolean;
 };
 
@@ -19,6 +21,7 @@ type SignUpRequestBody = {
     password: string;
     firstName: string;
     lastName: string;
+    dateOfBirth: string;
 };
 
 export class AuthService {
@@ -41,8 +44,17 @@ export class AuthService {
         return AuthService.mapDtoToUser(data);
     }
 
-    private static mapDtoToUser({ displayName, role, name, id, isActive }: UserDTO): User {
-        const [firstName, lastName] = displayName.split(" ");
-        return { firstName, lastName, role, login: name, id: id.toString(), isActive };
+    private static mapDtoToUser({ role, login, id, isActive, dateOfBirth }: UserDTO): User {
+        // TODO: Remove mocks
+
+        return {
+            id,
+            login,
+            role,
+            firstName: "Test",
+            lastName: "User",
+            dateOfBirth: new Date(dateOfBirth),
+            isActive,
+        };
     }
 }

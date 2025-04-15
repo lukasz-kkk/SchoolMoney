@@ -7,4 +7,9 @@
   .submitButton {
     margin-top: var(--space-2);
   }
+
+  .row {
+    display: flex;
+    gap: var(--space-4);
+  }
 }
