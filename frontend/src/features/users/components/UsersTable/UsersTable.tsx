@@ -4,6 +4,7 @@ import { Table } from "@/components/Table/components/Table";
 import { IconButton } from "@radix-ui/themes";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { AccountStatusTag } from "@/features/users/components/AccountStatusTag/AccountStatusTag";
+import { UsersTableActions } from "@/features/users/components/UsersTable/components/UsersTableActions/UsersTableActions.tsx";
 
 const columnHelper = createColumnHelper<User>();
 
@@ -64,6 +65,7 @@ export const UsersTable = ({ users, isLoading }: UsersTableProps) => {
             sortOptions={[{ id: "lastName", desc: false }]}
             data={users}
             columns={columns}
+            onRenderSubRow={UsersTableActions}
             withPagination
             withFilters
             isLoading={isLoading}
