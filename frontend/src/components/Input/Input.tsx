@@ -42,7 +42,13 @@ export const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputPro
                         {...props}
                     />
                 ) : (
-                    <TextField.Root type={type} aria-invalid={!!error} ref={ref as Ref<HTMLInputElement>} {...props} />
+                    <TextField.Root
+                        type={type}
+                        aria-invalid={!!error}
+                        ref={ref as Ref<HTMLInputElement>}
+                        step={type === "number" ? ".01" : undefined}
+                        {...props}
+                    />
                 )}
             </label>
         );

@@ -8,6 +8,7 @@ import classes from "./TransferMoneyDialog.module.scss";
 import { useTransferMoney } from "@/features/finances/hooks/useTransferMoney.ts";
 import { TransferMoneyForm } from "@/features/finances/components/TransferMoneyForm/TransferMoneyForm.tsx";
 import { TransferMoneyFormInputs } from "@/features/finances/components/TransferMoneyForm/hooks/useTransferMoneyForm.ts";
+import { moneyToInteger } from "@/features/finances/utils/moneyUtils.ts";
 
 type TransformMoneyDialogProps = {
     title: string;
@@ -24,12 +25,12 @@ export const TransformMoneyDialog = ({ trigger, title, transferData, restriction
 
     const transferMoney = async ({
         amount,
-        name,
+        title,
         targetAccountNumber,
         sourceAccountNumber,
     }: TransferMoneyFormInputs) => {
         try {
-            await mutateAsync({ amount, name, targetAccountNumber, sourceAccountNumber });
+            await mutateAsync({ amount: moneyToInteger(amount), title, targetAccountNumber, sourceAccountNumber });
             toast.success("Przelew środków został zlecony.");
         } catch (e) {
             console.log(e);

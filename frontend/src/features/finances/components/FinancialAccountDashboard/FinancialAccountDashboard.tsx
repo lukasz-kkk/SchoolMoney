@@ -5,18 +5,14 @@ import classNames from "classnames";
 import { toast } from "sonner";
 import { CopyToClipboardButton } from "@/components/CopyToClipboardButton/CopyToClipboardButton.tsx";
 import { TransformMoneyDialog } from "@/features/finances/components/TransferMoneyDialog/TransferMoneyDialog.tsx";
-
-const DEFAULT_CURRENCY = "PLN";
+import { formatMoney, moneyToFloatingPoint } from "@/features/finances/utils/moneyUtils.ts";
 
 type FinancialAccountDashboardProps = {
     account: FinancialAccount;
 };
 
 export const FinancialAccountDashboard = ({ account }: FinancialAccountDashboardProps) => {
-    const formattedBalance = new Intl.NumberFormat("pl-PL", {
-        style: "currency",
-        currency: DEFAULT_CURRENCY,
-    }).format(account.balance / 100);
+    const formattedBalance = formatMoney(account.balance);
 
     const onAccountNumberCopied = () => {
         toast.success("Skopiowano numer rachunku.");
@@ -51,7 +47,7 @@ export const FinancialAccountDashboard = ({ account }: FinancialAccountDashboard
                     transferData={{
                         targetAccountNumber: account.number,
                         sourceAccountNumber: "Rachunek zewnętrzny",
-                        name: "Zasilenie rachunku środkami",
+                        title: "Zasilenie rachunku środkami",
                     }}
                 />
 
@@ -59,12 +55,12 @@ export const FinancialAccountDashboard = ({ account }: FinancialAccountDashboard
                     trigger={<Button color="crimson">Wypłać</Button>}
                     title="Wypłać środki"
                     restrictions={{
-                        maxAmount: account.balance,
+                        maxAmount: moneyToFloatingPoint(account.balance),
                     }}
                     transferData={{
                         sourceAccountNumber: account.number,
                         targetAccountNumber: "Rachunek zewnętrzny",
-                        name: "Wypłata pieniędzy z rachunku",
+                        title: "Wypłata pieniędzy z rachunku",
                     }}
                 />
             </Box>
