@@ -1,11 +1,11 @@
 {
-  "name": "pds_przedszkoleplus",
+  "name": "school_money",
   "version": "1.0.0",
   "description": "",
   "main": "",
   "scripts": {
     "start:frontend": "npm run --prefix frontend start",
-    "start:backend": "dotnet run --launch-profile https --project ./backend/PrzedszkolePlus"
+    "start:backend": "dotnet run --launch-profile https --project ./backend/SchoolMoney"
   },
   "author": "",
   "license": "ISC"
