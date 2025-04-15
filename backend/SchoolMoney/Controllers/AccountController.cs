@@ -24,8 +24,7 @@ namespace SchoolMoney.Controllers
                 var mockAccount = new AccountResponse
                 {
                     AccountNumber = "0000 1111 2222 3333 4444 5555",
-                    OwnerId = 1,
-                    OwnerType = "User"
+                    Balance = 1250.75m
                 };
 
                 return Ok(mockAccount);
