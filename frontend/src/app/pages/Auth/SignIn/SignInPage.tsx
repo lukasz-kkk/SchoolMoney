@@ -13,7 +13,7 @@ export const SignInPage = () => {
 
     const login = async ({ password, login }: SignInFormInputs) => {
         try {
-            await signIn({ password, username: login });
+            await signIn({ password, login });
             navigate(AppRoute.FINANCES);
             toast.success("Logowanie pomyślne.");
         } catch (e) {

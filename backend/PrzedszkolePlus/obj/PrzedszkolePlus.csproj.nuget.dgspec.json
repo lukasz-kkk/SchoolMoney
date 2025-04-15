@@ -1,0 +1,222 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\Hubert\\RiderProjects\\PDS_PrzedszkolePlus\\backend\\PrzedszkolePlus\\PrzedszkolePlus.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\Hubert\\RiderProjects\\PDS_PrzedszkolePlus\\backend\\Domain\\Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Hubert\\RiderProjects\\PDS_PrzedszkolePlus\\backend\\Domain\\Domain.csproj",
+        "projectName": "Domain",
+        "projectPath": "C:\\Users\\Hubert\\RiderProjects\\PDS_PrzedszkolePlus\\backend\\Domain\\Domain.csproj",
+        "packagesPath": "C:\\Users\\Hubert\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Hubert\\RiderProjects\\PDS_PrzedszkolePlus\\backend\\Domain\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Hubert\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.410\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Hubert\\RiderProjects\\PDS_PrzedszkolePlus\\backend\\Infrastructure\\Infrastructure.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Hubert\\RiderProjects\\PDS_PrzedszkolePlus\\backend\\Infrastructure\\Infrastructure.csproj",
+        "projectName": "Infrastructure",
+        "projectPath": "C:\\Users\\Hubert\\RiderProjects\\PDS_PrzedszkolePlus\\backend\\Infrastructure\\Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\Hubert\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Hubert\\RiderProjects\\PDS_PrzedszkolePlus\\backend\\Infrastructure\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Hubert\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {
+              "C:\\Users\\Hubert\\RiderProjects\\PDS_PrzedszkolePlus\\backend\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\Hubert\\RiderProjects\\PDS_PrzedszkolePlus\\backend\\Domain\\Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "target": "Package",
+              "version": "[7.0.17, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[7.0.17, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.410\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\Hubert\\RiderProjects\\PDS_PrzedszkolePlus\\backend\\PrzedszkolePlus\\PrzedszkolePlus.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Hubert\\RiderProjects\\PDS_PrzedszkolePlus\\backend\\PrzedszkolePlus\\PrzedszkolePlus.csproj",
+        "projectName": "PrzedszkolePlus",
+        "projectPath": "C:\\Users\\Hubert\\RiderProjects\\PDS_PrzedszkolePlus\\backend\\PrzedszkolePlus\\PrzedszkolePlus.csproj",
+        "packagesPath": "C:\\Users\\Hubert\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Hubert\\RiderProjects\\PDS_PrzedszkolePlus\\backend\\PrzedszkolePlus\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Hubert\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {
+              "C:\\Users\\Hubert\\RiderProjects\\PDS_PrzedszkolePlus\\backend\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\Hubert\\RiderProjects\\PDS_PrzedszkolePlus\\backend\\Domain\\Domain.csproj"
+              },
+              "C:\\Users\\Hubert\\RiderProjects\\PDS_PrzedszkolePlus\\backend\\Infrastructure\\Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\Hubert\\RiderProjects\\PDS_PrzedszkolePlus\\backend\\Infrastructure\\Infrastructure.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[11.9.0, )"
+            },
+            "FluentValidation.AspNetCore": {
+              "target": "Package",
+              "version": "[11.3.0, )"
+            },
+            "MediatR": {
+              "target": "Package",
+              "version": "[12.2.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
+            "Microsoft.AspNetCore.OpenApi": {
+              "target": "Package",
+              "version": "[7.0.12, )"
+            },
+            "NCrontab": {
+              "target": "Package",
+              "version": "[3.3.3, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.5.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.410\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

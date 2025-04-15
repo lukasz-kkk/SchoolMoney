@@ -12,12 +12,12 @@ type UserDTO = {
 };
 
 type SignInRequestBody = {
-    username: string;
+    login: string;
     password: string;
 };
 
 type SignUpRequestBody = {
-    username: string;
+    login: string;
     password: string;
     firstName: string;
     lastName: string;
@@ -44,15 +44,13 @@ export class AuthService {
         return AuthService.mapDtoToUser(data);
     }
 
-    private static mapDtoToUser({ role, login, id, isActive, dateOfBirth }: UserDTO): User {
-        // TODO: Remove mocks
-
+    private static mapDtoToUser({ firstName, lastName, role, login, id, isActive, dateOfBirth }: UserDTO): User {
         return {
             id,
             login,
             role,
-            firstName: "Test",
-            lastName: "User",
+            firstName,
+            lastName,
             dateOfBirth: new Date(dateOfBirth),
             isActive,
         };
