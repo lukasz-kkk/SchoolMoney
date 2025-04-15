@@ -44,7 +44,7 @@ namespace SchoolMoney.Controllers
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
                 Password = dto.Password,
-                Username = dto.Username,
+                login = dto.login,
                 DateOfBirth = dto.DateOfBirth,
             };
 
@@ -76,7 +76,7 @@ namespace SchoolMoney.Controllers
             var query = new LoginQuery
             {
                 Password = dto.Password,
-                Username = dto.Username
+                login = dto.login
             };
             try
             {
@@ -86,7 +86,7 @@ namespace SchoolMoney.Controllers
                 return Ok(new UserResponse
                 {
                     Id = response.Id,
-                    Name = response.Name,
+                    Login = response.Login,
                     FirstName = response.FirstName,
                     LastName = response.LastName,
                     Role = response.Role,
@@ -165,7 +165,7 @@ namespace SchoolMoney.Controllers
                 throw new MissingSigningKeyException();
 
             var token = JwtHelper.GetJwtToken(
-                response.Name,
+                response.Login,
                 signingKey,
                 _configuration["JWT:Issuer"],
                 _configuration["JWT:Audience"],

@@ -6,7 +6,7 @@ using Domain.Repositories;
 
 namespace SchoolMoney.QueryHandlers
 {
-    public class UserQueryHandler : IRequestHandler<CheckUsernameAvailabilityQuery, bool>,
+    public class UserQueryHandler : IRequestHandler<CheckloginAvailabilityQuery, bool>,
                                     IRequestHandler<GetUserQuery, UserResponse>,
                                     IRequestHandler<GetAllUsersQuery, IEnumerable<UserResponse>>,
                                     IRequestHandler<GetUsersByRoleQuery, IEnumerable<UserResponse>>
@@ -18,11 +18,11 @@ namespace SchoolMoney.QueryHandlers
             _userRepository = userRepository;
         }
 
-        public Task<bool> Handle(CheckUsernameAvailabilityQuery request, CancellationToken cancellationToken)
+        public Task<bool> Handle(CheckloginAvailabilityQuery request, CancellationToken cancellationToken)
         {
-            var username = request.Username.ToLower();
+            var login = request.login.ToLower();
 
-            var existingUsers = _userRepository.GetList(u => u.Name.ToLower() == username);
+            var existingUsers = _userRepository.GetList(u => u.Login.ToLower() == login);
             if (existingUsers == null || !existingUsers.Any())
                 return Task.FromResult(true);
 
@@ -37,7 +37,7 @@ namespace SchoolMoney.QueryHandlers
             var result = new UserResponse
             {
                 Id = user.Id,
-                Name = user.Name,
+                Login = user.Login,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Role = user.Role.ToString(),
@@ -59,7 +59,7 @@ namespace SchoolMoney.QueryHandlers
             var result = users.Select(x => new UserResponse
             {
                 Id = x.Id,
-                Name = x.Name,
+                Login = x.Login,
                 FirstName = x.FirstName,
                 LastName = x.LastName,
                 Role = x.Role.ToString(),
@@ -82,7 +82,7 @@ namespace SchoolMoney.QueryHandlers
             var result = users.Select(x => new UserResponse
             {
                 Id = x.Id,
-                Name = x.Name,
+                Login = x.Login,
                 FirstName = x.FirstName,
                 LastName = x.LastName,
                 Role = x.Role.ToString(),

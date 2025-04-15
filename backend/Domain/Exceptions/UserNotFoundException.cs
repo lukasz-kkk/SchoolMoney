@@ -7,7 +7,7 @@ namespace Domain.Exceptions
         public UserNotFoundException(int userId) : base(string.Format(Resource.ExceptionUserNotFound, userId)) 
         {
         }
-        public UserNotFoundException(string userName) : base(string.Format(Resource.ExceptionUserNameNotFound, userName))
+        public UserNotFoundException(string login) : base(string.Format(Resource.ExceptionloginNotFound, login))
         {
         }
     }

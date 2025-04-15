@@ -189,9 +189,9 @@ namespace Domain.Properties {
         /// <summary>
         ///   Looks up a localized string similar to User with name {0} not found..
         /// </summary>
-        internal static string ExceptionUserNameNotFound {
+        internal static string ExceptionloginNotFound {
             get {
-                return ResourceManager.GetString("ExceptionUserNameNotFound", resourceCulture);
+                return ResourceManager.GetString("ExceptionloginNotFound", resourceCulture);
             }
         }
         

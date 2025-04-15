@@ -19,12 +19,12 @@ namespace SchoolMoney.QueryHandlers
 
         public Task<UserResponse> Handle(LoginQuery request, CancellationToken cancellationToken)
         {
-            var user = _userRepository.GetList(x => x.Name == request.Username).FirstOrDefault()
-                ?? throw new UserNotFoundException(request.Username);
+            var user = _userRepository.GetList(x => x.Login == request.login).FirstOrDefault()
+                ?? throw new UserNotFoundException(request.login);
 
             var hash = ShaHelper.QuickHash(request.Password);
             if (hash.ToLower() != user.HashedPassword.ToLower())
-                throw new PasswordNotMatchException(request.Username);
+                throw new PasswordNotMatchException(request.login);
 
             if (!user.IsActive)
                 throw new UserIsNotActiveException(user.Id);
@@ -32,7 +32,7 @@ namespace SchoolMoney.QueryHandlers
             return Task.FromResult(new UserResponse
             {
                 Id = user.Id,
-                Name = user.Name,
+                Login = user.Login,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Role = user.Role.ToString(),

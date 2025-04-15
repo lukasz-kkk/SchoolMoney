@@ -12,7 +12,7 @@ $rng.GetBytes($keyBytes)
 
 # Convert key to hexadecimal string
 $signingKey = [System.BitConverter]::ToString($keyBytes).Replace("-", "")
-$envName = "PrzedszkolePlusSecret"
+$envName = "SchoolMoneySecret"
 
 # Set an environment variable with the generated key
 [Environment]::SetEnvironmentVariable($envName, $signingKey, "User")

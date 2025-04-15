@@ -5,7 +5,7 @@ namespace SchoolMoney.Requests
 {
     public class RegisterRequest
     {
-        public string Username { get; set; }
+        public string login { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Password { get; set; }
@@ -16,10 +16,10 @@ namespace SchoolMoney.Requests
     {
         public RegisterRequestValidator()
         {
-            RuleFor(registerRequest => registerRequest.Username)
-                .NotEmpty().WithMessage(Resource.ValidatorUsernameRequired)
-                .MinimumLength(5).WithMessage(Resource.ValidatorUsernameLonger)
-                .MaximumLength(20).WithMessage(Resource.ValidatorUsernameShorter);
+            RuleFor(registerRequest => registerRequest.login)
+                .NotEmpty().WithMessage(Resource.ValidatorloginRequired)
+                .MinimumLength(5).WithMessage(Resource.ValidatorloginLonger)
+                .MaximumLength(20).WithMessage(Resource.ValidatorloginShorter);
 
             RuleFor(registerRequest => registerRequest.FirstName)
                 .NotEmpty().WithMessage(Resource.ValidatorFirstNameRequired)

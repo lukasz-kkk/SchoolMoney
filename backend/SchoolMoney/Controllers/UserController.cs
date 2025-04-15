@@ -141,15 +141,15 @@ namespace SchoolMoney.Controllers
             return await Get(id);
         }
 
-        [HttpGet("CheckAvailability/ByName/{username}")]
+        [HttpGet("CheckAvailability/ByName/{login}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [AllowAnonymous]
-        public async Task<ActionResult<bool>> CheckUsernameAvailability(string username)
+        public async Task<ActionResult<bool>> CheckloginAvailability(string login)
         {
-            var query = new CheckUsernameAvailabilityQuery
+            var query = new CheckloginAvailabilityQuery
             {
-                Username = username
+                login = login
             };
             try
             {

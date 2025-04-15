@@ -56,7 +56,7 @@ namespace SchoolMoney.CommandHandlers
 
             var oldPasswordHash = ShaHelper.QuickHash(request.OldPassword);
             if (oldPasswordHash.ToLower() != user.HashedPassword.ToLower())
-                throw new PasswordNotMatchException(user.Name);
+                throw new PasswordNotMatchException(user.Login);
 
             var newPasswordHash = ShaHelper.QuickHash(request.NewPassword);
 

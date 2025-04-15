@@ -493,29 +493,29 @@ namespace SchoolMoney.Properties {
         }
         
         /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Username must be at least 5 characters long..
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu login must be at least 5 characters long..
         /// </summary>
-        public static string ValidatorUsernameLonger {
+        public static string ValidatorloginLonger {
             get {
-                return ResourceManager.GetString("ValidatorUsernameLonger", resourceCulture);
+                return ResourceManager.GetString("ValidatorloginLonger", resourceCulture);
             }
         }
         
         /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Username is required..
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu login is required..
         /// </summary>
-        public static string ValidatorUsernameRequired {
+        public static string ValidatorloginRequired {
             get {
-                return ResourceManager.GetString("ValidatorUsernameRequired", resourceCulture);
+                return ResourceManager.GetString("ValidatorloginRequired", resourceCulture);
             }
         }
         
         /// <summary>
-        /// Wyszukuje zlokalizowany ciąg podobny do ciągu Username must not exceed 20 characters..
+        /// Wyszukuje zlokalizowany ciąg podobny do ciągu login must not exceed 20 characters..
         /// </summary>
-        public static string ValidatorUsernameShorter {
+        public static string ValidatorloginShorter {
             get {
-                return ResourceManager.GetString("ValidatorUsernameShorter", resourceCulture);
+                return ResourceManager.GetString("ValidatorloginShorter", resourceCulture);
             }
         }
     }
