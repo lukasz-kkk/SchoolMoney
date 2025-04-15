@@ -240,14 +240,14 @@
   <data name="ValidatorUserIdRequired" xml:space="preserve">
     <value>User id is required.</value>
   </data>
-  <data name="ValidatorUsernameLonger" xml:space="preserve">
-    <value>Username must be at least 5 characters long.</value>
+  <data name="ValidatorloginLonger" xml:space="preserve">
+    <value>login must be at least 5 characters long.</value>
   </data>
-  <data name="ValidatorUsernameRequired" xml:space="preserve">
-    <value>Username is required.</value>
+  <data name="ValidatorloginRequired" xml:space="preserve">
+    <value>login is required.</value>
   </data>
-  <data name="ValidatorUsernameShorter" xml:space="preserve">
-    <value>Username must not exceed 20 characters.</value>
+  <data name="ValidatorloginShorter" xml:space="preserve">
+    <value>login must not exceed 20 characters.</value>
   </data>
   <data name="ValidatorSubjectRequired" xml:space="preserve">
     <value>Subject is required.</value>

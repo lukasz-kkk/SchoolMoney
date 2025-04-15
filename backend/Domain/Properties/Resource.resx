@@ -144,7 +144,7 @@
   <data name="ExceptionUserIsNotParentOfThisChild" xml:space="preserve">
     <value>User with ID {0} is not parent of child with ID {1}</value>
   </data>
-  <data name="ExceptionUserNameNotFound" xml:space="preserve">
+  <data name="ExceptionloginNotFound" xml:space="preserve">
     <value>User with name {0} not found.</value>
   </data>
   <data name="ExceptionUserNotFound" xml:space="preserve">

@@ -4,7 +4,7 @@ namespace Domain.Exceptions
 {
     public class PasswordNotMatchException : DomainException
     {
-        public PasswordNotMatchException(string username) : base(string.Format(Resource.ExceptionUserPasswordNotMatch, username)) 
+        public PasswordNotMatchException(string login) : base(string.Format(Resource.ExceptionUserPasswordNotMatch, login)) 
         {
         }
     }

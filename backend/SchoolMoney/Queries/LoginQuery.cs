@@ -5,7 +5,7 @@ namespace SchoolMoney.Queries
 {
     public class LoginQuery : IRequest<UserResponse>
     {
-        public string Username { get; set; }
+        public string login { get; set; }
         public string Password { get; set; }
     }
 }

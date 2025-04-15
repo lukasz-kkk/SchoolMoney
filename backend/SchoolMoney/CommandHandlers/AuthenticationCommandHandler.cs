@@ -20,14 +20,14 @@ namespace SchoolMoney.CommandHandlers
 
         public async Task<UserResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
-            var userExists = _userRepository.GetList(x => x.Name == request.Username).FirstOrDefault();
+            var userExists = _userRepository.GetList(x => x.Login == request.login).FirstOrDefault();
             if (userExists != null)
-                throw new UserAlreadyExistsException(request.Username);
+                throw new UserAlreadyExistsException(request.login);
 
             var hash = ShaHelper.QuickHash(request.Password);
             var user = new User 
             { 
-                Name = request.Username,
+                Login = request.login,
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 IsActive = true,
@@ -41,7 +41,7 @@ namespace SchoolMoney.CommandHandlers
             return new UserResponse
             {
                 Id = user.Id,
-                Name = user.Name,
+                Login = user.Login,
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 IsActive = user.IsActive,
