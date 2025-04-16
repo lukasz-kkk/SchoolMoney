@@ -4,3 +4,12 @@ export type FinancialAccount = {
 };
 
 type FinancialAccountNumber = string;
+
+export type Transaction = {
+    id: number;
+    name: string;
+    amount: number;
+    sourceAccountNumber: FinancialAccountNumber;
+    targetAccountNumber: FinancialAccountNumber;
+    createdAt: Date;
+};
