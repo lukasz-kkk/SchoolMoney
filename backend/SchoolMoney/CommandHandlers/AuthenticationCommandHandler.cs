@@ -12,10 +12,12 @@ namespace SchoolMoney.CommandHandlers
         : IRequestHandler<RegisterCommand, UserResponse>
     {
         private readonly IUserRepository _userRepository;
+        private readonly IFinancialAccountRepository _financialAccountRepository;
 
-        public AuthenticationCommandHandler(IUserRepository userRepository)
+        public AuthenticationCommandHandler(IUserRepository userRepository, IFinancialAccountRepository financialAccountRepository)
         {
             _userRepository = userRepository;
+            _financialAccountRepository = financialAccountRepository;
         }
 
         public async Task<UserResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
@@ -23,6 +25,14 @@ namespace SchoolMoney.CommandHandlers
             var userExists = _userRepository.GetList(x => x.Login == request.login).FirstOrDefault();
             if (userExists != null)
                 throw new UserAlreadyExistsException(request.login);
+
+            var account = new FinancialAccount
+            {
+                Number = FinancialAccountHelper.GenerateAccountNumber(),
+                Balance = 0
+            };
+            _financialAccountRepository.Add(account);
+            await _financialAccountRepository.SaveChangesAsync();
 
             var hash = ShaHelper.QuickHash(request.Password);
             var user = new User 
@@ -33,7 +43,8 @@ namespace SchoolMoney.CommandHandlers
                 IsActive = true,
                 HashedPassword = hash,
                 Role = Role.User,
-                DateOfBirth = request.DateOfBirth
+                DateOfBirth = request.DateOfBirth,
+                Account = account,
             };
             _userRepository.Add(user);
             await _userRepository.SaveChangesAsync();
@@ -47,6 +58,7 @@ namespace SchoolMoney.CommandHandlers
                 IsActive = user.IsActive,
                 Role = user.Role.ToString(),
                 DateOfBirth = user.DateOfBirth,
+                AccoutNumber = account.Number,
             };
         }
     }

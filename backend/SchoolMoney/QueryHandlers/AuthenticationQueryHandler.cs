@@ -38,6 +38,7 @@ namespace SchoolMoney.QueryHandlers
                 Role = user.Role.ToString(),
                 IsActive = user.IsActive,
                 DateOfBirth = user.DateOfBirth,
+                AccoutNumber = user.Account.Number
             });
         }
     }

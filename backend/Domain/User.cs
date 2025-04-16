@@ -10,5 +10,6 @@ namespace Domain
         public DateOnly DateOfBirth { get; set; }
         public string HashedPassword { get; set; }
         public bool IsActive { get; set; }
+        public FinancialAccount Account { get; set; }
     }
 }
