@@ -171,4 +171,16 @@
   <data name="ExceptionMealAlreadyCreated" xml:space="preserve">
     <value>Meal was already created in date {0} for group {1}.</value>
   </data>
+  <data name="ExceptionTransactionAccountNotFound" xml:space="preserve">
+    <value>Account with number {0} was not found.</value>
+  </data>
+  <data name="ExceptionTransactionInvalidAmount" xml:space="preserve">
+    <value>The amount must be greater than zero.</value>
+  </data>
+  <data name="ExceptionTransactionNotEnoughFunds" xml:space="preserve">
+    <value>The source account has not enough funds.</value>
+  </data>
+  <data name="ExceptionTransactionUnauthorized" xml:space="preserve">
+    <value>User is not authorized to perform this transaction.</value>
+  </data>
 </root>

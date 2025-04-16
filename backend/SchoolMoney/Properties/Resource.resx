@@ -270,4 +270,28 @@
   <data name="ValidatorLastNameShorter" xml:space="preserve">
     <value>Last name must not exceed 20 characters.</value>
   </data>
+  <data name="ValidatorTransactionAmountGreaterThanZero" xml:space="preserve">
+    <value>Amount must be greater than 0.</value>
+  </data>
+  <data name="ValidatorTransactionAmountTooBig" xml:space="preserve">
+    <value>Amount is too large.</value>
+  </data>
+  <data name="ValidatorTransactionNameRequired" xml:space="preserve">
+    <value>Transaction name is required.</value>
+  </data>
+  <data name="ValidatorTransactionNameTooLong" xml:space="preserve">
+    <value>Transaction name can be up to 100 characters long.</value>
+  </data>
+  <data name="ValidatorTransactionSourceRequired" xml:space="preserve">
+    <value>Source account number is required.</value>
+  </data>
+  <data name="ValidatorTransactionSourceTooLong" xml:space="preserve">
+    <value>Source account number can be up to 34 characters long.</value>
+  </data>
+  <data name="ValidatorTransactionTargetRequired" xml:space="preserve">
+    <value>Destination account number is required.</value>
+  </data>
+  <data name="ValidatorTransactionTargetTooLong" xml:space="preserve">
+    <value>Destination account number can be up to 34 characters long.</value>
+  </data>
 </root>

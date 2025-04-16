@@ -106,6 +106,15 @@ namespace Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User with name {0} not found..
+        /// </summary>
+        internal static string ExceptionloginNotFound {
+            get {
+                return ResourceManager.GetString("ExceptionloginNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Meal was already created in date {0} for group {1}..
         /// </summary>
         internal static string ExceptionMealAlreadyCreated {
@@ -138,6 +147,42 @@ namespace Domain.Properties {
         internal static string ExceptionThreadNotFound {
             get {
                 return ResourceManager.GetString("ExceptionThreadNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Account with number {0} was not found..
+        /// </summary>
+        internal static string ExceptionTransactionAccountNotFound {
+            get {
+                return ResourceManager.GetString("ExceptionTransactionAccountNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The amount must be greater than zero..
+        /// </summary>
+        internal static string ExceptionTransactionInvalidAmount {
+            get {
+                return ResourceManager.GetString("ExceptionTransactionInvalidAmount", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The source account has not enough funds..
+        /// </summary>
+        internal static string ExceptionTransactionNotEnoughFunds {
+            get {
+                return ResourceManager.GetString("ExceptionTransactionNotEnoughFunds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User is not authorized to perform this transaction..
+        /// </summary>
+        internal static string ExceptionTransactionUnauthorized {
+            get {
+                return ResourceManager.GetString("ExceptionTransactionUnauthorized", resourceCulture);
             }
         }
         
@@ -183,15 +228,6 @@ namespace Domain.Properties {
         internal static string ExceptionUserIsNotParentOfThisChild {
             get {
                 return ResourceManager.GetString("ExceptionUserIsNotParentOfThisChild", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User with name {0} not found..
-        /// </summary>
-        internal static string ExceptionloginNotFound {
-            get {
-                return ResourceManager.GetString("ExceptionloginNotFound", resourceCulture);
             }
         }
         

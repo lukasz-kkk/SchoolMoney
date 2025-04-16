@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure
 {
@@ -8,6 +9,12 @@ namespace Infrastructure
         public FinancialAccountRepository(AppDbContext appDbContext) 
             : base(appDbContext, appDbContext.FinancialAccounts)
         {
+        }
+
+        public FinancialAccount? FirstOrDefault(Func<FinancialAccount, bool> predicate = null)
+        {
+            return _appDbContext.FinancialAccounts
+                .FirstOrDefault(predicate);
         }
     }
 }

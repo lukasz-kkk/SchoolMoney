@@ -12,7 +12,7 @@ namespace SchoolMoney.Utils
             var randomPart2 = rand.Next(1000, 9999);
             var randomPart3 = rand.Next(1000, 9999);
             var randomPart4 = rand.Next(1000, 9999);
-            string accountNumber = $"PL00 0000 0000 {randomPart1} {randomPart2} {randomPart3} {randomPart4}";
+            string accountNumber = $"PL26 1200 0000 {randomPart1} {randomPart2} {randomPart3} {randomPart4}";
 
             return accountNumber;
         }
