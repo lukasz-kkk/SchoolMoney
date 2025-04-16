@@ -16,7 +16,8 @@ namespace Infrastructure.Extensions
                     .AddScoped<IMessageRepository, MessageRepository>()
                     .AddScoped<IThreadRepository, ThreadRepository>()
                     .AddScoped<IAnnouncementRepository, AnnouncementRepository>()
-                    .AddScoped<IMealRepository, MealRepository>();
+                    .AddScoped<IMealRepository, MealRepository>()
+                    .AddScoped<IFinancialAccountRepository, FinancialAccountRepository>();
         }
     }
 }

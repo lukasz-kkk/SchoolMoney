@@ -43,6 +43,7 @@ namespace SchoolMoney.QueryHandlers
                 Role = user.Role.ToString(),
                 IsActive = user.IsActive,
                 DateOfBirth = user.DateOfBirth,
+                AccoutNumber = user.Account.Number
             };
             return Task.FromResult(result);
         }
@@ -65,6 +66,7 @@ namespace SchoolMoney.QueryHandlers
                 Role = x.Role.ToString(),
                 IsActive = x.IsActive,
                 DateOfBirth = x.DateOfBirth,
+                AccoutNumber = x.Account.Number
             });
 
             return Task.FromResult(result);
@@ -88,6 +90,7 @@ namespace SchoolMoney.QueryHandlers
                 Role = x.Role.ToString(),
                 IsActive = x.IsActive,
                 DateOfBirth = x.DateOfBirth,
+                AccoutNumber = x.Account.Number
             });
 
             return Task.FromResult(result);

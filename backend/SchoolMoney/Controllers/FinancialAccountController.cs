@@ -9,7 +9,7 @@ namespace SchoolMoney.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AccountController : ControllerBase
+    public class FinancialAccountController : ControllerBase
     {
         [HttpGet("ByLoggedUser")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -17,14 +17,14 @@ namespace SchoolMoney.Controllers
 #if !DEBUG
         [Authorize(Roles = Roles.User)]
 #endif
-        public ActionResult<AccountResponse> GetMyAccount()
+        public ActionResult<FinancialAccountResponse> GetMyAccount()
         {
             try
             {
-                var mockAccount = new AccountResponse
+                var mockAccount = new FinancialAccountResponse
                 {
                     AccountNumber = "0000 1111 2222 3333 4444 5555",
-                    Balance = 1250.75m
+                    Balance = 125075
                 };
 
                 return Ok(mockAccount);

@@ -1,8 +1,8 @@
 ﻿namespace SchoolMoney.Response
 {
-    public class AccountResponse
+    public class FinancialAccountResponse
     {
         public string AccountNumber { get; set; }
-        public decimal Balance { get; set; }
+        public int Balance { get; set; }
     }
 }

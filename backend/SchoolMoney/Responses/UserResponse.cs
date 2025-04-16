@@ -9,5 +9,6 @@
         public string Role { get; set; }
         public bool IsActive { get; set; }
         public DateOnly DateOfBirth { get; set; }
+        public String AccoutNumber { get; set; }
     }
 }

@@ -14,6 +14,7 @@ namespace Infrastructure
         public DbSet<Domain.Thread> Threads { get; set; }
         public DbSet<Meal> Meals { get; set; }
         public DbSet<Announcement> Announcements { get; set; }
+        public DbSet<FinancialAccount> FinancialAccounts { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {

@@ -92,6 +92,7 @@ namespace SchoolMoney.Controllers
                     Role = response.Role,
                     IsActive = response.IsActive,
                     DateOfBirth = response.DateOfBirth,
+                    AccoutNumber = response.AccoutNumber
                 });
             }
             catch (UserNotFoundException ex)
