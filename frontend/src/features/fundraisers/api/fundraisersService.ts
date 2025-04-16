@@ -21,6 +21,10 @@ export class FundraisersService {
         return FundraisersService.mapDtoToFundraiser(data);
     }
 
+    public static async close(id: number): Promise<void> {
+        await requestClient.delete(`/Fundraisers/${id}`);
+    }
+
     private static mapDtoToFundraiser(dto: FundraiserDto): Fundraiser {
         return {
             name: dto.name,

@@ -22,7 +22,6 @@ export const SIGN_UP_LOGIN_REQUIREMENT = `Login musi zawierać min. ${MIN_LOGIN_
 export const SIGN_UP_PASSWORD_REQUIREMENT = `Hasło musi zawierać min. ${MIN_PASSWORD_LENGTH} znaków.`;
 export const SIGN_UP_CONFIRM_PASSWORD_REQUIREMENT = "Hasła muszą się zgadzać.";
 
-
 export const useSignUpForm = () => {
     const requirements = yup.object({
         password: yup
@@ -33,7 +32,7 @@ export const useSignUpForm = () => {
             .string()
             .required(SIGN_UP_CONFIRM_PASSWORD_REQUIREMENT)
             .test("passwords-match", SIGN_UP_CONFIRM_PASSWORD_REQUIREMENT, function (value) {
-                return this.parent.newPassword === value;
+                return this.parent.password === value;
             }),
         login: yup.string().required(SIGN_UP_LOGIN_REQUIREMENT).min(MIN_LOGIN_LENGTH, SIGN_UP_PASSWORD_REQUIREMENT),
         firstName: yup.string().required(SIGN_UP_FIRST_NAME_REQUIREMENT),
