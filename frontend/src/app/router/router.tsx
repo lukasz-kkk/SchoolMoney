@@ -21,6 +21,10 @@ const FundraisersPage = React.lazy(() =>
     import("@/app/pages/Root/Fundraisers/FundraisersPage.tsx").then((module) => ({ default: module.FundraisersPage }))
 );
 
+const FundraiserPage = React.lazy(() =>
+    import("@/app/pages/Root/Fundraiser/FundraiserPage.tsx").then((module) => ({ default: module.FundraiserPage }))
+);
+
 const FinancesPage = React.lazy(() =>
     import("@/app/pages/Root/Finances/FinancesPage.tsx").then((module) => ({ default: module.FinancesPage }))
 );
@@ -64,6 +68,10 @@ export const router = createBrowserRouter([
             {
                 path: AppRoute.FUNDRAISERS,
                 element: WithSuspense(<FundraisersPage />),
+            },
+            {
+                path: AppRoute.FUNDRAISER,
+                element: WithSuspense(<FundraiserPage />),
             },
             {
                 path: AppRoute.CLASSES,
