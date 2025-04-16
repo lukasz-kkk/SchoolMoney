@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 export type TransferMoneyFormInputs = {
-    title: string;
+    name: string;
     sourceAccountNumber: string;
     targetAccountNumber: string;
     amount: number;
@@ -23,11 +23,11 @@ export const useTransferMoneyForm = ({
     sourceAccountNumber,
     targetAccountNumber,
     amount,
-    title,
+    name,
     maxAmount = Infinity,
 }: UseTransferMoneyFormOptions) => {
     const requirements = yup.object({
-        title: yup.string().required(MONEY_TRANSFER_NAME_HELP),
+        name: yup.string().required(MONEY_TRANSFER_NAME_HELP),
         sourceAccountNumber: yup.string().required(MONEY_TRANSFER_SOURCE_ACCOUNT_NUMBER_HELP),
         targetAccountNumber: yup.string().required(MONEY_TRANSFER_TARGET_ACCOUNT_NUMBER_HELP),
         amount: yup
@@ -42,7 +42,7 @@ export const useTransferMoneyForm = ({
         defaultValues: {
             sourceAccountNumber,
             targetAccountNumber,
-            title,
+            name,
             amount,
         },
     });

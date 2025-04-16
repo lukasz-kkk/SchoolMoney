@@ -20,7 +20,7 @@ export class FinancialAccountService {
     }
 
     public static async transferMoney(body: TransferMoneyRequestBody): Promise<void> {
-        await requestClient.post("Authentication/Register", body);
+        await requestClient.post("/Account/Transaction", body);
     }
 
     private static mapDtoToAccount({ balance, accountNumber }: AccountDto): FinancialAccount {

@@ -48,7 +48,7 @@ export const FinancialAccountDashboard = ({ account, accountName }: FinancialAcc
                     transferData={{
                         targetAccountNumber: account.accountNumber,
                         sourceAccountNumber: "Rachunek zewnętrzny",
-                        title: "Zasilenie rachunku środkami",
+                        name: "Zasilenie rachunku środkami",
                     }}
                 />
 
@@ -61,7 +61,7 @@ export const FinancialAccountDashboard = ({ account, accountName }: FinancialAcc
                     transferData={{
                         sourceAccountNumber: account.accountNumber,
                         targetAccountNumber: "Rachunek zewnętrzny",
-                        title: "Wypłata pieniędzy z rachunku",
+                        name: "Wypłata pieniędzy z rachunku",
                     }}
                 />
             </Box>
