@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 export type SignUpFormInputs = {
     login: string;
     password: string;
+    confirmPassword: string;
     firstName: string;
     lastName: string;
     dateOfBirth: Date;
@@ -19,6 +20,8 @@ export const SIGN_UP_FIRST_NAME_REQUIREMENT = "Imię jest wymagane.";
 export const SIGN_UP_LAST_NAME_REQUIREMENT = "Nazwisko jest wymagane.";
 export const SIGN_UP_LOGIN_REQUIREMENT = `Login musi zawierać min. ${MIN_LOGIN_LENGTH} znaków.`;
 export const SIGN_UP_PASSWORD_REQUIREMENT = `Hasło musi zawierać min. ${MIN_PASSWORD_LENGTH} znaków.`;
+export const SIGN_UP_CONFIRM_PASSWORD_REQUIREMENT = "Hasła muszą się zgadzać.";
+
 
 export const useSignUpForm = () => {
     const requirements = yup.object({
@@ -26,6 +29,12 @@ export const useSignUpForm = () => {
             .string()
             .required(SIGN_UP_PASSWORD_REQUIREMENT)
             .min(MIN_PASSWORD_LENGTH, SIGN_UP_PASSWORD_REQUIREMENT),
+        confirmPassword: yup
+            .string()
+            .required(SIGN_UP_CONFIRM_PASSWORD_REQUIREMENT)
+            .test("passwords-match", SIGN_UP_CONFIRM_PASSWORD_REQUIREMENT, function (value) {
+                return this.parent.newPassword === value;
+            }),
         login: yup.string().required(SIGN_UP_LOGIN_REQUIREMENT).min(MIN_LOGIN_LENGTH, SIGN_UP_PASSWORD_REQUIREMENT),
         firstName: yup.string().required(SIGN_UP_FIRST_NAME_REQUIREMENT),
         lastName: yup.string().required(SIGN_UP_LAST_NAME_REQUIREMENT),
