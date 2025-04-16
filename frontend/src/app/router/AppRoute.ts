@@ -5,6 +5,7 @@ export enum AppRoute {
     CHILDREN = "/children",
     CLASSES = "/classes",
     FUNDRAISERS = "/fundraisers",
+    FUNDRAISER = "/fundraisers/:id",
 
     USERS = "/users",
 

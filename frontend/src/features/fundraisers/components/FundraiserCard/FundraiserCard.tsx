@@ -5,12 +5,20 @@ import { Fundraiser } from "@/features/fundraisers/types/Fundraiser";
 import { TransformMoneyDialog } from "@/features/finances/components/TransferMoneyDialog/TransferMoneyDialog.tsx";
 import { CloseFundraiserDialog } from "@/features/fundraisers/components/CloseFundraiserDialog/CloseFundraiserDialog.tsx";
 import { AccessGuard } from "@/features/auth/components/AccessGuard/AccessGuard.tsx";
+import { useNavigate } from "react-router-dom";
+import { AppRoute } from "@/app/router";
 
 type FundraiserCardProps = {
     fundraiser: Fundraiser;
 };
 
 export const FundraiserCard = ({ fundraiser }: FundraiserCardProps) => {
+    const navigate = useNavigate();
+
+    const seeDetails = () => {
+        navigate(AppRoute.FUNDRAISER.replace(":id", fundraiser.id.toString()));
+    };
+
     return (
         <Card className={styles.container}>
             <Box className={styles.content}>
@@ -50,7 +58,7 @@ export const FundraiserCard = ({ fundraiser }: FundraiserCardProps) => {
                     />
                 </AccessGuard>
 
-                <Button>Szczegóły</Button>
+                <Button onClick={seeDetails}>Szczegóły</Button>
             </Box>
         </Card>
     );
