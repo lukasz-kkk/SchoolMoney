@@ -2,6 +2,7 @@ import classes from "./SignUpForm.module.scss";
 import { Box, Button } from "@radix-ui/themes";
 import { Input } from "@/components/Input/Input";
 import {
+    SIGN_UP_CONFIRM_PASSWORD_REQUIREMENT,
     SIGN_UP_DATE_OF_BIRTH_REQUIREMENT,
     SIGN_UP_FIRST_NAME_REQUIREMENT,
     SIGN_UP_LAST_NAME_REQUIREMENT,
@@ -59,6 +60,13 @@ export const SignUpForm = ({ onSubmit, isLoading }: SignUpFormProps) => {
                 type="password"
                 help={SIGN_UP_PASSWORD_REQUIREMENT}
                 error={formState.errors?.password?.message}
+            />
+            <Input
+                {...register("confirmPassword")}
+                label="Potwierdź hasło"
+                help={SIGN_UP_CONFIRM_PASSWORD_REQUIREMENT}
+                error={formState.errors?.confirmPassword?.message}
+                type="password"
             />
 
             <Button loading={isLoading} className={classes.submitButton}>
