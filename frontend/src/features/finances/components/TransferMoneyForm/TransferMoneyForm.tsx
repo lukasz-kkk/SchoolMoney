@@ -33,11 +33,11 @@ export const TransferMoneyForm = ({
     return (
         <form className={classes.form} onSubmit={handleSubmit(onSubmit)} onReset={onCancel}>
             <Input
-                {...register("title")}
+                {...register("name")}
                 label="Tytuł przelewu"
-                error={formState.errors?.title?.message}
+                error={formState.errors?.name?.message}
                 help={MONEY_TRANSFER_NAME_HELP}
-                disabled={!!data.title}
+                disabled={!!data.name}
             />
 
             <Input

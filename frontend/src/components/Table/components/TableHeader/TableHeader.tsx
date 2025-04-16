@@ -17,7 +17,12 @@ export function TableHeader<T>({ table, withFilters }: HeaderProps<T>) {
                 <tr key={headerGroup.id}>
                     {headerGroup.headers.map((header) => {
                         return (
-                            <th key={header.id} colSpan={header.colSpan} className={classes.cell}>
+                            <th
+                                key={header.id}
+                                colSpan={header.colSpan}
+                                className={classes.cell}
+                                style={{ width: `${header.getSize()}px` }}
+                            >
                                 <Box
                                     onClick={header.column.getToggleSortingHandler()}
                                     className={classNames(classes.title, {
