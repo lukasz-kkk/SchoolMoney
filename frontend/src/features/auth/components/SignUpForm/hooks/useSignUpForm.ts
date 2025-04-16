@@ -22,6 +22,7 @@ export const SIGN_UP_LOGIN_REQUIREMENT = `Login musi zawierać min. ${MIN_LOGIN_
 export const SIGN_UP_PASSWORD_REQUIREMENT = `Hasło musi zawierać min. ${MIN_PASSWORD_LENGTH} znaków.`;
 export const SIGN_UP_CONFIRM_PASSWORD_REQUIREMENT = "Hasła muszą się zgadzać.";
 
+
 export const useSignUpForm = () => {
     const requirements = yup.object({
         password: yup
