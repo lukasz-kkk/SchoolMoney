@@ -9,9 +9,10 @@ import { formatMoney, moneyToFloatingPoint } from "@/features/finances/utils/mon
 
 type FinancialAccountDashboardProps = {
     account: FinancialAccount;
+    accountName: string;
 };
 
-export const FinancialAccountDashboard = ({ account }: FinancialAccountDashboardProps) => {
+export const FinancialAccountDashboard = ({ account, accountName }: FinancialAccountDashboardProps) => {
     const formattedBalance = formatMoney(account.balance);
 
     const onAccountNumberCopied = () => {
@@ -23,7 +24,7 @@ export const FinancialAccountDashboard = ({ account }: FinancialAccountDashboard
             <Box className={styles.row}>
                 <Box className={classNames(styles.name, styles.group)}>
                     <Text className={styles.label}>Nazwa rachunku</Text>
-                    <Text className={styles.value}>{account.name}</Text>
+                    <Text className={styles.value}>{accountName}</Text>
                 </Box>
 
                 <Box className={classNames(styles.balance, styles.group)}>
@@ -35,8 +36,8 @@ export const FinancialAccountDashboard = ({ account }: FinancialAccountDashboard
             <Box className={classNames(styles.number, styles.group)}>
                 <Text className={styles.label}>Numer rachunku</Text>
                 <Box className={styles.valueWrapper}>
-                    <Text className={styles.value}>{account.number}</Text>
-                    <CopyToClipboardButton value={account.number} onSuccess={onAccountNumberCopied} />
+                    <Text className={styles.value}>{account.accountNumber}</Text>
+                    <CopyToClipboardButton value={account.accountNumber} onSuccess={onAccountNumberCopied} />
                 </Box>
             </Box>
 
@@ -45,7 +46,7 @@ export const FinancialAccountDashboard = ({ account }: FinancialAccountDashboard
                     trigger={<Button color="jade">Wpłać</Button>}
                     title="Wpłać środki"
                     transferData={{
-                        targetAccountNumber: account.number,
+                        targetAccountNumber: account.accountNumber,
                         sourceAccountNumber: "Rachunek zewnętrzny",
                         title: "Zasilenie rachunku środkami",
                     }}
@@ -58,7 +59,7 @@ export const FinancialAccountDashboard = ({ account }: FinancialAccountDashboard
                         maxAmount: moneyToFloatingPoint(account.balance),
                     }}
                     transferData={{
-                        sourceAccountNumber: account.number,
+                        sourceAccountNumber: account.accountNumber,
                         targetAccountNumber: "Rachunek zewnętrzny",
                         title: "Wypłata pieniędzy z rachunku",
                     }}

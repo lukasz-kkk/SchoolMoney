@@ -6,6 +6,7 @@ import { AppRoute } from "@/app/router";
 import { useSignUp } from "@/features/auth/hooks/useSignUp.ts";
 import { SignUpFormInputs } from "@/features/auth/components/SignUpForm/hooks/useSignUpForm.ts";
 import { SignUpForm } from "@/features/auth/components/SignUpForm/SignUpForm.tsx";
+import { dateToDateOnlyISOString } from "@/utils/dateFormat.ts";
 
 export const SignUpPage = () => {
     const { mutateAsync: signUp, isPending } = useSignUp();
@@ -13,7 +14,7 @@ export const SignUpPage = () => {
 
     const register = async ({ password, login, firstName, lastName, dateOfBirth }: SignUpFormInputs) => {
         try {
-            await signUp({ password, login, firstName, lastName, dateOfBirth: dateOfBirth.toISOString() });
+            await signUp({ password, login, firstName, lastName, dateOfBirth: dateToDateOnlyISOString(dateOfBirth) });
             navigate(AppRoute.FINANCES);
             toast.success("Rejestracja pomyślna.");
         } catch (e) {

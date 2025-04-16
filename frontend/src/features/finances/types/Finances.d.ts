@@ -1,5 +1,6 @@
 export type FinancialAccount = {
-    number: string;
-    name: string;
+    accountNumber: FinancialAccountNumber;
     balance: number;
 };
+
+type FinancialAccountNumber = string;

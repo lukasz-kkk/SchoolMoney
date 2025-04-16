@@ -11,7 +11,7 @@ const BaseFinancesPage = () => {
             <Page.Header title="Finanse" />
 
             <Page.Content>
-                <FinancialAccountDashboard account={data} />
+                {data && <FinancialAccountDashboard account={data} accountName="Podstawowy rachunek" />}
             </Page.Content>
         </Page.Root>
     );
