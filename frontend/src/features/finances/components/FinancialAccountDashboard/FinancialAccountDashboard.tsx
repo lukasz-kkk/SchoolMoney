@@ -49,7 +49,7 @@ export const FinancialAccountDashboard = ({ primaryAccount, transactions }: Fina
                         title="Wpłać środki"
                         transferData={{
                             targetAccountNumber: primaryAccount.accountNumber,
-                            sourceAccountNumber: "Rachunek zewnętrzny",
+                            sourceAccountNumber: "External",
                             name: "Zasilenie rachunku środkami",
                         }}
                     />
@@ -62,7 +62,7 @@ export const FinancialAccountDashboard = ({ primaryAccount, transactions }: Fina
                         }}
                         transferData={{
                             sourceAccountNumber: primaryAccount.accountNumber,
-                            targetAccountNumber: "Rachunek zewnętrzny",
+                            targetAccountNumber: "External",
                             name: "Wypłata pieniędzy z rachunku",
                         }}
                     />

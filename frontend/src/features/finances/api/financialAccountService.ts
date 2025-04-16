@@ -15,12 +15,12 @@ type TransferMoneyRequestBody = {
 
 export class FinancialAccountService {
     public static async getAccount(): Promise<FinancialAccount> {
-        const { data } = await requestClient.get<AccountDto>("/Account/ByLoggedUser");
+        const { data } = await requestClient.get<AccountDto>("/FinancialAccount/ByLoggedUser");
         return FinancialAccountService.mapDtoToAccount(data);
     }
 
     public static async transferMoney(body: TransferMoneyRequestBody): Promise<void> {
-        await requestClient.post("/Account/Transaction", body);
+        await requestClient.post("/FinancialAccount/Transaction", body);
     }
 
     private static mapDtoToAccount({ balance, accountNumber }: AccountDto): FinancialAccount {
