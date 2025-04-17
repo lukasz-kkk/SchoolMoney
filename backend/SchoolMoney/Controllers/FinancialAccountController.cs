@@ -83,6 +83,11 @@ namespace SchoolMoney.Controllers
                 return StatusCode((int)HttpStatusCode.BadRequest,
                     string.Format(Resource.ControllerBadRequest, ex.Message));
             }
+            catch (TransactionNotEnoughFundsException ex)
+            {
+                return StatusCode((int)HttpStatusCode.BadRequest,
+                    string.Format(Resource.ControllerBadRequest, ex.Message));
+            }
             catch (TransactionAccountNotFoundException ex)
             {
                 return StatusCode((int)HttpStatusCode.NotFound,
