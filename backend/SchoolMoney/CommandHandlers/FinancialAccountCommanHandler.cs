@@ -1,5 +1,7 @@
-﻿using Domain.Exceptions;
+﻿using Domain;
+using Domain.Exceptions;
 using Domain.Repositories;
+using Infrastructure;
 using MediatR;
 using SchoolMoney.Commands;
 using SchoolMoney.Constants;
@@ -12,15 +14,18 @@ namespace SchoolMoney.CommandHandlers
     {
         private readonly IUserRepository _userRepository;
         private readonly IFinancialAccountRepository _financialAccountRepository;
+        private readonly ITransactionRepository _transactionRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public FinancialAccountCommandHandler(
             IUserRepository userRepository,
             IFinancialAccountRepository financialAccountRepository,
+            ITransactionRepository transactionRepository,
             IHttpContextAccessor httpContextAccessor)
         {
             _userRepository = userRepository;
             _financialAccountRepository = financialAccountRepository;
+            _transactionRepository = transactionRepository;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -46,6 +51,19 @@ namespace SchoolMoney.CommandHandlers
             else
                 HandleTransfer(request, user.Account, amount);
 
+            var transaction = new Transaction
+            {
+                SourceAccountNumber = request.SourceAccountNumber,
+                TargetAccountNumber = request.TargetAccountNumber,
+                Name = request.Name,
+                Amount = amount,
+                Date = DateTime.UtcNow,
+                Sender = user
+            };
+
+            _transactionRepository.Add(transaction);
+
+            await _transactionRepository.SaveChangesAsync();
             await _userRepository.SaveChangesAsync();
             return Unit.Value;
         }
