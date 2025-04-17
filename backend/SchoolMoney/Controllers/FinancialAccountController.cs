@@ -104,5 +104,29 @@ namespace SchoolMoney.Controllers
                     string.Format(Resource.ControllerInternalError, ex.Message));
             }
         }
+
+        [HttpGet("TransactionsHistory/{accountNumber}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+#if !DEBUG
+        [Authorize(Roles = Roles.User)]
+#endif
+        public async Task<ActionResult<FinancialAccountResponse>> GetTransactionsHisotry(string accountNumber)
+        {
+            try
+            {
+                var query = new GetTransactionsHistoryQuery
+                {
+                    AccountNumber = accountNumber,
+                };
+                var result = await _mediator.Send(query);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                    string.Format(Resource.ControllerInternalError, ex.Message));
+            }
+        }
     }
 }

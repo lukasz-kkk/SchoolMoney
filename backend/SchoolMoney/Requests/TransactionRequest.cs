@@ -8,7 +8,7 @@ namespace SchoolMoney.Requests
         public string Name { get; set; }
         public string SourceAccountNumber { get; set; }
         public string TargetAccountNumber { get; set; }
-        public decimal Amount { get; set; }
+        public int Amount { get; set; }
     }
 
     public class TransactionRequestValidator : AbstractValidator<TransactionRequest>
