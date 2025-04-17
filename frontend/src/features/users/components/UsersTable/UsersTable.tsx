@@ -26,21 +26,25 @@ const columns = [
     }),
     columnHelper.accessor((row) => row.dateOfBirth, {
         id: "dateOfBirth",
+        size: 60,
         cell: (info) => info.getValue().toLocaleDateString(),
         header: () => <span>Data urodzenia</span>,
     }),
     columnHelper.accessor((row) => row.role, {
         id: "role",
+        size: 60,
         cell: (info) => info.getValue(),
         header: () => <span>Rola</span>,
     }),
     columnHelper.accessor((row) => row.isActive, {
         id: "isActive",
+        size: 60,
         cell: (info) => <AccountStatusTag isActive={info.getValue()} />,
         header: () => <span>Status</span>,
     }),
     columnHelper.display({
         id: "actions",
+        size: 40,
         cell: ({ row, table }) => (
             <IconButton
                 onClick={() => table.setExpanded({ [row.id]: !row.getIsExpanded() })}

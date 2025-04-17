@@ -1,0 +1,11 @@
+.contentWrapper {
+  display: flex;
+  gap: var(--space-4);
+  
+  .aside {
+    margin-left: auto;
+    display: grid;
+    grid-gap: var(--space-2);
+    width: 400px;
+  }
+}
