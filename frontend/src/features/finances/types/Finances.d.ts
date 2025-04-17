@@ -6,10 +6,12 @@ export type FinancialAccount = {
 type FinancialAccountNumber = string;
 
 export type Transaction = {
-    id: number;
+    senderId: number;
     name: string;
     amount: number;
     sourceAccountNumber: FinancialAccountNumber;
     targetAccountNumber: FinancialAccountNumber;
-    createdAt: Date;
+    senderFirstName: string;
+    senderLastName: string;
+    date: Date;
 };

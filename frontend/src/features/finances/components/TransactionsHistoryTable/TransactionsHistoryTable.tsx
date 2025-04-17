@@ -22,14 +22,23 @@ const columns = [
         cell: (info) => info.getValue(),
         header: () => <span>Rachunek docelowy</span>,
     }),
+    columnHelper.accessor((row) => row, {
+        id: "source",
+        cell: (info) => (
+            <span>
+                {info.getValue().senderFirstName} {info.getValue().senderLastName}
+            </span>
+        ),
+        header: () => <span>Zleceniodawca</span>,
+    }),
     columnHelper.accessor((row) => row.amount, {
         id: "amount",
         cell: (info) => `${moneyToFloatingPoint(info.getValue())}zł`,
         header: () => <span>Kwota transakcji</span>,
     }),
-    columnHelper.accessor((row) => row.createdAt, {
+    columnHelper.accessor((row) => row.date, {
         id: "createdAt",
-        cell: (info) => info.getValue().toLocaleDateString(),
+        cell: (info) => info.getValue().toLocaleString(),
         header: () => <span>Data zlecenia</span>,
     }),
 ];
