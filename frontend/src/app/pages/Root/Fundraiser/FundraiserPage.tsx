@@ -9,15 +9,12 @@ import { useState } from "react";
 
 import styles from "./FundraiserPage.module.scss";
 import { TransactionsHistoryTable } from "@/features/finances/components/TransactionsHistoryTable/TransactionsHistoryTable.tsx";
-import { useTransactionsHistory } from "@/features/finances/hooks/useTransactionsHistory.ts";
 
 // TODO: Remove mocks
 const BaseFundraiserPage = () => {
     const params = useParams<{ id: string }>();
     const { data: fundraiser } = useFundraiser(parseInt(params.id ?? "0"));
     const [files, setFiles] = useState<File[]>([]);
-
-    const { data: transactions } = useTransactionsHistory();
 
     const onUploadFile = (file: File) => {
         setFiles((prev) => [...prev, file]);
@@ -39,7 +36,7 @@ const BaseFundraiserPage = () => {
                     </Box>
                 </Box>
 
-                <TransactionsHistoryTable transactions={transactions ?? []} />
+                <TransactionsHistoryTable transactions={[]} />
             </Page.Content>
         </Page.Root>
     );

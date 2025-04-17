@@ -6,14 +6,14 @@ import { useTransactionsHistory } from "@/features/finances/hooks/useTransaction
 
 const BaseFinancesPage = () => {
     const { data: account } = useFinancialAccount();
-    const { data: transactions } = useTransactionsHistory();
+    const { data: transactions } = useTransactionsHistory({ accountNumber: account?.accountNumber });
 
     return (
         <Page.Root>
             <Page.Header title="Finanse" />
 
             <Page.Content>
-                {account && <FinancialAccountDashboard primaryAccount={account} transactions={transactions} />}
+                {account && <FinancialAccountDashboard primaryAccount={account} transactions={transactions ?? []} />}
             </Page.Content>
         </Page.Root>
     );

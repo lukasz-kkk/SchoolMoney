@@ -7,6 +7,9 @@ export const useTransferMoney = () => {
 
     return useMutation({
         mutationFn: FinancialAccountService.transferMoney,
-        onSuccess: () => invalidate(QueryKey.FinancialAccount),
+        onSuccess: () => {
+            void invalidate(QueryKey.FinancialAccount);
+            void invalidate(QueryKey.Transaction);
+        },
     });
 };
