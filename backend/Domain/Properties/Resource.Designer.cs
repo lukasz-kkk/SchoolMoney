@@ -214,11 +214,11 @@ namespace Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User with ID {0} is not caregiver..
+        ///   Looks up a localized string similar to User with ID {0} is not Treasurer..
         /// </summary>
-        internal static string ExceptionUserIsNotCaregiver {
+        internal static string ExceptionUserIsNotTreasurer {
             get {
-                return ResourceManager.GetString("ExceptionUserIsNotCaregiver", resourceCulture);
+                return ResourceManager.GetString("ExceptionUserIsNotTreasurer", resourceCulture);
             }
         }
         

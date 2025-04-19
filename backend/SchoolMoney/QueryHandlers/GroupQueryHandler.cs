@@ -33,7 +33,9 @@ namespace SchoolMoney.QueryHandlers
             {
                 Id = x.Id,
                 Name = x.Name,
-                CaregiverId = x.Caregiver.Id,
+                TreasurerId = x.Treasurer.Id,
+                TreasurerFirstName = x.Treasurer.FirstName,
+                TreasurerLastName = x.Treasurer.LastName,
                 CreatedAt = x.CreatedAt
             });
 
@@ -45,7 +47,7 @@ namespace SchoolMoney.QueryHandlers
             var loggedUserId = JwtHelper.GetUserIdFromCookies(_httpContextAccessor)
                 ?? throw new InvalidCookieException(Cookies.UserId);
 
-            var group = _groupRepository.GetList(x => x.Caregiver.Id == loggedUserId);
+            var group = _groupRepository.GetList(x => x.Treasurer.Id == loggedUserId);
 
             if (group == null || !group.Any())
             {
@@ -56,7 +58,9 @@ namespace SchoolMoney.QueryHandlers
             {
                 Id = x.Id,
                 Name = x.Name,
-                CaregiverId = x.Caregiver.Id,
+                TreasurerId = x.Treasurer.Id,
+                TreasurerFirstName = x.Treasurer.FirstName,
+                TreasurerLastName = x.Treasurer.LastName,
                 CreatedAt = x.CreatedAt
             });
 

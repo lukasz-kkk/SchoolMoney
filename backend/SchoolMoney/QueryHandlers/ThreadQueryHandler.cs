@@ -33,7 +33,7 @@ namespace SchoolMoney.QueryHandlers
                 ?? throw new UserNotFoundException(loggedUserId);
 
             var threads = _threadRepository.GetList(thread => 
-                thread.Parent.Id == loggedUserId || thread.Caregiver.Id == loggedUserId);
+                thread.Parent.Id == loggedUserId || thread.Treasurer.Id == loggedUserId);
 
             if (threads == null || !threads.Any())
                 return Task.FromResult(Enumerable.Empty<ThreadResponse>());
@@ -52,7 +52,7 @@ namespace SchoolMoney.QueryHandlers
         private int GetReceiverId(Domain.Role loggedRole, Domain.Thread thread)
             => loggedRole switch
             {
-                Domain.Role.User => thread.Caregiver.Id,
+                Domain.Role.User => thread.Treasurer.Id,
                 Domain.Role.Admin => thread.Parent.Id,
                 _ => throw new NotImplementedException(),
             };
@@ -61,7 +61,7 @@ namespace SchoolMoney.QueryHandlers
             => loggedRole switch
             {
                 Domain.Role.User => !thread.Messages.Any(x => x.CreatedAt > thread.ParentLastRead),
-                Domain.Role.Admin => !thread.Messages.Any(x => x.CreatedAt > thread.CaregiverLastRead),
+                Domain.Role.Admin => !thread.Messages.Any(x => x.CreatedAt > thread.TreasurerLastRead),
                 _ => false
             };
     }

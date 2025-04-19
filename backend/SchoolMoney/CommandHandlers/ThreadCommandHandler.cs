@@ -30,18 +30,18 @@ namespace SchoolMoney.CommandHandlers
         {
             var parent = _userRepository.Get(request.ParentId)
                 ?? throw new UserNotFoundException(request.ParentId);
-            var caregiver = _userRepository.Get(request.CaregiverId)
-                ?? throw new UserNotFoundException(request.CaregiverId);
+            var treasurer = _userRepository.Get(request.TreasurerId)
+                ?? throw new UserNotFoundException(request.TreasurerId);
 
             if(parent.Role != Role.User)
                 throw new UserHasWrongRoleInThreadException("Parent", parent.Id);
-            if(caregiver.Role != Role.Admin)
-                throw new UserHasWrongRoleInThreadException("Caregiver", parent.Id);
+            if(treasurer.Role != Role.Admin)
+                throw new UserHasWrongRoleInThreadException("Treasurer", parent.Id);
 
             var thread = new Domain.Thread
             {
                 Parent = parent,
-                Caregiver = caregiver,
+                Treasurer = treasurer,
                 Subject = request.Subject,
                 CreatedAt = DateTime.UtcNow
             };
@@ -63,8 +63,8 @@ namespace SchoolMoney.CommandHandlers
 
             if (loggedUser.Id == thread.Parent.Id)
                 thread.ParentLastRead = DateTime.UtcNow;
-            else if (loggedUser.Id == thread.Caregiver.Id)
-                thread.CaregiverLastRead = DateTime.UtcNow;
+            else if (loggedUser.Id == thread.Treasurer.Id)
+                thread.TreasurerLastRead = DateTime.UtcNow;
             else
                 throw new UserNotAllowedInThreadException(loggedUser.Id);
 

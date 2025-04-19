@@ -3,6 +3,9 @@ using Domain.Exceptions;
 using SchoolMoney.Commands;
 using MediatR;
 using Domain.Repositories;
+using SchoolMoney.Constants;
+using SchoolMoney.Exceptions;
+using SchoolMoney.Utils;
 
 namespace SchoolMoney.CommandHandlers
 {
@@ -11,20 +14,24 @@ namespace SchoolMoney.CommandHandlers
     {
         private readonly IUserRepository _userRepository;
         private readonly IGroupRepository _groupRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public GroupCommandHandler(IUserRepository userRepository, IGroupRepository groupRepository)
+        public GroupCommandHandler(IUserRepository userRepository,
+                                   IGroupRepository groupRepository,
+                                   IHttpContextAccessor httpContextAccessor)
         {
             _userRepository = userRepository;
             _groupRepository = groupRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<Unit> Handle(CreateGroupCommand request, CancellationToken cancellationToken)
         {
-            var caregiver = _userRepository.Get(request.CaregiverId)
-                ?? throw new UserNotFoundException(request.CaregiverId);
+            var loggedUserId = JwtHelper.GetUserIdFromCookies(_httpContextAccessor)
+                ?? throw new InvalidCookieException(Cookies.UserId);
 
-            if (caregiver.Role != Role.Admin)
-                throw new UserIsNotCaregiverException(request.CaregiverId);
+            var user = _userRepository.Get(loggedUserId)
+                ?? throw new UserNotFoundException(loggedUserId);
 
             var existingGroup = _groupRepository.GetList(u => u.Name.ToLower() == request.Name.ToLower());
             if (existingGroup.Any())
@@ -32,7 +39,7 @@ namespace SchoolMoney.CommandHandlers
 
             var group = new Group
             {
-                Caregiver = caregiver,
+                Treasurer = user,
                 Name = request.Name,
                 CreatedAt = DateTime.Now
             };

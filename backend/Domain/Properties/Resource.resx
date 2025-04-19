@@ -138,8 +138,8 @@
   <data name="ExceptionUserIsNotActive" xml:space="preserve">
     <value>User with ID {0} is not active.</value>
   </data>
-  <data name="ExceptionUserIsNotCaregiver" xml:space="preserve">
-    <value>User with ID {0} is not caregiver.</value>
+  <data name="ExceptionUserIsNotTreasurer" xml:space="preserve">
+    <value>User with ID {0} is not Treasurer.</value>
   </data>
   <data name="ExceptionUserIsNotParentOfThisChild" xml:space="preserve">
     <value>User with ID {0} is not parent of child with ID {1}</value>
