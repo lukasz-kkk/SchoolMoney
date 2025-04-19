@@ -7,12 +7,16 @@ import { useGroup } from "@/features/groups/hooks/useGroup";
 import { useUser } from "@/features/auth/hooks/useUser";
 import { AppRoute } from "@/app/router";
 import { RenameGroupDialog } from "@/features/groups/components/RenameGroupDialog/RenameGroupDialog";
+import { useGroupJoinCode } from "@/features/groups/hooks/useGroupJoinCode";
+import { GroupJoinCode } from "@/features/groups/components/GroupJoinCode/GroupJoinCode";
 
 const BaseGroupPage = () => {
     const params = useParams<{ id: string }>();
+    const { user } = useUser();
     const { data: group } = useGroup(parseInt(params.id ?? "0"));
 
-    const { user } = useUser();
+    const isTreasurer = !!user && user?.id == group?.treasurer?.id;
+    const { data: joinCode } = useGroupJoinCode(group?.id);
 
     const breadcrumbItems = [
         {
@@ -27,12 +31,12 @@ const BaseGroupPage = () => {
     return (
         <Page.Root>
             <Page.Header items={breadcrumbItems}>
-                {!!group && user?.id === group?.treasurer?.id && (
+                {!!group && isTreasurer && (
                     <RenameGroupDialog groupId={group.id} trigger={<Button color="jade">Edytuj</Button>} />
                 )}
             </Page.Header>
 
-            <Page.Content></Page.Content>
+            <Page.Content>{isTreasurer && joinCode && <GroupJoinCode value={joinCode} />}</Page.Content>
         </Page.Root>
     );
 };

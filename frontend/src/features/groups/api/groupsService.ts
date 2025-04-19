@@ -10,6 +10,10 @@ type GroupDto = {
     createdAt: Date;
 };
 
+type JoinCodeDto = {
+    joinCode: string;
+};
+
 type CreateGroupRequest = {
     name: string;
 };
@@ -23,6 +27,11 @@ export class GroupsService {
     public static async getOwn(): Promise<Group[]> {
         const { data } = await requestClient.get<GroupDto[]>("/Group/ByLoggedUser");
         return data.map(GroupsService.mapDtoToGroup);
+    }
+
+    public static async getJoinCode(groupId: number): Promise<string> {
+        const { data } = await requestClient.get<JoinCodeDto>(`/Group/${groupId}/JoinCode`);
+        return data.joinCode;
     }
 
     public static async create(body: CreateGroupRequest): Promise<Group> {
@@ -40,7 +49,7 @@ export class GroupsService {
             id: dto.id,
             createdAt: new Date(dto.createdAt),
             treasurer: {
-                id: dto.id,
+                id: dto.treasurerId,
                 firstName: dto.treasurerFirstName,
                 lastName: dto.treasurerLastName,
             },
