@@ -53,6 +53,45 @@ namespace PrzedszkolePlus.Controllers
             }
         }
 
+        [HttpPost("/JoinByCode")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+#if !DEBUG
+        [Authorize(Roles = Roles.Admin)]
+#endif
+        public async Task<IActionResult> JoinByCode([FromBody] JoinGroupRequest dto)
+        {
+
+            var command = new CreateRequestToJoinGroupCommand
+            {
+                JoinCode = dto.JoinCode,
+                ChildId = dto.ChildId
+            };
+
+            try
+            {
+                await _mediator.Send(command);
+                return NoContent();
+            }
+            catch (ChildNotFoundException ex)
+            {
+                return StatusCode((int)HttpStatusCode.NotFound,
+                    string.Format(Resource.ControllerNotFound, ex.Message));
+            }
+            catch (GroupNotFoundException ex)
+            {
+                return StatusCode((int)HttpStatusCode.BadRequest,
+                    string.Format(Resource.ControllerBadRequest, ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                    string.Format(Resource.ControllerInternalError, ex.Message));
+            }
+        }
+
         [HttpGet("ByLoggedUser")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

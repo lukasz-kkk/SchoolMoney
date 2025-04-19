@@ -294,4 +294,10 @@
   <data name="ValidatorTransactionTargetTooLong" xml:space="preserve">
     <value>Destination account number can be up to 34 characters long.</value>
   </data>
+  <data name="ValidatorJoinCodeLength" xml:space="preserve">
+    <value>Join code must be 7 characters long.</value>
+  </data>
+  <data name="ValidatorJoinCodeRequired" xml:space="preserve">
+    <value>Join code is required.</value>
+  </data>
 </root>
