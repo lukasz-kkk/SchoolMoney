@@ -18,6 +18,12 @@ namespace Infrastructure
                 .FirstOrDefault(group => group.Id == id);
         }
 
+        public Group? FirstOrDefault(Func<Group, bool> predicate = null)
+        {
+            return _appDbContext.Groups
+                .FirstOrDefault(predicate);
+        }
+
         public new List<Group> GetList(Func<Group, bool> predicate = null)
         {
             if (predicate == null)

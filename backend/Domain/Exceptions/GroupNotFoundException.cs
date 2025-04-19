@@ -8,5 +8,8 @@ namespace Domain.Exceptions
         {
         }
 
+        public GroupNotFoundException(string joinCode) : base(string.Format(Resource.ExceptionGroupWithJoinCodeNotFound, joinCode))
+        {
+        }
     }
 }

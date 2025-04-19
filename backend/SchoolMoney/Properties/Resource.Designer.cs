@@ -322,6 +322,24 @@ namespace SchoolMoney.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Join code must be 7 characters long..
+        /// </summary>
+        public static string ValidatorJoinCodeLength {
+            get {
+                return ResourceManager.GetString("ValidatorJoinCodeLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Join code is required..
+        /// </summary>
+        public static string ValidatorJoinCodeRequired {
+            get {
+                return ResourceManager.GetString("ValidatorJoinCodeRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Last name must be at least 5 characters long..
         /// </summary>
         public static string ValidatorLastNameLonger {

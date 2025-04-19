@@ -183,4 +183,7 @@
   <data name="ExceptionTransactionUnauthorized" xml:space="preserve">
     <value>User is not authorized to perform this transaction.</value>
   </data>
+  <data name="ExceptionGroupWithJoinCodeNotFound" xml:space="preserve">
+    <value>Group with join code {0} not found.</value>
+  </data>
 </root>

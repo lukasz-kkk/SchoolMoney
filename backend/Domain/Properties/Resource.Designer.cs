@@ -106,6 +106,15 @@ namespace Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Group with join code {0} not found..
+        /// </summary>
+        internal static string ExceptionGroupWithJoinCodeNotFound {
+            get {
+                return ResourceManager.GetString("ExceptionGroupWithJoinCodeNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User with name {0} not found..
         /// </summary>
         internal static string ExceptionloginNotFound {
@@ -214,20 +223,20 @@ namespace Domain.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User with ID {0} is not Treasurer..
-        /// </summary>
-        internal static string ExceptionUserIsNotTreasurer {
-            get {
-                return ResourceManager.GetString("ExceptionUserIsNotTreasurer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to User with ID {0} is not parent of child with ID {1}.
         /// </summary>
         internal static string ExceptionUserIsNotParentOfThisChild {
             get {
                 return ResourceManager.GetString("ExceptionUserIsNotParentOfThisChild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User with ID {0} is not Treasurer..
+        /// </summary>
+        internal static string ExceptionUserIsNotTreasurer {
+            get {
+                return ResourceManager.GetString("ExceptionUserIsNotTreasurer", resourceCulture);
             }
         }
         
