@@ -146,7 +146,7 @@ namespace PrzedszkolePlus.Controllers
             }
         }
 
-        [HttpPut("{child_id:int}/IsAccepted")]
+        [HttpPut("{id:int}/IsAccepted")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -154,12 +154,12 @@ namespace PrzedszkolePlus.Controllers
 #if !DEBUG
         [Authorize(Roles = Roles.Admin)]
 #endif
-        public async Task<IActionResult> PutIsAccepted(int child_id, bool is_accepted)
+        public async Task<IActionResult> PutIsAccepted(int id, bool is_accepted)
         {
 
             var request = new UpdateChildIsAcceptedCommand
             {
-                ChildId = child_id,
+                ChildId = id,
                 NewIsAccepted = is_accepted
             };
 
