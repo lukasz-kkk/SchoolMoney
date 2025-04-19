@@ -146,6 +146,50 @@ namespace PrzedszkolePlus.Controllers
             }
         }
 
+        [HttpPut("{child_id:int}/IsAccepted")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+#if !DEBUG
+        [Authorize(Roles = Roles.Admin)]
+#endif
+        public async Task<IActionResult> PutIsAccepted(int child_id, bool is_accepted)
+        {
+
+            var request = new UpdateChildIsAcceptedCommand
+            {
+                ChildId = child_id,
+                NewIsAccepted = is_accepted
+            };
+
+            try
+            {
+                await _mediator.Send(request);
+                return NoContent();
+            }
+            catch (ChildNotFoundException ex)
+            {
+                return StatusCode((int)HttpStatusCode.NotFound,
+                    string.Format(Resource.ControllerNotFound, ex.Message));
+            }
+            catch (ChildDoesntHaveJoinRequest ex)
+            {
+                return StatusCode((int)HttpStatusCode.BadRequest,
+                    string.Format(Resource.ControllerBadRequest, ex.Message));
+            }
+            catch (UserIsNotTreasurerException ex)
+            {
+                return StatusCode((int)HttpStatusCode.Forbidden,
+                    string.Format(Resource.ControllerForbidden, ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                    string.Format(Resource.ControllerInternalError, ex.Message));
+            }
+        }
+
         [HttpDelete("{id:int}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

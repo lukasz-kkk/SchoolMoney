@@ -12,7 +12,8 @@ namespace SchoolMoney.CommandHandlers
     public class ChildCommandHandler : IRequestHandler<CreateChildCommand, Unit>,
                                        IRequestHandler<UpdateChildParentCommand, Unit>,
                                        IRequestHandler<UpdateChildGroupCommand, Unit>,
-                                       IRequestHandler<DeleteChildCommand, Unit>
+                                       IRequestHandler<DeleteChildCommand, Unit>,
+                                       IRequestHandler<UpdateChildIsAcceptedCommand, Unit>
     { 
         private readonly IChildRepository _childRepository;
         private readonly IUserRepository _userRepository;
@@ -81,7 +82,33 @@ namespace SchoolMoney.CommandHandlers
 
             return Unit.Value;
         }
-        
+
+        public async Task<Unit> Handle(UpdateChildIsAcceptedCommand request, CancellationToken cancellationToken)
+        {
+            var child = _childRepository.Get(request.ChildId)
+                ?? throw new ChildNotFoundException(request.ChildId);
+
+            var group = _groupRepository.Get(child.Group.Id)
+                ?? throw new ChildDoesntHaveJoinRequest(request.ChildId);
+
+            var loggedUserId = JwtHelper.GetUserIdFromCookies(_httpContextAccessor)
+                ?? throw new InvalidCookieException(Cookies.UserId);
+
+            if (group.Treasurer.Id != loggedUserId)
+                throw new UserIsNotTreasurerException(loggedUserId);
+
+            child.IsAccepted = request.NewIsAccepted;
+
+            if (request.NewIsAccepted == false)
+            {
+                child.Group = null;
+            }
+
+            await _childRepository.SaveChangesAsync();
+
+            return Unit.Value;
+        }
+
         public async Task<Unit> Handle(DeleteChildCommand request, CancellationToken cancellationToken)
         {
             var child = _childRepository.Get(request.ChildId)

@@ -186,4 +186,7 @@
   <data name="ExceptionGroupWithJoinCodeNotFound" xml:space="preserve">
     <value>Group with join code {0} not found.</value>
   </data>
+  <data name="ExceptionChildDoesntHaveJoinRequest" xml:space="preserve">
+    <value>Child with ID {0} doesn't have join group request.</value>
+  </data>
 </root>

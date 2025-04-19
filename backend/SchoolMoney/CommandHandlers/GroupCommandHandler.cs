@@ -72,7 +72,6 @@ namespace SchoolMoney.CommandHandlers
 
         public async Task<Unit> Handle(CreateRequestToJoinGroupCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
             var group = _groupRepository.FirstOrDefault(x => x.JoinCode == request.JoinCode)
                 ?? throw new GroupNotFoundException(request.JoinCode);
 
@@ -86,7 +85,9 @@ namespace SchoolMoney.CommandHandlers
                 throw new UserIsNotParentOfThisChildException(loggedUserId, child.Id);
 
             child.Group = group;
-            // child.IsAccepted = false
+            child.IsAccepted = false;
+
+            await _childRepository.SaveChangesAsync();
 
             return Unit.Value;
         }

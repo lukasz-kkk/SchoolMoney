@@ -79,6 +79,15 @@ namespace Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Child with ID {0} doesn&apos;t have join group request..
+        /// </summary>
+        internal static string ExceptionChildDoesntHaveJoinRequest {
+            get {
+                return ResourceManager.GetString("ExceptionChildDoesntHaveJoinRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Child with ID {0} not found..
         /// </summary>
         internal static string ExceptionChildNotFound {
