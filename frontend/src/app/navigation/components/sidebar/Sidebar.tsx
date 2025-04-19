@@ -19,7 +19,7 @@ const items = [
         title: "Szkoła",
         requiredAccess: "authenticated",
         items: [
-            { label: "Klasy", href: AppRoute.CLASSES },
+            { label: "Klasy", href: AppRoute.GROUPS },
             { label: "Zbiórki", href: AppRoute.FUNDRAISERS },
             { label: "Moje dzieci", href: AppRoute.CHILDREN },
             { label: "Kontakt", href: AppRoute.CHAT },

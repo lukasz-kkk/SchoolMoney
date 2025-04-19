@@ -3,7 +3,8 @@ export enum AppRoute {
 
     CHAT = "/chat",
     CHILDREN = "/children",
-    CLASSES = "/classes",
+    GROUPS = "/groups",
+    GROUP = "/groups/:id",
     FUNDRAISERS = "/fundraisers",
     FUNDRAISER = "/fundraisers/:id",
 

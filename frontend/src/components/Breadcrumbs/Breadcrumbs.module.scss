@@ -1,0 +1,31 @@
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  gap: var(--space-2);
+}
+
+.item {
+  display: flex;
+  align-items: center;
+
+  &:not(:last-child)::after {
+    content: '>';
+    margin-left: var(--space-2);
+  }
+}
+
+.link {
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+  }
+}
+
+.current {
+  text-decoration: none;
+}

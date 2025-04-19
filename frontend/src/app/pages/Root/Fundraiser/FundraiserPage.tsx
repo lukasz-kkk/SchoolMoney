@@ -9,6 +9,7 @@ import { useState } from "react";
 
 import styles from "./FundraiserPage.module.scss";
 import { TransactionsHistoryTable } from "@/features/finances/components/TransactionsHistoryTable/TransactionsHistoryTable.tsx";
+import { AppRoute } from "@/app/router";
 
 // TODO: Remove mocks
 const BaseFundraiserPage = () => {
@@ -20,9 +21,19 @@ const BaseFundraiserPage = () => {
         setFiles((prev) => [...prev, file]);
     };
 
+    const breadcrumbItems = [
+        {
+            label: "Zbiórki",
+            href: AppRoute.FUNDRAISERS,
+        },
+        {
+            label: fundraiser?.name ?? "",
+        },
+    ];
+
     return (
         <Page.Root>
-            <Page.Header title={fundraiser?.name ?? "Zbiórka"}>
+            <Page.Header items={breadcrumbItems}>
                 <Button color="jade">Edytuj</Button>
             </Page.Header>
 
