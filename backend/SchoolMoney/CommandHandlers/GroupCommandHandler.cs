@@ -41,7 +41,8 @@ namespace SchoolMoney.CommandHandlers
             {
                 Treasurer = user,
                 Name = request.Name,
-                CreatedAt = DateTime.Now
+                CreatedAt = DateTime.Now,
+                JoinCode = GroupsHelper.GenerateJoinCode()
             };
 
             _groupRepository.Add(group);

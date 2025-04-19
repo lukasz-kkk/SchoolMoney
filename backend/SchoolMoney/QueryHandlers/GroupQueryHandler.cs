@@ -5,11 +5,13 @@ using Domain.Repositories;
 using SchoolMoney.Constants;
 using SchoolMoney.Exceptions;
 using SchoolMoney.Utils;
+using Domain.Exceptions;
 
 namespace SchoolMoney.QueryHandlers
 {
     public class GroupQueryHandler : IRequestHandler<GetAllGroupsQuery, IEnumerable<GroupResponse>>,
-                                     IRequestHandler<GetGroupByLoggedUserQuery, IEnumerable<GroupResponse>>
+                                     IRequestHandler<GetGroupByLoggedUserQuery, IEnumerable<GroupResponse>>,
+                                     IRequestHandler<GetGroupJoinCodeQuery, GroupJoinCodeResponse>
     {
         private readonly IGroupRepository _groupRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
@@ -63,6 +65,25 @@ namespace SchoolMoney.QueryHandlers
                 TreasurerLastName = x.Treasurer.LastName,
                 CreatedAt = x.CreatedAt
             });
+
+            return Task.FromResult(result);
+        }
+
+        public Task<GroupJoinCodeResponse> Handle(GetGroupJoinCodeQuery request, CancellationToken cancellationToken)
+        {
+            var loggedUserId = JwtHelper.GetUserIdFromCookies(_httpContextAccessor)
+                ?? throw new InvalidCookieException(Cookies.UserId);
+
+            var group = _groupRepository.Get(request.GroupId)
+                    ?? throw new GroupNotFoundException(request.GroupId);
+
+            if (group.Treasurer.Id != loggedUserId)
+                throw new UserIsNotTreasurerException(loggedUserId);
+
+            var result = new GroupJoinCodeResponse
+            {
+                JoinCode = group.JoinCode
+            };
 
             return Task.FromResult(result);
         }
