@@ -14,7 +14,7 @@ namespace Infrastructure
         public new Group? Get(int id)
         {
             return _appDbContext.Groups
-                .Include(group => group.Caregiver)
+                .Include(group => group.Treasurer)
                 .FirstOrDefault(group => group.Id == id);
         }
 
@@ -22,10 +22,10 @@ namespace Infrastructure
         {
             if (predicate == null)
                 return _appDbContext.Groups
-                    .Include(group => group.Caregiver)
+                    .Include(group => group.Treasurer)
                     .ToList();
             return _appDbContext.Groups
-                .Include(group => group.Caregiver)
+                .Include(group => group.Treasurer)
                 .Where(predicate)
                 .ToList();
         }

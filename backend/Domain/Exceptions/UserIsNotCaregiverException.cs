@@ -2,9 +2,9 @@
 
 namespace Domain.Exceptions
 {
-    public class UserIsNotCaregiverException : DomainException
+    public class UserIsNotTreasurerException : DomainException
     {
-        public UserIsNotCaregiverException(int userId) : base(string.Format(Resource.ExceptionUserIsNotCaregiver, userId))
+        public UserIsNotTreasurerException(int userId) : base(string.Format(Resource.ExceptionUserIsNotTreasurer, userId))
         {
         }
     }

@@ -34,7 +34,7 @@ namespace SchoolMoney.CommandHandlers
             var user = _userRepository.Get(loggedUserId)
                 ?? throw new UserNotFoundException(loggedUserId);
 
-            if (user.Id != thread.Parent.Id && user.Id != thread.Caregiver.Id)
+            if (user.Id != thread.Parent.Id && user.Id != thread.Treasurer.Id)
                 throw new UserNotAllowedInThreadException(thread.Id);
 
             var message = new Domain.Message

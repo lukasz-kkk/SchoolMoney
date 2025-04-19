@@ -13,7 +13,7 @@ namespace Infrastructure
         public new Domain.Thread? Get(int id)
         {
             return _appDbContext.Threads
-                .Include(thread => thread.Caregiver)
+                .Include(thread => thread.Treasurer)
                 .Include(thread => thread.Parent)
                 .Include(thread => thread.Messages)
                 .FirstOrDefault(group => group.Id == id);
@@ -22,12 +22,12 @@ namespace Infrastructure
         {
             if (predicate == null)
                 return _appDbContext.Threads
-                    .Include(thread => thread.Caregiver)
+                    .Include(thread => thread.Treasurer)
                     .Include(thread => thread.Parent)
                     .Include(thread => thread.Messages)
                     .ToList();
             return _appDbContext.Threads
-                .Include(thread => thread.Caregiver)
+                .Include(thread => thread.Treasurer)
                 .Include(thread => thread.Parent)
                 .Include(thread => thread.Messages)
                 .Where(predicate)
