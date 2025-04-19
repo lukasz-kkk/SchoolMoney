@@ -23,6 +23,11 @@ type RenameGroupRequest = {
     newName: string;
 };
 
+type AddChildToGroupRequest = {
+    childId: number;
+    joinCode: string;
+};
+
 export class GroupsService {
     public static async getOwn(): Promise<Group[]> {
         const { data } = await requestClient.get<GroupDto[]>("/Group/ByLoggedUser");
@@ -41,6 +46,10 @@ export class GroupsService {
 
     public static async rename(body: RenameGroupRequest): Promise<void> {
         await requestClient.put(`/Group/${body.groupId}/Name`, body);
+    }
+
+    public static async addChildToGroup(body: AddChildToGroupRequest): Promise<void> {
+        await requestClient.post("/JoinByCode", body);
     }
 
     private static mapDtoToGroup(dto: GroupDto): Group {
