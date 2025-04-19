@@ -3,6 +3,9 @@ using Domain.Exceptions;
 using SchoolMoney.Commands;
 using MediatR;
 using Domain.Repositories;
+using SchoolMoney.Constants;
+using SchoolMoney.Exceptions;
+using SchoolMoney.Utils;
 
 namespace SchoolMoney.CommandHandlers
 {
@@ -14,30 +17,35 @@ namespace SchoolMoney.CommandHandlers
         private readonly IChildRepository _childRepository;
         private readonly IUserRepository _userRepository;
         private readonly IGroupRepository _groupRepository;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ChildCommandHandler(IChildRepository childRepository, IUserRepository userRepository, IGroupRepository groupRepository)
+        public ChildCommandHandler(IChildRepository childRepository,
+                                   IUserRepository userRepository,
+                                   IGroupRepository groupRepository,
+                                   IHttpContextAccessor httpContextAccessor)
         {
             _childRepository = childRepository;
             _userRepository = userRepository;
             _groupRepository = groupRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<Unit> Handle(CreateChildCommand request, CancellationToken cancellationToken)
         {
-            var parent = _userRepository.Get(request.ParentId)
-                    ?? throw new UserNotFoundException(request.ParentId);
+            var loggedUserId = JwtHelper.GetUserIdFromCookies(_httpContextAccessor)
+                ?? throw new InvalidCookieException(Cookies.UserId);
 
-            var group = _groupRepository.Get(request.GroupId)
-                    ?? throw new GroupNotFoundException(request.GroupId);
+            var user = _userRepository.Get(loggedUserId)
+                ?? throw new UserNotFoundException(loggedUserId);
 
             var child = new Child
             {
                 FirstName = request.FirstName,
                 LastName = request.LastName,
                 DateOfBirth = request.DateOfBirth,
-                Parent = parent,
-                Group = group,
-                CreatedAt = DateTime.Now
+                IsAccepted = false,
+                CreatedAt = DateTime.Now,
+                Parent = user
             };
 
             _childRepository.Add(child);

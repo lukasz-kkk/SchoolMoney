@@ -45,7 +45,8 @@ namespace SchoolMoney.QueryHandlers
                 LastName = x.LastName,
                 DateOfBirth = x.DateOfBirth,
                 ParentId = x.Parent.Id,
-                GroupId = x.Group.Id,
+                GroupId = x.Group?.Id,
+                IsAccepted = x.IsAccepted,
                 CreatedAt = x.CreatedAt
             });
             
@@ -71,7 +72,8 @@ namespace SchoolMoney.QueryHandlers
                 LastName = x.LastName,
                 DateOfBirth = x.DateOfBirth,
                 ParentId = x.Parent.Id,
-                GroupId = x.Group.Id,
+                GroupId = x.Group?.Id,
+                IsAccepted = x.IsAccepted,
                 CreatedAt = x.CreatedAt
             });
 
@@ -97,7 +99,8 @@ namespace SchoolMoney.QueryHandlers
                 LastName = x.LastName,
                 DateOfBirth = x.DateOfBirth,
                 ParentId = x.Parent.Id,
-                GroupId = x.Group.Id,
+                GroupId = x.Group?.Id,
+                IsAccepted = x.IsAccepted,
                 CreatedAt = x.CreatedAt
             });
 
