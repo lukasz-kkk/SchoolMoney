@@ -7,6 +7,7 @@ export enum QueryKey {
     Fundraisers,
     FinancialAccount,
     Transaction,
+    Children,
 }
 
 export const useInvalidateQuery = () => {

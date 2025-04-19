@@ -11,7 +11,7 @@ const BaseUsersPage = () => {
             <Page.Header items={[{ label: "Użytkownicy" }]} />
 
             <Page.Content>
-                <UsersTable users={data} />
+                <UsersTable users={data ?? []} />
             </Page.Content>
         </Page.Root>
     );

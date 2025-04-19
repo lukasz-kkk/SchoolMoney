@@ -37,6 +37,10 @@ const UsersPage = React.lazy(() =>
     import("@/app/pages/Root/Users/UsersPage.tsx").then((module) => ({ default: module.UsersPage }))
 );
 
+const ChildrenPage = React.lazy(() =>
+    import("@/app/pages/Root/Children/ChildrenPage.tsx").then((module) => ({ default: module.ChildrenPage }))
+);
+
 const SettingsPage = React.lazy(() =>
     import("@/app/pages/Root/Settings/SettingsPage.tsx").then((module) => ({ default: module.SettingsPage }))
 );
@@ -92,6 +96,10 @@ export const router = createBrowserRouter([
             {
                 path: AppRoute.USERS,
                 element: WithSuspense(<UsersPage />),
+            },
+            {
+                path: AppRoute.CHILDREN,
+                element: WithSuspense(<ChildrenPage />),
             },
             {
                 path: AppRoute.SETTINGS,

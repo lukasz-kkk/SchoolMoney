@@ -9,11 +9,16 @@ import { AppRoute } from "@/app/router";
 import { RenameGroupDialog } from "@/features/groups/components/RenameGroupDialog/RenameGroupDialog";
 import { useGroupJoinCode } from "@/features/groups/hooks/useGroupJoinCode";
 import { GroupJoinCode } from "@/features/groups/components/GroupJoinCode/GroupJoinCode";
+import { useGetChildrenByGroup } from "@/features/children/hooks/useGetChildrenByGroup";
+import { GroupChildrenTable } from "@/features/children/components/GroupChildrenTable/GroupChildrenTable";
 
 const BaseGroupPage = () => {
     const params = useParams<{ id: string }>();
+    const groupId = params?.id ? parseInt(params.id) : undefined;
+
     const { user } = useUser();
-    const { data: group } = useGroup(parseInt(params.id ?? "0"));
+    const { data: group } = useGroup(groupId);
+    const { data: children } = useGetChildrenByGroup(groupId);
 
     const isTreasurer = !!user && user?.id == group?.treasurer?.id;
     const { data: joinCode } = useGroupJoinCode(group?.id);
@@ -36,7 +41,10 @@ const BaseGroupPage = () => {
                 )}
             </Page.Header>
 
-            <Page.Content>{isTreasurer && joinCode && <GroupJoinCode value={joinCode} />}</Page.Content>
+            <Page.Content>
+                {isTreasurer && joinCode && <GroupJoinCode value={joinCode} />}
+                <GroupChildrenTable childrenList={children ?? []} />
+            </Page.Content>
         </Page.Root>
     );
 };
