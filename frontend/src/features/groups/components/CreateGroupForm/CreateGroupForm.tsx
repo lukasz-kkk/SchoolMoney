@@ -1,21 +1,21 @@
 import { Box, Button } from "@radix-ui/themes";
-import classes from "./CreateClassForm.module.scss";
+import classes from "./CreateGroupForm.module.scss";
 
 import { Input } from "@/components/Input/Input";
 import {
     CLASS_NAME_HELP,
-    CreateClassFormInputs,
-    useCreateClassForm,
-} from "@/features/classes/components/CreateClassForm/hooks/useCreateClassForm.ts";
+    CreateGroupFormInputs,
+    useCreateGroupForm,
+} from "@/features/groups/components/CreateGroupForm/hooks/useCreateGroupForm.ts";
 
-type CreateClassFormProps = {
-    onSubmit: (inputs: CreateClassFormInputs) => void;
+type CreateGroupFormProps = {
+    onSubmit: (inputs: CreateGroupFormInputs) => void;
     onCancel: () => void;
     isLoading?: boolean;
 };
 
-export const CreateClassForm = ({ onSubmit, isLoading, onCancel }: CreateClassFormProps) => {
-    const { register, handleSubmit, formState } = useCreateClassForm();
+export const CreateGroupForm = ({ onSubmit, isLoading, onCancel }: CreateGroupFormProps) => {
+    const { register, handleSubmit, formState } = useCreateGroupForm();
 
     return (
         <form className={classes.form} onSubmit={handleSubmit(onSubmit)} onReset={onCancel}>
@@ -31,7 +31,7 @@ export const CreateClassForm = ({ onSubmit, isLoading, onCancel }: CreateClassFo
                     Anuluj
                 </Button>
                 <Button color="jade" loading={isLoading} type="submit">
-                    Utwórz
+                    Potwierdź
                 </Button>
             </Box>
         </form>

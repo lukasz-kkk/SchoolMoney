@@ -1,14 +1,14 @@
 import { useMutation } from "@tanstack/react-query";
-import { ClassesService } from "@/features/classes/api/classesService.ts";
+import { GroupsService } from "@/features/groups/api/groupsService";
 import { QueryKey, useInvalidateQuery } from "@/lib/apiClient";
 
-export const useCreateClass = () => {
+export const useCreateGroup = () => {
     const { invalidate } = useInvalidateQuery();
 
     return useMutation({
-        mutationFn: ClassesService.create,
+        mutationFn: GroupsService.create,
         onSuccess: async () => {
-            void invalidate(QueryKey.Classes);
+            void invalidate(QueryKey.Groups);
         },
     });
 };

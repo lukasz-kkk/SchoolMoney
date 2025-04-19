@@ -10,7 +10,7 @@ const BaseFinancesPage = () => {
 
     return (
         <Page.Root>
-            <Page.Header title="Finanse" />
+            <Page.Header items={[{ label: "Finanse" }]} />
 
             <Page.Content>
                 {account && <FinancialAccountDashboard primaryAccount={account} transactions={transactions ?? []} />}

@@ -11,7 +11,7 @@ const BaseFundraisersPage = () => {
 
     return (
         <Page.Root>
-            <Page.Header title="Zbiórki">
+            <Page.Header items={[{ label: "Zbiórki" }]}>
                 <CreateFundraiserDialog trigger={<Button color="jade">Utwórz zbiórkę</Button>} />
             </Page.Header>
 

@@ -13,8 +13,12 @@ const SignUpPage = React.lazy(() =>
     import("@/app/pages/Auth/SignUp/SignUpPage").then((module) => ({ default: module.SignUpPage }))
 );
 
-const ClassesPage = React.lazy(() =>
-    import("@/app/pages/Root/Classes/ClassesPage.tsx").then((module) => ({ default: module.ClassesPage }))
+const GroupsPage = React.lazy(() =>
+    import("@/app/pages/Root/Groups/GroupsPage.tsx").then((module) => ({ default: module.GroupsPage }))
+);
+
+const GroupPage = React.lazy(() =>
+    import("@/app/pages/Root/Group/GroupPage.tsx").then((module) => ({ default: module.GroupPage }))
 );
 
 const FundraisersPage = React.lazy(() =>
@@ -74,8 +78,12 @@ export const router = createBrowserRouter([
                 element: WithSuspense(<FundraiserPage />),
             },
             {
-                path: AppRoute.CLASSES,
-                element: WithSuspense(<ClassesPage />),
+                path: AppRoute.GROUPS,
+                element: WithSuspense(<GroupsPage />),
+            },
+            {
+                path: AppRoute.GROUP,
+                element: WithSuspense(<GroupPage />),
             },
             {
                 path: AppRoute.FINANCES,

@@ -21,7 +21,7 @@ export const SettingsPage = () => {
 
     return (
         <Page.Root>
-            <Page.Header title="Ustawienia" />
+            <Page.Header items={[{ label: "Ustawienia" }]} />
 
             <Page.Content>
                 <Heading as="h2" className={classes.sectionTitle}>

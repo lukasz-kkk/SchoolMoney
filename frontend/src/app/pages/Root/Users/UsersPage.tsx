@@ -8,7 +8,7 @@ const BaseUsersPage = () => {
 
     return (
         <Page.Root>
-            <Page.Header title="Użytkownicy" />
+            <Page.Header items={[{ label: "Użytkownicy" }]} />
 
             <Page.Content>
                 <UsersTable users={data} />

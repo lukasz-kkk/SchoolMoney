@@ -1,7 +1,6 @@
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { CLASS_NAME_HELP } from "@/features/classes/components/CreateClassForm/hooks/useCreateClassForm.ts";
 
 export type CreateFundraiserFormInputs = {
     name: string;
@@ -21,12 +20,12 @@ export const FUNDRAISER_CLASS_HELP = "Zbiórka musi być przypisana do klasy.";
 
 export const useCreateFundraiserForm = () => {
     const requirements = yup.object({
-        name: yup.string().required(CLASS_NAME_HELP).min(10, FUNDRAISER_NAME_HELP),
-        description: yup.string().required(CLASS_NAME_HELP).min(50, FUNDRAISER_DESCRIPTION_HELP),
-        amountPerPerson: yup.number().required(CLASS_NAME_HELP),
-        startDate: yup.date().required(CLASS_NAME_HELP),
-        endDate: yup.date().required(CLASS_NAME_HELP),
-        classId: yup.number().required(CLASS_NAME_HELP),
+        name: yup.string().required(FUNDRAISER_NAME_HELP).min(10, FUNDRAISER_NAME_HELP),
+        description: yup.string().required(FUNDRAISER_DESCRIPTION_HELP).min(50, FUNDRAISER_DESCRIPTION_HELP),
+        amountPerPerson: yup.number().required(FUNDRAISER_AMOUNT_PER_PERSON_HELP),
+        startDate: yup.date().required(FUNDRAISER_START_DATE_HELP),
+        endDate: yup.date().required(FUNDRAISER_END_DATE_HELP),
+        classId: yup.number().required(FUNDRAISER_CLASS_HELP),
     });
 
     return useForm<CreateFundraiserFormInputs>({

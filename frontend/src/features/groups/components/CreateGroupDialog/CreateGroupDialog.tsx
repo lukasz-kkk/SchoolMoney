@@ -2,32 +2,33 @@ import { Dialog, Text } from "@radix-ui/themes";
 import { ReactNode, useState } from "react";
 import { DialogHeader } from "@/components/Dialog/components/DialogHeader/DialogHeader.tsx";
 import { Alert } from "@/components/Alert/Alert.tsx";
-import { CreateClassFormInputs } from "@/features/classes/components/CreateClassForm/hooks/useCreateClassForm.ts";
+import { CreateGroupFormInputs } from "@/features/groups/components/CreateGroupForm/hooks/useCreateGroupForm.ts";
 import { toast } from "sonner";
-import { useCreateClass } from "@/features/classes/hooks/useCreateClass.ts";
-import { CreateClassForm } from "@/features/classes/components/CreateClassForm/CreateClassForm.tsx";
+import { useCreateGroup } from "@/features/groups/hooks/useCreateGroup.ts";
+import { CreateGroupForm } from "@/features/groups/components/CreateGroupForm/CreateGroupForm.tsx";
 
-import classes from "./CreateClassDialog.module.scss";
+import classes from "./CreateGroupDialog.module.scss";
 
-type CreateClassDialogProps = {
+type CreateGroupDialogProps = {
     trigger: ReactNode;
 };
 
-export const CreateClassDialog = ({ trigger }: CreateClassDialogProps) => {
+export const CreateGroupDialog = ({ trigger }: CreateGroupDialogProps) => {
     const [open, setOpen] = useState(false);
-    const { mutateAsync, isPending, error } = useCreateClass();
+    const { mutateAsync, isPending, error } = useCreateGroup();
 
-    const createClass = async ({ name }: CreateClassFormInputs) => {
+    const createGroup = async ({ name }: CreateGroupFormInputs) => {
         try {
             await mutateAsync({ name });
             toast.success("Klasa została utworzona.");
+            close();
         } catch (e) {
             console.log(e);
             toast.error("Nie udało się dodać klasy.");
         }
     };
 
-    const handleFormCancel = () => {
+    const close = () => {
         setOpen(false);
     };
 
@@ -39,7 +40,7 @@ export const CreateClassDialog = ({ trigger }: CreateClassDialogProps) => {
                 <DialogHeader>Dodaj klasę</DialogHeader>
                 <Text as="p">Po utworzeniu klasy staniesz się jej skarbnikiem.</Text>
 
-                <CreateClassForm onSubmit={createClass} isLoading={isPending} onCancel={handleFormCancel} />
+                <CreateGroupForm onSubmit={createGroup} isLoading={isPending} onCancel={close} />
                 {error && <Alert className={classes.alert}>{error.message}</Alert>}
             </Dialog.Content>
         </Dialog.Root>
