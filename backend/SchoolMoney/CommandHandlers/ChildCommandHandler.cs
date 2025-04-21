@@ -13,7 +13,8 @@ namespace SchoolMoney.CommandHandlers
                                        IRequestHandler<UpdateChildParentCommand, Unit>,
                                        IRequestHandler<UpdateChildGroupCommand, Unit>,
                                        IRequestHandler<DeleteChildCommand, Unit>,
-                                       IRequestHandler<UpdateChildIsAcceptedCommand, Unit>
+                                       IRequestHandler<UpdateChildIsAcceptedCommand, Unit>,
+                                       IRequestHandler<UpdateChildCommand, Unit>
     { 
         private readonly IChildRepository _childRepository;
         private readonly IUserRepository _userRepository;
@@ -103,6 +104,26 @@ namespace SchoolMoney.CommandHandlers
             {
                 child.Group = null;
             }
+
+            await _childRepository.SaveChangesAsync();
+
+            return Unit.Value;
+        }
+
+        public async Task<Unit> Handle(UpdateChildCommand request, CancellationToken cancellationToken)
+        {
+            var child = _childRepository.Get(request.ChildId)
+                ?? throw new ChildNotFoundException(request.ChildId);
+
+            var loggedUserId = JwtHelper.GetUserIdFromCookies(_httpContextAccessor)
+                ?? throw new InvalidCookieException(Cookies.UserId);
+
+            if (child.Parent.Id != loggedUserId)
+                throw new UserIsNotParentOfThisChildException(loggedUserId, child.Id);
+
+            child.FirstName = request.FirstName;
+            child.LastName = request.LastName;
+            child.DateOfBirth = request.DateOfBirth;
 
             await _childRepository.SaveChangesAsync();
 
