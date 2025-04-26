@@ -39,7 +39,12 @@ const columns = [
                 return groupName;
             }
 
-            return <AddChildToGroupDialog childId={info.getValue().id} trigger={<Button>Dodaj do grupy</Button>} />;
+            return (
+                <AddChildToGroupDialog
+                    childId={info.getValue().id}
+                    trigger={<Button size="1">Dodaj do klasy</Button>}
+                />
+            );
         },
         header: () => <span>Klasa</span>,
     }),

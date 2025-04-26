@@ -2,11 +2,12 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import dayjs from "dayjs";
+import { formatISODate } from "@/utils/dateFormat.ts";
 
 export type AddChildFormInputs = {
     firstName: string;
     lastName: string;
-    dateOfBirth: Date;
+    dateOfBirth: Date | string;
 };
 
 export const CHILD_FIRST_NAME_HELP = "Imię jest wymagane";
@@ -26,6 +27,9 @@ export const useAddChildForm = (initialValue?: Partial<AddChildFormInputs>) => {
 
     return useForm<AddChildFormInputs>({
         resolver: yupResolver<AddChildFormInputs>(requirements),
-        defaultValues: initialValue,
+        defaultValues: {
+            ...initialValue,
+            dateOfBirth: initialValue?.dateOfBirth ? formatISODate(initialValue.dateOfBirth) : undefined,
+        },
     });
 };
