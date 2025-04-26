@@ -1,7 +1,7 @@
 ﻿namespace Domain.Repositories
 {
-    public interface IFinancialAccountRepository : IRepository<FinancialAccount>
+    public interface IFundraiserRepository : IRepository<Fundraiser>
     {
-        FinancialAccount? FirstOrDefault(Func<FinancialAccount, bool> predicate = null);
+        Fundraiser? FirstOrDefault(Func<Fundraiser, bool> predicate = null);
     }
 }
