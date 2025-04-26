@@ -16,5 +16,6 @@ namespace Infrastructure
             return _appDbContext.FinancialAccounts
                 .FirstOrDefault(predicate);
         }
+
     }
 }

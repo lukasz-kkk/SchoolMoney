@@ -14,5 +14,10 @@ namespace Infrastructure
         {
             return _appDbContext.Fundraisers.FirstOrDefault(predicate);
         }
+
+        public bool Exists(string name)
+        {
+            return _appDbContext.Fundraisers.Any(f => f.Name == name);
+        }
     }
 }

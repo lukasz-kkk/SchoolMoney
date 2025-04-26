@@ -7,6 +7,7 @@ using SchoolMoney.Properties;
 using MediatR;
 using SchoolMoney.Commands;
 using Domain.Exceptions;
+using SchoolMoney.Exceptions;
 
 namespace SchoolMoney.Controllers
 {
@@ -23,6 +24,7 @@ namespace SchoolMoney.Controllers
 
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 #if !DEBUG
@@ -45,8 +47,17 @@ namespace SchoolMoney.Controllers
                 await _mediator.Send(command);
                 return NoContent();
             }
-
-            catch (TransactionAccountNotFoundException ex)
+            catch (InvalidCookieException ex)
+            {
+                return StatusCode((int)HttpStatusCode.BadRequest,
+                    string.Format(Resource.ControllerBadRequest, ex.Message));
+            }
+            catch (FundraiserNameAlreadyExistsException ex)
+            {
+                return StatusCode((int)HttpStatusCode.BadRequest,
+                    string.Format(Resource.ControllerBadRequest, ex.Message));
+            }
+            catch (GroupNotFoundException ex)
             {
                 return StatusCode((int)HttpStatusCode.NotFound,
                     string.Format(Resource.ControllerNotFound, ex.Message));

@@ -284,5 +284,14 @@ namespace Domain.Properties {
                 return ResourceManager.GetString("ExceptionUserPasswordNotMatch", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fundraiser with name {0} already exists..
+        /// </summary>
+        internal static string FundraiserNameAlreadyExists {
+            get {
+                return ResourceManager.GetString("FundraiserNameAlreadyExists", resourceCulture);
+            }
+        }
     }
 }
