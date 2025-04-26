@@ -106,6 +106,15 @@ namespace Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Fundraiser with ID {0} not found..
+        /// </summary>
+        internal static string ExceptionFundraiserNotFound {
+            get {
+                return ResourceManager.GetString("ExceptionFundraiserNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Group with name {0} already exists..
         /// </summary>
         internal static string ExceptionGroupAlreadyExists {

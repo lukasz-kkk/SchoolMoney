@@ -123,6 +123,9 @@
   <data name="ExceptionChildNotFound" xml:space="preserve">
     <value>Child with ID {0} not found.</value>
   </data>
+  <data name="ExceptionFundraiserNotFound" xml:space="preserve">
+    <value>Fundraiser with ID {0} not found.</value>
+  </data>
   <data name="ExceptionGroupAlreadyExists" xml:space="preserve">
     <value>Group with name {0} already exists.</value>
   </data>

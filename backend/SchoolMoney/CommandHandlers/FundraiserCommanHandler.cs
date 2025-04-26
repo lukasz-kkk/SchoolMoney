@@ -9,26 +9,31 @@ using SchoolMoney.Utils;
 
 namespace SchoolMoney.CommandHandlers
 {
-    public class FundraiserCommandHandler : IRequestHandler<CreateFundraiserCommand, Unit>
+    public class FundraiserCommandHandler : 
+        IRequestHandler<CreateFundraiserCommand, Unit>,
+        IRequestHandler<ExcludeChildCommand, Unit>
     {
         private readonly IUserRepository _userRepository;
         private readonly IFundraiserRepository _fundraiserRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IFinancialAccountRepository _financialAccountRepository;
         private readonly IGroupRepository _groupRepository;
+        private readonly IChildRepository _childRepository;
 
         public FundraiserCommandHandler(
             IUserRepository userRepository,
             IFundraiserRepository FundraiserRepository,
             IHttpContextAccessor httpContextAccessor,
             IFinancialAccountRepository financialAccountRepository,
-            IGroupRepository groupRepository)
+            IGroupRepository groupRepository,
+            IChildRepository childRepository)
         {
             _userRepository = userRepository;
             _fundraiserRepository = FundraiserRepository;
             _httpContextAccessor = httpContextAccessor;
             _financialAccountRepository = financialAccountRepository;
             _groupRepository = groupRepository;
+            _childRepository = childRepository;
         }
 
         public async Task<Unit> Handle(CreateFundraiserCommand request, CancellationToken cancellationToken)
@@ -56,6 +61,18 @@ namespace SchoolMoney.CommandHandlers
             var fundraiser = new Fundraiser(request.Name, request.Description, request.Goal, request.StartDate, request.EndDate, 
                 account, user, group);
             _fundraiserRepository.Add(fundraiser);
+            await _fundraiserRepository.SaveChangesAsync();
+            return Unit.Value;
+        }
+
+        public async Task<Unit> Handle(ExcludeChildCommand request, CancellationToken cancellationToken)
+        {
+            var fundraiser = _fundraiserRepository.Get(request.FundraiserId)
+                ?? throw new FundraiserNotFoundException(request.FundraiserId);
+            var child = _childRepository.Get(request.ChildId)
+                ?? throw new ChildNotFoundException(request.ChildId);
+
+            fundraiser.ExcludeChild(child);
             await _fundraiserRepository.SaveChangesAsync();
             return Unit.Value;
         }

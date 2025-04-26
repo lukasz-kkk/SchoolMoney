@@ -30,7 +30,7 @@ namespace SchoolMoney.Controllers
 #if !DEBUG
         [Authorize(Roles = Roles.User)]
 #endif
-        public async Task<IActionResult> MakeTransaction([FromBody] CreateFundraiserRequest dto)
+        public async Task<IActionResult> CreateFundraiser([FromBody] CreateFundraiserRequest dto)
         {
             try
             {
@@ -60,6 +60,48 @@ namespace SchoolMoney.Controllers
             catch (GroupNotFoundException ex)
             {
                 return StatusCode((int)HttpStatusCode.NotFound,
+                    string.Format(Resource.ControllerNotFound, ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                    string.Format(Resource.ControllerInternalError, ex.Message));
+            }
+        }
+
+        [HttpPut("{id}/exclude")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+#if !DEBUG
+        [Authorize(Roles = Roles.User)]
+#endif
+        public async Task<IActionResult> ExcludeChild(int id, [FromBody] ExcludeChildRequest dto)
+        {
+            try
+            {
+                var command = new ExcludeChildCommand
+                {
+                    ChildId = dto.ChildId,
+                    FundraiserId = id,
+                };
+
+                await _mediator.Send(command);
+                return NoContent();
+            }
+            catch (ChildNotFoundException ex)
+            {
+                return StatusCode((int)HttpStatusCode.NotFound,
+                    string.Format(Resource.ControllerNotFound, ex.Message));
+            }
+            catch (FundraiserNotFoundException ex)
+            {
+                return StatusCode((int)HttpStatusCode.NotFound,
+                    string.Format(Resource.ControllerNotFound, ex.Message));
+            }
+            catch (ChildDoesntBelongToFundraiserException ex)
+            {
+                return StatusCode((int)HttpStatusCode.BadRequest,
                     string.Format(Resource.ControllerNotFound, ex.Message));
             }
             catch (Exception ex)
