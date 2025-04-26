@@ -11,7 +11,8 @@ namespace SchoolMoney.CommandHandlers
 {
     public class FundraiserCommandHandler : 
         IRequestHandler<CreateFundraiserCommand, Unit>,
-        IRequestHandler<ExcludeChildCommand, Unit>
+        IRequestHandler<ExcludeChildCommand, Unit>,
+        IRequestHandler<SwitchBlockFundraiserCommand, Unit>
     {
         private readonly IUserRepository _userRepository;
         private readonly IFundraiserRepository _fundraiserRepository;
@@ -74,6 +75,17 @@ namespace SchoolMoney.CommandHandlers
 
             fundraiser.ExcludeChild(child);
             await _fundraiserRepository.SaveChangesAsync();
+            return Unit.Value;
+        }
+
+        public async Task<Unit> Handle(SwitchBlockFundraiserCommand request, CancellationToken cancellationToken)
+        {
+            var fundraiser = _fundraiserRepository.Get(request.FundraiserId)
+                ?? throw new FundraiserNotFoundException(request.FundraiserId);
+
+            fundraiser.IsBlocked = request.IsBlocked;
+            await _fundraiserRepository.SaveChangesAsync();
+
             return Unit.Value;
         }
     }

@@ -110,5 +110,67 @@ namespace SchoolMoney.Controllers
                     string.Format(Resource.ControllerInternalError, ex.Message));
             }
         }
+
+        [HttpPut("{id}/block")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+#if !DEBUG
+        [Authorize(Roles = Roles.User)]
+#endif
+        public async Task<IActionResult> Block(int id)
+        {
+            try
+            {
+                var command = new SwitchBlockFundraiserCommand
+                {
+                    FundraiserId = id,
+                    IsBlocked = true,
+                };
+
+                await _mediator.Send(command);
+                return NoContent();
+            }
+            catch (FundraiserNotFoundException ex)
+            {
+                return StatusCode((int)HttpStatusCode.NotFound,
+                    string.Format(Resource.ControllerNotFound, ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                    string.Format(Resource.ControllerInternalError, ex.Message));
+            }
+        }
+
+        [HttpPut("{id}/unlock")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+#if !DEBUG
+        [Authorize(Roles = Roles.User)]
+#endif
+        public async Task<IActionResult> Unlock(int id)
+        {
+            try
+            {
+                var command = new SwitchBlockFundraiserCommand
+                {
+                    FundraiserId = id,
+                    IsBlocked = false,
+                };
+
+                await _mediator.Send(command);
+                return NoContent();
+            }
+            catch (FundraiserNotFoundException ex)
+            {
+                return StatusCode((int)HttpStatusCode.NotFound,
+                    string.Format(Resource.ControllerNotFound, ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                    string.Format(Resource.ControllerInternalError, ex.Message));
+            }
+        }
     }
 }
