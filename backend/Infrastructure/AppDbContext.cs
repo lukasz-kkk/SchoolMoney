@@ -15,6 +15,7 @@ namespace Infrastructure
         public DbSet<Announcement> Announcements { get; set; }
         public DbSet<FinancialAccount> FinancialAccounts { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Fundraiser> Fundraisers { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -23,6 +24,9 @@ namespace Infrastructure
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
+            modelBuilder.Entity<FundraiserChild>()
+                .HasKey(fc => new { fc.FundraiserId, fc.ChildId });
         }
     }
 }

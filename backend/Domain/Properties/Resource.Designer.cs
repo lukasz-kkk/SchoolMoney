@@ -61,6 +61,15 @@ namespace Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Child with id {0} doesn&apos;t belong to fundraiser with id {1}..
+        /// </summary>
+        internal static string ChildDoesntBelongToFundraiser {
+            get {
+                return ResourceManager.GetString("ChildDoesntBelongToFundraiser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Activity with ID {0} not found..
         /// </summary>
         internal static string ExceptionActivityNotFound {
