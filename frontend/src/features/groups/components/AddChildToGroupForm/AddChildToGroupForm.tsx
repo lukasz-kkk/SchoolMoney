@@ -30,7 +30,7 @@ export const AddChildToGroupForm = ({ onSubmit, isLoading, onCancel }: AddChildT
                 <Button variant="soft" type="reset">
                     Anuluj
                 </Button>
-                <Button color="jade" loading={isLoading} type="submit">
+                <Button color="jade" loading={isLoading} type="submit" variant="soft">
                     Potwierdź
                 </Button>
             </Box>
