@@ -7,6 +7,8 @@ import { CloseFundraiserDialog } from "@/features/fundraisers/components/CloseFu
 import { AccessGuard } from "@/features/auth/components/AccessGuard/AccessGuard.tsx";
 import { useNavigate } from "react-router-dom";
 import { AppRoute } from "@/app/router";
+import { SuspendFundraiserDialog } from "@/features/fundraisers/components/SuspendFundraiserDialog/SuspendFundraiserDialog.tsx";
+import { formatMoney } from "@/features/finances/utils/moneyUtils.ts";
 
 type FundraiserCardProps = {
     fundraiser: Fundraiser;
@@ -28,7 +30,7 @@ export const FundraiserCard = ({ fundraiser }: FundraiserCardProps) => {
                 <Text className={styles.description}>{fundraiser.description}</Text>
                 <Box className={styles.footer}>
                     <Text className={styles.amountPerPerson}>
-                        Kwota na osobę: <strong>{fundraiser.amountPerPerson}zł</strong>
+                        Kwota na osobę: <strong>{formatMoney(fundraiser.amountPerPerson)}</strong>
                     </Text>
 
                     <Text className={styles.endDate}>
@@ -54,6 +56,11 @@ export const FundraiserCard = ({ fundraiser }: FundraiserCardProps) => {
                 <AccessGuard requiredAccess="Admin">
                     <CloseFundraiserDialog
                         trigger={<Button color="crimson">Zamknij</Button>}
+                        fundraiserId={fundraiser.id}
+                    />
+
+                    <SuspendFundraiserDialog
+                        trigger={<Button color="orange">Zawieś</Button>}
                         fundraiserId={fundraiser.id}
                     />
                 </AccessGuard>

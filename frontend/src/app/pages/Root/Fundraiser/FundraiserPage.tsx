@@ -2,13 +2,16 @@ import { Page } from "@/components/Page/Page";
 import { onlyAsAuthenticated } from "@/features/auth/hoc/withAuthorization";
 import { useFundraiser } from "@/features/fundraisers/hooks/useFundraiser.ts";
 import { useParams } from "react-router-dom";
-import { Button } from "@radix-ui/themes";
+import { Box, Button, Heading, Spinner } from "@radix-ui/themes";
 import { ReceiptUploader } from "@/features/fundraisers/components/ReceiptUploader/ReceiptUploader.tsx";
 import { ReceiptsList } from "@/features/fundraisers/components/ReceiptsList/ReceiptsList.tsx";
-import { useState } from "react";
+import { PropsWithChildren, useState } from "react";
 
 import { TransactionsHistoryTable } from "@/features/finances/components/TransactionsHistoryTable/TransactionsHistoryTable.tsx";
 import { AppRoute } from "@/app/router";
+
+import styles from "./FundraiserPage.module.scss";
+import { FundraiserDetailsCard } from "@/features/fundraisers/components/FundraiserDetailsCard/FundraiserDetailsCard.tsx";
 
 // TODO: Remove mocks
 const BaseFundraiserPage = () => {
@@ -30,6 +33,10 @@ const BaseFundraiserPage = () => {
         },
     ];
 
+    if (!fundraiser) {
+        return <Spinner />;
+    }
+
     return (
         <Page.Root>
             <Page.Header items={breadcrumbItems}>
@@ -37,12 +44,41 @@ const BaseFundraiserPage = () => {
             </Page.Header>
 
             <Page.Content>
-                <ReceiptUploader onUpload={onUploadFile} />
-                <ReceiptsList files={files} />
+                <Section title="Informacje o zbiórce">
+                    <FundraiserDetailsCard
+                        fundraiser={fundraiser}
+                        account={{
+                            accountNumber: "PL26 1200 0000 9665 8767 5627 4104",
+                            balance: 100,
+                        }}
+                    />
+                </Section>
 
-                <TransactionsHistoryTable transactions={[]} />
+                <Section title="Dokumenty">
+                    <ReceiptUploader onUpload={onUploadFile} />
+                    <ReceiptsList files={files} />
+                </Section>
+
+                <Section title="Historia transakcji">
+                    <TransactionsHistoryTable transactions={[]} />
+                </Section>
             </Page.Content>
         </Page.Root>
+    );
+};
+
+type SectionsProps = PropsWithChildren<{
+    title: string;
+}>;
+
+const Section = ({ children, title }: SectionsProps) => {
+    return (
+        <Box className={styles.section}>
+            <Heading as="h3" className={styles.title}>
+                {title}
+            </Heading>
+            <Box className={styles.content}>{children}</Box>
+        </Box>
     );
 };
 
