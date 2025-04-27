@@ -7,7 +7,7 @@ namespace Domain
     {
         public string Name { get; set; }
         public string Description { get; set; }
-        public decimal Goal { get; set; }
+        public decimal AmountPerPerson { get; set; }
         public DateOnly StartDate { get; set; }
         public DateOnly EndDate { get; set; }
         public FinancialAccount FinancialAccount { get; set; }
@@ -22,7 +22,7 @@ namespace Domain
         {
             Name = name;
             Description = description;
-            Goal = goal;
+            AmountPerPerson = goal;
             StartDate = startDate;
             EndDate = endDate;
             FinancialAccount = financialAccount;
