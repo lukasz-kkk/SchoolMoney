@@ -1,7 +1,7 @@
 import { Page } from "@/components/Page/Page";
 import { onlyAsAuthenticated } from "@/features/auth/hoc/withAuthorization";
 import { useParams } from "react-router-dom";
-import { Button, Spinner } from "@radix-ui/themes";
+import { Box, Button, Spinner } from "@radix-ui/themes";
 
 import { useGroup } from "@/features/groups/hooks/useGroup";
 import { useUser } from "@/features/auth/hooks/useUser";
@@ -18,6 +18,9 @@ import { FundraiserCard } from "@/features/fundraisers/components/FundraiserCard
 import { FundraisersList } from "@/features/fundraisers/components/FundraisersList/FundraisersList.tsx";
 import { useFundraisers } from "@/features/fundraisers/hooks/useFundraisers.ts";
 import { CreateFundraiserDialog } from "@/features/fundraisers/components/CreateFundraiserDialog/CreateFundraiserDialog.tsx";
+import { GroupDetailsCard } from "@/features/groups/components/GroupDetailsCard/GroupDetailsCard.tsx";
+
+import styles from "./GroupPage.module.scss";
 
 const BaseGroupPage = () => {
     const params = useParams<{ id: string }>();
@@ -77,15 +80,19 @@ const BaseGroupPage = () => {
             </Page.Header>
 
             <Page.Content>
-                {isTreasurer && joinCode && (
-                    <Section title="Dostęp do grupy">
-                        <GroupJoinCode
-                            value={joinCode}
-                            onRefresh={onRefreshGroupJoinCode}
-                            isRefreshing={isRefreshingCode}
-                        />
-                    </Section>
-                )}
+                <Section title="Informacje o klasie">
+                    <Box className={styles.row}>
+                        <GroupDetailsCard group={group} />
+
+                        {isTreasurer && joinCode && (
+                            <GroupJoinCode
+                                value={joinCode}
+                                onRefresh={onRefreshGroupJoinCode}
+                                isRefreshing={isRefreshingCode}
+                            />
+                        )}
+                    </Box>
+                </Section>
 
                 <Section
                     title="Zbiórki"
