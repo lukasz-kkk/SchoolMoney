@@ -4,5 +4,6 @@
     {
         bool Exists(string name);
         Fundraiser? FirstOrDefault(Func<Fundraiser, bool> predicate = null);
+        string GetAccount(int fundraiserId);
     }
 }

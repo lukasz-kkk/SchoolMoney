@@ -99,7 +99,7 @@ namespace SchoolMoney.CommandHandlers
             var sourceAccount = _financialAccountRepository.FirstOrDefault(x => x.Number == request.SourceAccountNumber)
                 ?? throw new TransactionAccountNotFoundException(request.SourceAccountNumber);
 
-            if (sourceAccount.Id != userAccount.Id)
+            if (sourceAccount.Id != userAccount.Id && !request.TechnicalOperation)
                 throw new TransactionUnauthorizedException();
 
             if (sourceAccount.Balance < amount)
@@ -116,7 +116,7 @@ namespace SchoolMoney.CommandHandlers
             var targetAccount = _financialAccountRepository.FirstOrDefault(x => x.Number == request.TargetAccountNumber)
                 ?? throw new TransactionAccountNotFoundException(request.TargetAccountNumber);
 
-            if (sourceAccount.Id != userAccount.Id)
+            if (sourceAccount.Id != userAccount.Id && !request.TechnicalOperation)
                 throw new TransactionUnauthorizedException();
 
             if (sourceAccount.Balance < amount)

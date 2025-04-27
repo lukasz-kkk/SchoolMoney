@@ -29,5 +29,13 @@ namespace Infrastructure
                 .Where(predicate)
                 .ToList();
         }
+
+        public int GetBalanceForChild(string account, Child child)
+        {
+            var onPlus = _appDbContext.Transactions.Where(x => x.Child == child && x.TargetAccountNumber == account).Sum(x => x.Amount);
+            var onMinus = _appDbContext.Transactions.Where(x => x.Child == child && x.SourceAccountNumber == account).Sum(x => x.Amount);
+
+            return onPlus - onMinus;
+        }
     }
 }

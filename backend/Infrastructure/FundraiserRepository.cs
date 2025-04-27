@@ -1,5 +1,6 @@
 ﻿using Domain;
 using Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure
 {
@@ -18,6 +19,15 @@ namespace Infrastructure
         public bool Exists(string name)
         {
             return _appDbContext.Fundraisers.Any(f => f.Name == name);
+        }
+
+        public string? GetAccount(int fundraiserId)
+        {
+            return _appDbContext.Fundraisers
+                .Include(x => x.FinancialAccount)
+                .Where(x => x.Id == fundraiserId)
+                .Select(x => x.FinancialAccount.Number)
+                .FirstOrDefault();
         }
     }
 }

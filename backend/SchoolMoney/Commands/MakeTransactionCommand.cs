@@ -8,5 +8,6 @@ namespace SchoolMoney.Commands
         public string SourceAccountNumber { get; set; }
         public string TargetAccountNumber { get; set; }
         public decimal Amount { get; set; }
+        public bool TechnicalOperation { get; set; }
     }
 }
