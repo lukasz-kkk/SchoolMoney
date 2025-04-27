@@ -11,6 +11,8 @@ import { useGroupJoinCode } from "@/features/groups/hooks/useGroupJoinCode";
 import { GroupJoinCode } from "@/features/groups/components/GroupJoinCode/GroupJoinCode";
 import { useGetChildrenByGroup } from "@/features/children/hooks/useGetChildrenByGroup";
 import { GroupChildrenTable } from "@/features/children/components/GroupChildrenTable/GroupChildrenTable";
+import { useRefreshGroupJoinCode } from "@/features/groups/hooks/useRefreshGroupJoinCode.ts";
+import { toast } from "sonner";
 
 const BaseGroupPage = () => {
     const params = useParams<{ id: string }>();
@@ -22,6 +24,22 @@ const BaseGroupPage = () => {
 
     const isTreasurer = !!user && user?.id == group?.treasurer?.id;
     const { data: joinCode } = useGroupJoinCode(group?.id);
+
+    const { mutateAsync: refreshCode, isPending: isRefreshingCode } = useRefreshGroupJoinCode();
+
+    const onRefreshGroupJoinCode = async () => {
+        if (!groupId) {
+            toast.error("Nie udało się wygenerować nowego kodu.");
+            return;
+        }
+
+        try {
+            await refreshCode(groupId);
+            toast.success("Wygenerowano nowy kod.");
+        } catch (e) {
+            toast.error("Nie udało się wygenerować nowego kodu.");
+        }
+    };
 
     const breadcrumbItems = [
         {
@@ -42,7 +60,13 @@ const BaseGroupPage = () => {
             </Page.Header>
 
             <Page.Content>
-                {isTreasurer && joinCode && <GroupJoinCode value={joinCode} />}
+                {isTreasurer && joinCode && (
+                    <GroupJoinCode
+                        value={joinCode}
+                        onRefresh={onRefreshGroupJoinCode}
+                        isRefreshing={isRefreshingCode}
+                    />
+                )}
                 <GroupChildrenTable childrenList={children ?? []} />
             </Page.Content>
         </Page.Root>
