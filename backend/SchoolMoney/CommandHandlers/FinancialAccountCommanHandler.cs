@@ -7,6 +7,7 @@ using SchoolMoney.Commands;
 using SchoolMoney.Constants;
 using SchoolMoney.Exceptions;
 using SchoolMoney.Utils;
+using System.Text.RegularExpressions;
 
 namespace SchoolMoney.CommandHandlers
 {
@@ -15,17 +16,20 @@ namespace SchoolMoney.CommandHandlers
         private readonly IUserRepository _userRepository;
         private readonly IFinancialAccountRepository _financialAccountRepository;
         private readonly ITransactionRepository _transactionRepository;
+        private readonly IChildRepository _childRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public FinancialAccountCommandHandler(
             IUserRepository userRepository,
             IFinancialAccountRepository financialAccountRepository,
             ITransactionRepository transactionRepository,
+            IChildRepository childRepository,
             IHttpContextAccessor httpContextAccessor)
         {
             _userRepository = userRepository;
             _financialAccountRepository = financialAccountRepository;
             _transactionRepository = transactionRepository;
+            _childRepository = childRepository;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -60,6 +64,14 @@ namespace SchoolMoney.CommandHandlers
                 Date = DateTime.UtcNow,
                 Sender = user
             };
+
+            var match = Regex.Match(request.Name, "#(?<childId>\\d+)");
+            if (match.Success)
+            {
+                var childId = match.Groups["childId"].Value;
+                var child = _childRepository.Get(int.Parse(childId));
+                transaction.Child = child;
+            }
 
             _transactionRepository.Add(transaction);
 

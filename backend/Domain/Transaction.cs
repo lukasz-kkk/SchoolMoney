@@ -9,5 +9,6 @@ namespace Domain
         public int Amount { get; set; }
         public DateTime Date { get; set; }
         public User Sender { get; set; }
+        public Child Child{ get; set; }
     }
 }
