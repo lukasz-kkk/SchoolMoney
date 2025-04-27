@@ -51,7 +51,7 @@ export const SuspendFundraiserDialog = ({ trigger, fundraiserId }: SuspendFundra
                         <Button variant="soft" onClick={close}>
                             Anuluj
                         </Button>
-                        <Button color="crimson" loading={isPending} onClick={closeFundraiser}>
+                        <Button color="crimson" loading={isPending} onClick={closeFundraiser} variant="soft">
                             Potwierdź
                         </Button>
                     </Box>

@@ -71,7 +71,7 @@ export const TransferMoneyForm = ({
                 <Button variant="soft" type="reset">
                     Anuluj
                 </Button>
-                <Button color="jade" loading={isLoading} type="submit">
+                <Button color="jade" loading={isLoading} type="submit" variant="soft">
                     Potwierdź
                 </Button>
             </Box>

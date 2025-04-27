@@ -42,7 +42,11 @@ export const FundraiserCard = ({ fundraiser }: FundraiserCardProps) => {
             <Box className={styles.actions}>
                 <AccessGuard requiredAccess="User">
                     <TransformMoneyDialog
-                        trigger={<Button color="jade">Wpłać</Button>}
+                        trigger={
+                            <Button color="jade" variant="soft">
+                                Wpłać
+                            </Button>
+                        }
                         title="Wpłata na zbiórkę"
                         transferData={{
                             targetAccountNumber: "0000 1111 2222 3333 4444 5555",
@@ -55,17 +59,27 @@ export const FundraiserCard = ({ fundraiser }: FundraiserCardProps) => {
 
                 <AccessGuard requiredAccess="Admin">
                     <CloseFundraiserDialog
-                        trigger={<Button color="crimson">Zamknij</Button>}
+                        trigger={
+                            <Button color="crimson" variant="soft">
+                                Zamknij
+                            </Button>
+                        }
                         fundraiserId={fundraiser.id}
                     />
 
                     <SuspendFundraiserDialog
-                        trigger={<Button color="orange">Zawieś</Button>}
+                        trigger={
+                            <Button color="orange" variant="soft">
+                                Zawieś
+                            </Button>
+                        }
                         fundraiserId={fundraiser.id}
                     />
                 </AccessGuard>
 
-                <Button onClick={seeDetails}>Szczegóły</Button>
+                <Button onClick={seeDetails} variant="soft">
+                    Szczegóły
+                </Button>
             </Box>
         </Card>
     );

@@ -2,16 +2,16 @@ import { Page } from "@/components/Page/Page";
 import { onlyAsAuthenticated } from "@/features/auth/hoc/withAuthorization";
 import { useFundraiser } from "@/features/fundraisers/hooks/useFundraiser.ts";
 import { useParams } from "react-router-dom";
-import { Box, Button, Heading, Spinner } from "@radix-ui/themes";
+import { Button, Spinner } from "@radix-ui/themes";
 import { ReceiptUploader } from "@/features/fundraisers/components/ReceiptUploader/ReceiptUploader.tsx";
 import { ReceiptsList } from "@/features/fundraisers/components/ReceiptsList/ReceiptsList.tsx";
-import { PropsWithChildren, useState } from "react";
+import { useState } from "react";
 
 import { TransactionsHistoryTable } from "@/features/finances/components/TransactionsHistoryTable/TransactionsHistoryTable.tsx";
 import { AppRoute } from "@/app/router";
 
-import styles from "./FundraiserPage.module.scss";
 import { FundraiserDetailsCard } from "@/features/fundraisers/components/FundraiserDetailsCard/FundraiserDetailsCard.tsx";
+import { Section } from "@/components/Section/Section.tsx";
 
 // TODO: Remove mocks
 const BaseFundraiserPage = () => {
@@ -40,7 +40,9 @@ const BaseFundraiserPage = () => {
     return (
         <Page.Root>
             <Page.Header items={breadcrumbItems}>
-                <Button color="jade">Edytuj</Button>
+                <Button color="jade" variant="soft">
+                    Edytuj
+                </Button>
             </Page.Header>
 
             <Page.Content>
@@ -64,21 +66,6 @@ const BaseFundraiserPage = () => {
                 </Section>
             </Page.Content>
         </Page.Root>
-    );
-};
-
-type SectionsProps = PropsWithChildren<{
-    title: string;
-}>;
-
-const Section = ({ children, title }: SectionsProps) => {
-    return (
-        <Box className={styles.section}>
-            <Heading as="h3" className={styles.title}>
-                {title}
-            </Heading>
-            <Box className={styles.content}>{children}</Box>
-        </Box>
     );
 };
 

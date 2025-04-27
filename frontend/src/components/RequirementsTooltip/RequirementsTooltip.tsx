@@ -36,7 +36,7 @@ const mapStateToColor = (state: TooltipState) => {
             return "crimson";
 
         case "info":
-            return "purple";
+            return "violet";
     }
 };
 

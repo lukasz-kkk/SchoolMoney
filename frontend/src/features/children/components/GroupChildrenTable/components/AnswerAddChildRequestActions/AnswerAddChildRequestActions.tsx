@@ -28,11 +28,11 @@ export const AnswerAddChildRequestActions = ({ child, onAccept, onReject }: Answ
 
     return (
         <Box className={styles.actions}>
-            <Button color="crimson" onClick={onRejectInternal} size="1">
+            <Button color="crimson" onClick={onRejectInternal} size="1" variant="soft">
                 Odrzuć
             </Button>
 
-            <Button color="jade" onClick={() => onAccept(child.id)} size="1">
+            <Button color="jade" onClick={() => onAccept(child.id)} size="1" variant="soft">
                 Akceptuj
             </Button>
         </Box>

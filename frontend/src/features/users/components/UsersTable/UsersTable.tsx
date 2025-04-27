@@ -50,7 +50,7 @@ const columns = [
                 onClick={() => table.setExpanded({ [row.id]: !row.getIsExpanded() })}
                 variant="soft"
                 size="1"
-                color="blue"
+                color="violet"
             >
                 {row.getIsExpanded() ? <ChevronUp /> : <ChevronDown />}
             </IconButton>

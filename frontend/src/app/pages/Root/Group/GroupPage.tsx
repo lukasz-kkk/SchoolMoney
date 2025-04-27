@@ -55,7 +55,14 @@ const BaseGroupPage = () => {
         <Page.Root>
             <Page.Header items={breadcrumbItems}>
                 {!!group && isTreasurer && (
-                    <RenameGroupDialog groupId={group.id} trigger={<Button color="jade">Edytuj</Button>} />
+                    <RenameGroupDialog
+                        groupId={group.id}
+                        trigger={
+                            <Button color="jade" variant="soft">
+                                Edytuj
+                            </Button>
+                        }
+                    />
                 )}
             </Page.Header>
 

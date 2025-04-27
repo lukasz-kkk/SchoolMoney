@@ -44,7 +44,11 @@ export const FinancialAccountCard = ({ account, withActions }: FinancialAccountC
             {withActions && (
                 <Box className={styles.footer}>
                     <TransformMoneyDialog
-                        trigger={<Button color="jade">Wpłać</Button>}
+                        trigger={
+                            <Button color="jade" variant="soft">
+                                Wpłać
+                            </Button>
+                        }
                         title="Wpłać środki"
                         transferData={{
                             targetAccountNumber: account.accountNumber,
@@ -54,7 +58,11 @@ export const FinancialAccountCard = ({ account, withActions }: FinancialAccountC
                     />
 
                     <TransformMoneyDialog
-                        trigger={<Button color="crimson">Wypłać</Button>}
+                        trigger={
+                            <Button color="crimson" variant="soft">
+                                Wypłać
+                            </Button>
+                        }
                         title="Wypłać środki"
                         restrictions={{
                             maxAmount: moneyToFloatingPoint(account.balance),

@@ -43,7 +43,7 @@ export const DisableUserDialog = ({ user, trigger }: DisableUserDialogProps) => 
                     <Dialog.Close>
                         <Button variant="soft">Anuluj</Button>
                     </Dialog.Close>
-                    <Button color="crimson" loading={isPending} onClick={handleDelete}>
+                    <Button color="crimson" loading={isPending} onClick={handleDelete} variant="soft">
                         Wyłącz
                     </Button>
                 </DialogFooter>

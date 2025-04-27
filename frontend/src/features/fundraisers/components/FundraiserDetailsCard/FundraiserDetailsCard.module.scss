@@ -14,7 +14,8 @@
     flex-direction: column;
 
     .label {
-      color: var(--gray-11);
+      color: var(--accent-11);
+      opacity: 0.9;
       font-weight: bold;
       font-size: var(--font-size-1);
     }

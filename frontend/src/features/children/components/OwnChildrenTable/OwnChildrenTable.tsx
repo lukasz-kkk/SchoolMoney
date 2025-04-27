@@ -42,7 +42,11 @@ const columns = [
             return (
                 <AddChildToGroupDialog
                     childId={info.getValue().id}
-                    trigger={<Button size="1">Dodaj do klasy</Button>}
+                    trigger={
+                        <Button size="1" variant="soft">
+                            Dodaj do klasy
+                        </Button>
+                    }
                 />
             );
         },
@@ -56,7 +60,7 @@ const columns = [
                 onClick={() => table.setExpanded({ [row.id]: !row.getIsExpanded() })}
                 variant="soft"
                 size="1"
-                color="blue"
+                color="violet"
             >
                 {row.getIsExpanded() ? <ChevronUp /> : <ChevronDown />}
             </IconButton>
