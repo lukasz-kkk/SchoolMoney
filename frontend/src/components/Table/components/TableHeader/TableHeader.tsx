@@ -12,7 +12,7 @@ type HeaderProps<T> = {
 
 export function TableHeader<T>({ table, withFilters }: HeaderProps<T>) {
     return (
-        <thead>
+        <thead className={classes.header}>
             {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
                     {headerGroup.headers.map((header) => {
