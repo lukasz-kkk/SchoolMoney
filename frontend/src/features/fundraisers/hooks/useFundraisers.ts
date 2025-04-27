@@ -13,7 +13,7 @@ const data: Fundraiser[] = [
         amountPerPerson: 15000,
         startDate: new Date("2023-05-01"),
         endDate: new Date("2023-06-30"),
-        groupId: 12,
+        groupId: 3,
         ownerId: 1,
     },
     {
@@ -23,7 +23,7 @@ const data: Fundraiser[] = [
         amountPerPerson: 30000,
         startDate: new Date("2023-09-15"),
         endDate: new Date("2023-10-15"),
-        groupId: 8,
+        groupId: 3,
         ownerId: 2,
     },
     {
@@ -33,7 +33,7 @@ const data: Fundraiser[] = [
         amountPerPerson: 5000,
         startDate: new Date("2023-03-10"),
         endDate: new Date("2023-04-10"),
-        groupId: 5,
+        groupId: 3,
         ownerId: 3,
     },
     {
@@ -43,7 +43,7 @@ const data: Fundraiser[] = [
         amountPerPerson: 1000,
         startDate: new Date("2023-11-01"),
         endDate: new Date("2024-01-31"),
-        groupId: 10,
+        groupId: 3,
         ownerId: 4,
     },
     {

@@ -42,7 +42,7 @@ export const TransferMoneyForm = ({
 
             <Input
                 {...register("amount")}
-                label="Kwota przelewu"
+                label="Kwota przelewu (zł)"
                 type="number"
                 min={0}
                 max={restrictions?.maxAmount}

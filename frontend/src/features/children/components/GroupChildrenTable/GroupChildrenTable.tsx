@@ -82,7 +82,6 @@ export const GroupChildrenTable = ({ childrenList, isLoading }: GroupChildrenTab
             sortOptions={[{ id: "lastName", desc: false }]}
             data={childrenList}
             columns={columns}
-            withFilters
             isLoading={isLoading}
         />
     );

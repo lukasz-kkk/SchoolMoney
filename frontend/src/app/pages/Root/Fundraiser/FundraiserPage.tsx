@@ -12,6 +12,9 @@ import { TransactionsHistoryTable } from "@/features/finances/components/Transac
 import { FundraiserDetailsCard } from "@/features/fundraisers/components/FundraiserDetailsCard/FundraiserDetailsCard.tsx";
 import { Section } from "@/components/Section/Section.tsx";
 import { FundraiserActions } from "@/features/fundraisers/components/FundraiserManagementPanel/FundraiserActions.tsx";
+import { FundraiserChildrenTable } from "@/features/children/components/FundraiserChildrenTable/FundraiserChildrenTable.tsx";
+import { useGetChildrenByGroup } from "@/features/children/hooks/useGetChildrenByGroup.ts";
+import { AccessGuard } from "@/features/auth/components/AccessGuard/AccessGuard.tsx";
 
 const mockAccount = {
     accountNumber: "PL26 1200 0000 9665 8767 5627 4104",
@@ -23,6 +26,9 @@ const BaseFundraiserPage = () => {
     const params = useParams<{ id: string }>();
 
     const { data: fundraiser } = useFundraiser(parseInt(params.id ?? "0"));
+    const { data: children } = useGetChildrenByGroup(fundraiser?.groupId);
+    const acceptedChildren = (children ?? []).filter((child) => child.isAccepted);
+
     const [files, setFiles] = useState<File[]>([]);
 
     const onUploadFile = (file: File) => {
@@ -52,8 +58,18 @@ const BaseFundraiserPage = () => {
                 </Section>
 
                 <Section title="Dokumenty">
-                    <ReceiptUploader onUpload={onUploadFile} />
+                    <AccessGuard userId={fundraiser.ownerId}>
+                        <ReceiptUploader onUpload={onUploadFile} />
+                    </AccessGuard>
                     <ReceiptsList files={files} />
+                </Section>
+
+                <Section title="Lista dzieci">
+                    <FundraiserChildrenTable
+                        childrenList={acceptedChildren}
+                        fundraiserAccount={mockAccount}
+                        fundraiser={fundraiser}
+                    />
                 </Section>
 
                 <Section title="Historia transakcji">

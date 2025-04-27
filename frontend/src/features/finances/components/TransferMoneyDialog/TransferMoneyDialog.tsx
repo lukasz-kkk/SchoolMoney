@@ -56,6 +56,8 @@ export const TransformMoneyDialog = ({ trigger, title, transferData, restriction
                     restrictions={restrictions}
                     data={transferData}
                 />
+
+                {/* TODO: Display correct messages fore each error code */}
                 {error && <Alert className={classes.alert}>{error.message}</Alert>}
             </Dialog.Content>
         </Dialog.Root>
