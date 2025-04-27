@@ -172,5 +172,35 @@ namespace SchoolMoney.Controllers
                     string.Format(Resource.ControllerInternalError, ex.Message));
             }
         }
+
+        [HttpDelete]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+#if !DEBUG
+        [Authorize(Roles = Roles.User)]
+#endif
+        public async Task<IActionResult> DeleteFundraiser(int id)
+        {
+            try
+            {
+                var command = new DeleteFundraiserCommand
+                {
+                    FundraiserId = id
+                };
+
+                await _mediator.Send(command);
+                return NoContent();
+            }
+            catch (FundraiserNotFoundException ex)
+            {
+                return StatusCode((int)HttpStatusCode.NotFound,
+                    string.Format(Resource.ControllerNotFound, ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                    string.Format(Resource.ControllerInternalError, ex.Message));
+            }
+        }
     }
 }

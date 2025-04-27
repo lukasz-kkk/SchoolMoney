@@ -29,5 +29,28 @@ namespace Infrastructure
                 .Select(x => x.FinancialAccount.Number)
                 .FirstOrDefault();
         }
+
+        public List<Child> GetListOfMembers(int fundraiserId)
+        {
+            var fundraiser = _appDbContext.Fundraisers
+                .Include(x => x.Group)
+                .Include(x => x.ExcludedChildrens)
+                .FirstOrDefault();
+
+
+            return _appDbContext.Children.Where(x => x.Group == fundraiser!.Group
+                && !fundraiser.ExcludedChildrens.Select(c => c.ChildId).Contains(x.Id))
+                .ToList();
+        }
+
+        public void Delete(int fundraiserId)
+        {
+            var fundraiser = _appDbContext.Fundraisers
+                .Include (x => x.FinancialAccount)
+                .FirstOrDefault(x => x.Id == fundraiserId);
+
+            _appDbContext.FinancialAccounts.Remove(fundraiser!.FinancialAccount);
+            _appDbContext.Fundraisers.Remove(fundraiser);
+        }
     }
 }

@@ -12,7 +12,8 @@ namespace SchoolMoney.CommandHandlers
     public class FundraiserCommandHandler : 
         IRequestHandler<CreateFundraiserCommand, Unit>,
         IRequestHandler<ExcludeChildCommand, Unit>,
-        IRequestHandler<SwitchBlockFundraiserCommand, Unit>
+        IRequestHandler<SwitchBlockFundraiserCommand, Unit>,
+        IRequestHandler<DeleteFundraiserCommand, Unit>
     {
         private readonly IUserRepository _userRepository;
         private readonly IFundraiserRepository _fundraiserRepository;
@@ -107,6 +108,39 @@ namespace SchoolMoney.CommandHandlers
             fundraiser.IsBlocked = request.IsBlocked;
             await _fundraiserRepository.SaveChangesAsync();
 
+            return Unit.Value;
+        }
+
+        public async Task<Unit> Handle(DeleteFundraiserCommand request, CancellationToken cancellationToken)
+        {
+            var fundraiser = _fundraiserRepository.Get(request.FundraiserId)
+                ?? throw new FundraiserNotFoundException(request.FundraiserId);
+            var fundraiserAccount = _fundraiserRepository.GetAccount(request.FundraiserId);
+
+            var childrens = _fundraiserRepository.GetListOfMembers(request.FundraiserId);
+
+            foreach (var children in childrens)
+            {
+                var parentChildAccount = _childRepository.GetAccount(children.Id);
+                var balance = _transactionRepository.GetBalanceForChild(fundraiserAccount, children);
+
+                if (balance > 0)
+                {
+                    var command = new MakeTransactionCommand
+                    {
+                        Name = $"Przelew automatyczny za dziecko #{children.Id}",
+                        SourceAccountNumber = fundraiserAccount,
+                        TargetAccountNumber = parentChildAccount,
+                        Amount = balance,
+                        TechnicalOperation = true
+                    };
+
+                    await _mediator.Send(command);
+                }
+            }
+            
+            _fundraiserRepository.Delete(fundraiser.Id);
+            await _fundraiserRepository.SaveChangesAsync();
             return Unit.Value;
         }
     }
