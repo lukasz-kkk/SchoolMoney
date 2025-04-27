@@ -8,7 +8,6 @@ import { ReceiptsList } from "@/features/fundraisers/components/ReceiptsList/Rec
 import { useState } from "react";
 
 import { TransactionsHistoryTable } from "@/features/finances/components/TransactionsHistoryTable/TransactionsHistoryTable.tsx";
-import { AppRoute } from "@/app/router";
 
 import { FundraiserDetailsCard } from "@/features/fundraisers/components/FundraiserDetailsCard/FundraiserDetailsCard.tsx";
 import { Section } from "@/components/Section/Section.tsx";
@@ -16,6 +15,7 @@ import { Section } from "@/components/Section/Section.tsx";
 // TODO: Remove mocks
 const BaseFundraiserPage = () => {
     const params = useParams<{ id: string }>();
+
     const { data: fundraiser } = useFundraiser(parseInt(params.id ?? "0"));
     const [files, setFiles] = useState<File[]>([]);
 
@@ -24,10 +24,6 @@ const BaseFundraiserPage = () => {
     };
 
     const breadcrumbItems = [
-        {
-            label: "Zbiórki",
-            href: AppRoute.FUNDRAISERS,
-        },
         {
             label: fundraiser?.name ?? "",
         },

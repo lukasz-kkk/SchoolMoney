@@ -1,7 +1,7 @@
 import { Page } from "@/components/Page/Page";
 import { onlyAsAuthenticated } from "@/features/auth/hoc/withAuthorization";
 import { useParams } from "react-router-dom";
-import { Button } from "@radix-ui/themes";
+import { Box, Button, Spinner } from "@radix-ui/themes";
 
 import { useGroup } from "@/features/groups/hooks/useGroup";
 import { useUser } from "@/features/auth/hooks/useUser";
@@ -13,10 +13,19 @@ import { useGetChildrenByGroup } from "@/features/children/hooks/useGetChildrenB
 import { GroupChildrenTable } from "@/features/children/components/GroupChildrenTable/GroupChildrenTable";
 import { useRefreshGroupJoinCode } from "@/features/groups/hooks/useRefreshGroupJoinCode.ts";
 import { toast } from "sonner";
+import { Section } from "@/components/Section/Section.tsx";
+import { FundraiserCard } from "@/features/fundraisers/components/FundraiserCard/FundraiserCard.tsx";
+import { FundraisersList } from "@/features/fundraisers/components/FundraisersList/FundraisersList.tsx";
+import { useFundraisers } from "@/features/fundraisers/hooks/useFundraisers.ts";
+import { CreateFundraiserDialog } from "@/features/fundraisers/components/CreateFundraiserDialog/CreateFundraiserDialog.tsx";
+import { GroupDetailsCard } from "@/features/groups/components/GroupDetailsCard/GroupDetailsCard.tsx";
+
+import styles from "./GroupPage.module.scss";
 
 const BaseGroupPage = () => {
     const params = useParams<{ id: string }>();
     const groupId = params?.id ? parseInt(params.id) : undefined;
+    const { data: fundraisers } = useFundraisers();
 
     const { user } = useUser();
     const { data: group } = useGroup(groupId);
@@ -51,6 +60,10 @@ const BaseGroupPage = () => {
         },
     ];
 
+    if (!group) {
+        return <Spinner />;
+    }
+
     return (
         <Page.Root>
             <Page.Header items={breadcrumbItems}>
@@ -67,14 +80,43 @@ const BaseGroupPage = () => {
             </Page.Header>
 
             <Page.Content>
-                {isTreasurer && joinCode && (
-                    <GroupJoinCode
-                        value={joinCode}
-                        onRefresh={onRefreshGroupJoinCode}
-                        isRefreshing={isRefreshingCode}
-                    />
-                )}
-                <GroupChildrenTable childrenList={children ?? []} />
+                <Section title="Informacje o klasie">
+                    <Box className={styles.row}>
+                        <GroupDetailsCard group={group} />
+
+                        {isTreasurer && joinCode && (
+                            <GroupJoinCode
+                                value={joinCode}
+                                onRefresh={onRefreshGroupJoinCode}
+                                isRefreshing={isRefreshingCode}
+                            />
+                        )}
+                    </Box>
+                </Section>
+
+                <Section
+                    title="Zbiórki"
+                    actions={
+                        <CreateFundraiserDialog
+                            groupId={group.id}
+                            trigger={
+                                <Button color="jade" variant="soft">
+                                    Dodaj zbiórkę
+                                </Button>
+                            }
+                        />
+                    }
+                >
+                    <FundraisersList>
+                        {fundraisers?.map((fundraiser) => (
+                            <FundraiserCard key={fundraiser.id} fundraiser={fundraiser} />
+                        ))}
+                    </FundraisersList>
+                </Section>
+
+                <Section title="Dzieci">
+                    <GroupChildrenTable childrenList={children ?? []} />
+                </Section>
             </Page.Content>
         </Page.Root>
     );

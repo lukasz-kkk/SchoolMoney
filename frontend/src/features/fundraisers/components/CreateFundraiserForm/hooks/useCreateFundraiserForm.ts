@@ -8,7 +8,6 @@ export type CreateFundraiserFormInputs = {
     amountPerPerson: number;
     startDate: Date;
     endDate: Date;
-    classId: number;
 };
 
 export const FUNDRAISER_NAME_HELP = "Wymagane min. 10 znaków";
@@ -16,7 +15,6 @@ export const FUNDRAISER_DESCRIPTION_HELP = "Wymagane min. 50 znaków";
 export const FUNDRAISER_AMOUNT_PER_PERSON_HELP = "Zbierana kwota od osoby jest wymagana.";
 export const FUNDRAISER_START_DATE_HELP = "Data rozpoczęcia zbiórki jest wymagana.";
 export const FUNDRAISER_END_DATE_HELP = "Data zakończenia zbiórki jest wymagana.";
-export const FUNDRAISER_CLASS_HELP = "Zbiórka musi być przypisana do klasy.";
 
 export const useCreateFundraiserForm = () => {
     const requirements = yup.object({
@@ -25,7 +23,6 @@ export const useCreateFundraiserForm = () => {
         amountPerPerson: yup.number().required(FUNDRAISER_AMOUNT_PER_PERSON_HELP),
         startDate: yup.date().required(FUNDRAISER_START_DATE_HELP),
         endDate: yup.date().required(FUNDRAISER_END_DATE_HELP),
-        classId: yup.number().required(FUNDRAISER_CLASS_HELP),
     });
 
     return useForm<CreateFundraiserFormInputs>({

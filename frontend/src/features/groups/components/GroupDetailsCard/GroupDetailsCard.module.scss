@@ -1,0 +1,43 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-4);
+  gap: var(--space-4);
+  
+  .row {
+    display: flex;
+    gap: var(--space-7);
+  }
+
+  .group {
+    display: flex;
+    flex-direction: column;
+
+    .label {
+      color: var(--accent-11);
+      opacity: 0.9;
+      font-weight: bold;
+      font-size: var(--font-size-1);
+    }
+
+    .valueWrapper {
+      display: flex;
+      gap: var(--space-4);
+      align-items: center;
+    }
+
+    .value {
+      font-weight: bold;
+      font-size: var(--font-size-5);
+    }
+
+    &.description {
+      .value {
+        font-size: var(--font-size-3);
+        font-weight: normal;
+      }
+    }
+  }
+}
+
+

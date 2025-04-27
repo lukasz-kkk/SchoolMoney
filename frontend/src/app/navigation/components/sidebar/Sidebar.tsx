@@ -20,7 +20,6 @@ const items = [
         requiredAccess: "authenticated",
         items: [
             { label: "Klasy", href: AppRoute.GROUPS },
-            { label: "Zbiórki", href: AppRoute.FUNDRAISERS },
             { label: "Kontakt", href: AppRoute.CHAT },
         ],
     },
@@ -34,7 +33,10 @@ const items = [
     {
         title: "Panel administratora",
         requiredAccess: "Admin",
-        items: [{ label: "Użytkownicy", href: AppRoute.USERS }],
+        items: [
+            { label: "Użytkownicy", href: AppRoute.USERS },
+            { label: "Zbiórki", href: AppRoute.FUNDRAISERS },
+        ],
     },
 
     {
