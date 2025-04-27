@@ -2,12 +2,11 @@ import { Page } from "@/components/Page/Page";
 import { onlyAsAuthenticated } from "@/features/auth/hoc/withAuthorization";
 import { useFundraiser } from "@/features/fundraisers/hooks/useFundraiser.ts";
 import { useParams } from "react-router-dom";
-import { Box, Button } from "@radix-ui/themes";
+import { Button } from "@radix-ui/themes";
 import { ReceiptUploader } from "@/features/fundraisers/components/ReceiptUploader/ReceiptUploader.tsx";
 import { ReceiptsList } from "@/features/fundraisers/components/ReceiptsList/ReceiptsList.tsx";
 import { useState } from "react";
 
-import styles from "./FundraiserPage.module.scss";
 import { TransactionsHistoryTable } from "@/features/finances/components/TransactionsHistoryTable/TransactionsHistoryTable.tsx";
 import { AppRoute } from "@/app/router";
 
@@ -38,14 +37,8 @@ const BaseFundraiserPage = () => {
             </Page.Header>
 
             <Page.Content>
-                <Box className={styles.contentWrapper}>
-                    <Box className={styles.mainContent}></Box>
-
-                    <Box className={styles.aside}>
-                        <ReceiptUploader onUpload={onUploadFile} />
-                        <ReceiptsList files={files} />
-                    </Box>
-                </Box>
+                <ReceiptUploader onUpload={onUploadFile} />
+                <ReceiptsList files={files} />
 
                 <TransactionsHistoryTable transactions={[]} />
             </Page.Content>

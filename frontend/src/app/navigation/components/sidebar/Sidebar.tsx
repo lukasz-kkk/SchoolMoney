@@ -21,9 +21,14 @@ const items = [
         items: [
             { label: "Klasy", href: AppRoute.GROUPS },
             { label: "Zbiórki", href: AppRoute.FUNDRAISERS },
-            { label: "Moje dzieci", href: AppRoute.CHILDREN },
             { label: "Kontakt", href: AppRoute.CHAT },
         ],
+    },
+
+    {
+        title: "Panel rodzica",
+        requiredAccess: "User",
+        items: [{ label: "Moje dzieci", href: AppRoute.CHILDREN }],
     },
 
     {

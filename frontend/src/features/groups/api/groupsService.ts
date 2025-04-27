@@ -29,6 +29,11 @@ type AddChildToGroupRequest = {
 };
 
 export class GroupsService {
+    public static async getAll(): Promise<Group[]> {
+        const { data } = await requestClient.get<GroupDto[]>("/Group");
+        return data.map(GroupsService.mapDtoToGroup);
+    }
+
     public static async getOwn(): Promise<Group[]> {
         const { data } = await requestClient.get<GroupDto[]>("/Group/ByLoggedUser");
         return data.map(GroupsService.mapDtoToGroup);
@@ -37,6 +42,10 @@ export class GroupsService {
     public static async getJoinCode(groupId: number): Promise<string> {
         const { data } = await requestClient.get<JoinCodeDto>(`/Group/${groupId}/JoinCode`);
         return data.joinCode;
+    }
+
+    public static async refreshJoinCode(groupId: number): Promise<void> {
+        await requestClient.post<JoinCodeDto>(`/Group/${groupId}/RefreshJoinCode`);
     }
 
     public static async create(body: CreateGroupRequest): Promise<Group> {
