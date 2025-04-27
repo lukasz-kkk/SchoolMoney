@@ -9,6 +9,7 @@ type FundraiserDto = {
     startDate: string;
     endDate: string;
     groupId: number;
+    ownerId: number;
 };
 
 type CreateFundraiserRequest = {
@@ -41,6 +42,7 @@ export class FundraisersService {
             id: dto.id,
             amountPerPerson: dto.amountPerPerson,
             groupId: dto.groupId,
+            ownerId: dto.ownerId,
             endDate: new Date(dto.endDate),
             startDate: new Date(dto.startDate),
             description: dto.description,
