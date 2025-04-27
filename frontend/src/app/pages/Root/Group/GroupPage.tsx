@@ -4,9 +4,7 @@ import { useParams } from "react-router-dom";
 import { Box, Button, Spinner } from "@radix-ui/themes";
 
 import { useGroup } from "@/features/groups/hooks/useGroup";
-import { useUser } from "@/features/auth/hooks/useUser";
 import { AppRoute } from "@/app/router";
-import { RenameGroupDialog } from "@/features/groups/components/RenameGroupDialog/RenameGroupDialog";
 import { useGroupJoinCode } from "@/features/groups/hooks/useGroupJoinCode";
 import { GroupJoinCode } from "@/features/groups/components/GroupJoinCode/GroupJoinCode";
 import { useGetChildrenByGroup } from "@/features/children/hooks/useGetChildrenByGroup";
@@ -22,17 +20,15 @@ import { GroupDetailsCard } from "@/features/groups/components/GroupDetailsCard/
 
 import styles from "./GroupPage.module.scss";
 import { AccessGuard } from "@/features/auth/components/AccessGuard/AccessGuard.tsx";
+import { RenameGroupDialog } from "@/features/groups/components/RenameGroupDialog/RenameGroupDialog.tsx";
 
 const BaseGroupPage = () => {
     const params = useParams<{ id: string }>();
     const groupId = params?.id ? parseInt(params.id) : undefined;
-    const { data: fundraisers } = useFundraisers();
 
-    const { user } = useUser();
     const { data: group } = useGroup(groupId);
+    const { data: fundraisers } = useFundraisers();
     const { data: children } = useGetChildrenByGroup(groupId);
-
-    const isTreasurer = !!user && user?.id == group?.treasurer?.id;
     const { data: joinCode } = useGroupJoinCode(group?.id);
 
     const { mutateAsync: refreshCode, isPending: isRefreshingCode } = useRefreshGroupJoinCode();
@@ -67,31 +63,34 @@ const BaseGroupPage = () => {
 
     return (
         <Page.Root>
-            <Page.Header items={breadcrumbItems}>
-                {!!group && isTreasurer && (
-                    <RenameGroupDialog
-                        groupId={group.id}
-                        trigger={
-                            <Button color="jade" variant="soft">
-                                Edytuj
-                            </Button>
-                        }
-                    />
-                )}
-            </Page.Header>
+            <Page.Header items={breadcrumbItems}></Page.Header>
 
             <Page.Content>
-                <Section title="Informacje o klasie">
+                <Section
+                    title="Informacje o klasie"
+                    actions={
+                        <AccessGuard userId={group.treasurer.id}>
+                            <RenameGroupDialog
+                                groupId={group.id}
+                                trigger={
+                                    <Button variant="soft" size="1">
+                                        Edytuj nazwę klasy
+                                    </Button>
+                                }
+                            />
+                        </AccessGuard>
+                    }
+                >
                     <Box className={styles.row}>
                         <GroupDetailsCard group={group} />
 
-                        {isTreasurer && joinCode && (
+                        <AccessGuard userId={group.treasurer.id}>
                             <GroupJoinCode
-                                value={joinCode}
+                                value={joinCode ?? ""}
                                 onRefresh={onRefreshGroupJoinCode}
                                 isRefreshing={isRefreshingCode}
                             />
-                        )}
+                        </AccessGuard>
                     </Box>
                 </Section>
 
@@ -102,8 +101,8 @@ const BaseGroupPage = () => {
                             <CreateFundraiserDialog
                                 groupId={group.id}
                                 trigger={
-                                    <Button color="jade" variant="soft">
-                                        Dodaj zbiórkę
+                                    <Button color="jade" variant="soft" size="1">
+                                        Dodaj kolejną zbiórkę
                                     </Button>
                                 }
                             />
