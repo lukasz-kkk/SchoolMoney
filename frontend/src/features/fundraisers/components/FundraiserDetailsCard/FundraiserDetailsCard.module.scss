@@ -1,19 +1,12 @@
-.account {
+.container {
   display: flex;
   flex-direction: column;
   padding: var(--space-4);
   gap: var(--space-4);
-  width: fit-content;
-
-  .footer {
-    display: flex;
-    justify-content: flex-end;
-    gap: var(--space-2);
-  }
-
+  
   .row {
     display: flex;
-    justify-content: space-between;
+    gap: var(--space-7);
   }
 
   .group {
@@ -21,7 +14,8 @@
     flex-direction: column;
 
     .label {
-      color: var(--gray-11);
+      color: var(--accent-11);
+      opacity: 0.9;
       font-weight: bold;
       font-size: var(--font-size-1);
     }
@@ -37,9 +31,10 @@
       font-size: var(--font-size-5);
     }
 
-    &.number {
+    &.description {
       .value {
-        font-size: var(--font-size-7);
+        font-size: var(--font-size-3);
+        font-weight: normal;
       }
     }
   }

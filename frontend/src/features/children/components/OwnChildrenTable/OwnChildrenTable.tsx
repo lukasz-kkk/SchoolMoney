@@ -42,7 +42,11 @@ const columns = [
             return (
                 <AddChildToGroupDialog
                     childId={info.getValue().id}
-                    trigger={<Button size="1">Dodaj do klasy</Button>}
+                    trigger={
+                        <Button size="1" variant="soft">
+                            Dodaj do klasy
+                        </Button>
+                    }
                 />
             );
         },

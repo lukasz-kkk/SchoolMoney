@@ -8,7 +8,7 @@ import { Toaster } from "sonner";
 export const AppProvider = ({ children }: PropsWithChildren) => {
     return (
         <QueryClientProvider client={apiClient}>
-            <Toaster position="bottom-right" closeButton richColors />
+            <Toaster position="bottom-right" closeButton richColors theme="dark" />
             <ThemeProvider>{children}</ThemeProvider>
         </QueryClientProvider>
     );

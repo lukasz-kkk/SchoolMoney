@@ -89,7 +89,7 @@ export const CreateFundraiserForm = ({ onSubmit, isLoading, onCancel }: CreateFu
                 <Button variant="soft" type="reset">
                     Anuluj
                 </Button>
-                <Button color="jade" loading={isLoading} type="submit">
+                <Button color="jade" loading={isLoading} type="submit" variant="soft">
                     Utwórz
                 </Button>
             </Box>

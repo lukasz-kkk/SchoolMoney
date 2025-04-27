@@ -49,7 +49,7 @@ export const ChangePasswordForm = ({ onSubmit, isLoading }: ChangePasswordFormPr
                 <Button variant="soft" type="reset">
                     Anuluj
                 </Button>
-                <Button color="jade" type="submit" loading={isLoading}>
+                <Button color="jade" type="submit" loading={isLoading} variant="soft">
                     Zapisz
                 </Button>
             </Box>

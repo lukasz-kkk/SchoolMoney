@@ -14,7 +14,14 @@ const BaseChildrenPage = () => {
     return (
         <Page.Root>
             <Page.Header items={[{ label: "Moje dzieci" }]}>
-                <AddChildDialog lastName={user?.lastName} trigger={<Button color="jade">Dodaj</Button>} />
+                <AddChildDialog
+                    lastName={user?.lastName}
+                    trigger={
+                        <Button color="jade" variant="soft">
+                            Dodaj
+                        </Button>
+                    }
+                />
             </Page.Header>
 
             <Page.Content>

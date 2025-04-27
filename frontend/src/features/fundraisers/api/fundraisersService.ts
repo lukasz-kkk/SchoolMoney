@@ -25,6 +25,11 @@ export class FundraisersService {
         await requestClient.delete(`/Fundraisers/${id}`);
     }
 
+    public static async suspend(id: number): Promise<void> {
+        // TODO: Endpoint
+        await requestClient.delete(`/Fundraisers/${id}`);
+    }
+
     private static mapDtoToFundraiser(dto: FundraiserDto): Fundraiser {
         return {
             name: dto.name,

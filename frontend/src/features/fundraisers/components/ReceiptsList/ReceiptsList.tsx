@@ -50,7 +50,7 @@ export const ReceiptsList = ({ files }: ReceiptsListProps) => {
             <Text as="p" className={styles.caption}>
                 {files && files.length > 0
                     ? "Wszystkie pliki dodane przez skarbnika zbiórki:"
-                    : "Wszystkie pliki dodane przez skarbnika zbiórki pojawią się tutaj."}
+                    : "Na ten moment skarbnik nie dodał jeszcze żadnego pliku. Gdy tylko się tak stanie, pliki pojawią się w tym miejscu."}
             </Text>
 
             {filesWithPreview.length > 0 && (
