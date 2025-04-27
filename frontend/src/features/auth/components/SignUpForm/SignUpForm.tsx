@@ -69,7 +69,7 @@ export const SignUpForm = ({ onSubmit, isLoading }: SignUpFormProps) => {
                 type="password"
             />
 
-            <Button loading={isLoading} className={classes.submitButton} variant="soft">
+            <Button loading={isLoading} className={classes.submitButton}>
                 Zarejestruj
             </Button>
         </form>
