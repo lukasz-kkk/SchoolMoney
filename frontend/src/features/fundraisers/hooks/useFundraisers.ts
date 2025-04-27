@@ -14,6 +14,7 @@ const data: Fundraiser[] = [
         startDate: new Date("2023-05-01"),
         endDate: new Date("2023-06-30"),
         groupId: 12,
+        ownerId: 1,
     },
     {
         id: 2,
@@ -23,6 +24,7 @@ const data: Fundraiser[] = [
         startDate: new Date("2023-09-15"),
         endDate: new Date("2023-10-15"),
         groupId: 8,
+        ownerId: 2,
     },
     {
         id: 3,
@@ -32,6 +34,7 @@ const data: Fundraiser[] = [
         startDate: new Date("2023-03-10"),
         endDate: new Date("2023-04-10"),
         groupId: 5,
+        ownerId: 3,
     },
     {
         id: 4,
@@ -41,6 +44,7 @@ const data: Fundraiser[] = [
         startDate: new Date("2023-11-01"),
         endDate: new Date("2024-01-31"),
         groupId: 10,
+        ownerId: 4,
     },
     {
         id: 5,
@@ -50,5 +54,6 @@ const data: Fundraiser[] = [
         startDate: new Date("2023-07-01"),
         endDate: new Date("2023-07-31"),
         groupId: 3,
+        ownerId: 5,
     },
 ];

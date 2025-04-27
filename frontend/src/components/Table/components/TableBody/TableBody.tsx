@@ -14,7 +14,7 @@ export function TableBody<T>({ table, onRenderSubRow, isLoading }: TableBodyProp
     return (
         <tbody className={classes.body}>
             {isLoading &&
-                [...Array(2)].map((_, index) => (
+                [...Array(5)].map((_, index) => (
                     <LoadingTableRow columnsCount={table.getAllColumns().length} key={index} />
                 ))}
 
@@ -69,7 +69,7 @@ const LoadingTableRow = ({ columnsCount }: LoadingTableRowProps) => {
         <tr className={classes.row}>
             {[...Array(columnsCount)].map((_, index) => (
                 <td key={index} className={classes.cell}>
-                    <Skeleton />
+                    <Skeleton baseColor="#222" highlightColor="#444" />
                 </td>
             ))}
         </tr>

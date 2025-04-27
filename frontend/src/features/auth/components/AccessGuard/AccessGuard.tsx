@@ -4,14 +4,24 @@ import { AppRoute } from "@/app/router";
 import { Navigate } from "react-router-dom";
 import { useAccessValidation } from "@/features/auth/hooks/useAccessLevel";
 
-type AccessGuardProps = PropsWithChildren<{
-    requiredAccess: AccessLevel;
+type BaseAccessGuardProps = PropsWithChildren<{
     redirectTo?: AppRoute;
 }>;
 
-export const AccessGuard = ({ children, requiredAccess, redirectTo }: AccessGuardProps) => {
-    const { validate } = useAccessValidation();
-    const isAllowed = validate(requiredAccess);
+type AccessGuardProps = BaseAccessGuardProps &
+    (
+        | {
+              requiredAccess: AccessLevel;
+          }
+        | {
+              userId: number;
+          }
+    );
+
+export const AccessGuard = ({ children, redirectTo, ...rest }: AccessGuardProps) => {
+    const { validateAccessLevel, validateUserIdentifier } = useAccessValidation();
+    const isAllowed =
+        "requiredAccess" in rest ? validateAccessLevel(rest.requiredAccess) : validateUserIdentifier(rest.userId);
 
     if (!isAllowed && redirectTo) {
         return <Navigate to={redirectTo} replace />;

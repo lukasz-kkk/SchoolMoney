@@ -6,4 +6,5 @@ export type Fundraiser = {
     startDate: Date;
     endDate: Date;
     groupId: number;
+    ownerId: number;
 };

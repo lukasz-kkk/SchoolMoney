@@ -21,6 +21,7 @@ import { CreateFundraiserDialog } from "@/features/fundraisers/components/Create
 import { GroupDetailsCard } from "@/features/groups/components/GroupDetailsCard/GroupDetailsCard.tsx";
 
 import styles from "./GroupPage.module.scss";
+import { AccessGuard } from "@/features/auth/components/AccessGuard/AccessGuard.tsx";
 
 const BaseGroupPage = () => {
     const params = useParams<{ id: string }>();
@@ -97,14 +98,16 @@ const BaseGroupPage = () => {
                 <Section
                     title="Zbiórki"
                     actions={
-                        <CreateFundraiserDialog
-                            groupId={group.id}
-                            trigger={
-                                <Button color="jade" variant="soft">
-                                    Dodaj zbiórkę
-                                </Button>
-                            }
-                        />
+                        <AccessGuard requiredAccess="User">
+                            <CreateFundraiserDialog
+                                groupId={group.id}
+                                trigger={
+                                    <Button color="jade" variant="soft">
+                                        Dodaj zbiórkę
+                                    </Button>
+                                }
+                            />
+                        </AccessGuard>
                     }
                 >
                     <FundraisersList>
