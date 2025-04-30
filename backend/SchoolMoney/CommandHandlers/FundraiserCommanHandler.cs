@@ -84,16 +84,19 @@ namespace SchoolMoney.CommandHandlers
             var parentChildAccount = _childRepository.GetAccount(request.ChildId);
             var balance = _transactionRepository.GetBalanceForChild(fundraiserAccount, child);
 
-            var command = new MakeTransactionCommand
+            if(balance > 0)
             {
-                Name = $"Przelew automatyczny za dziecko #{child.Id}",
-                SourceAccountNumber = fundraiserAccount,
-                TargetAccountNumber = parentChildAccount,
-                Amount = balance,
-                TechnicalOperation = true
-            };
+                var command = new MakeTransactionCommand
+                {
+                    Name = $"Przelew automatyczny za dziecko #{child.Id}",
+                    SourceAccountNumber = fundraiserAccount,
+                    TargetAccountNumber = parentChildAccount,
+                    Amount = balance,
+                    TechnicalOperation = true
+                };
 
-            await _mediator.Send(command);
+                await _mediator.Send(command);
+            }
 
             fundraiser.ExcludeChild(child);
             await _fundraiserRepository.SaveChangesAsync();

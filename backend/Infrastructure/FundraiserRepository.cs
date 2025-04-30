@@ -20,6 +20,10 @@ namespace Infrastructure
         {
             return _appDbContext.Fundraisers.Any(f => f.Name == name);
         }
+        public bool Exists(int id)
+        {
+            return _appDbContext.Fundraisers.Any(f => f.Id == id);
+        }
 
         public string? GetAccount(int fundraiserId)
         {
@@ -27,6 +31,24 @@ namespace Infrastructure
                 .Include(x => x.FinancialAccount)
                 .Where(x => x.Id == fundraiserId)
                 .Select(x => x.FinancialAccount.Number)
+                .FirstOrDefault();
+        }
+        public IEnumerable<Child> GetExcludedChilds(int fundraiserId)
+        {
+            var fundraiser =  _appDbContext.Fundraisers
+                .Include(x => x.ExcludedChildrens)
+                .Where(x => x.Id == fundraiserId)
+                .FirstOrDefault();
+
+            return fundraiser!.ExcludedChildrens.Select(x => x.Child);
+        }
+
+        public Group? GetGroup(int fundraiserId)
+        {
+            return _appDbContext.Fundraisers
+                .Include(x => x.Group)
+                .Where(x => x.Id == fundraiserId)
+                .Select(x => x.Group)
                 .FirstOrDefault();
         }
 

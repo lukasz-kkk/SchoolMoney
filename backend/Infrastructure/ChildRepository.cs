@@ -30,6 +30,15 @@ namespace Infrastructure
                 .ToList();
         }
 
+        public List<Child> GetChildsInGroup(int groupId)
+        {
+            return _appDbContext.Children
+                .Include(child => child.Parent)
+                .Include(child => child.Group)
+                .Where(x => x.Group.Id == groupId)
+                .ToList();
+        }
+
         public string? GetAccount(int childId)
         {
             return _appDbContext.Children

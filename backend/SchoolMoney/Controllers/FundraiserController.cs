@@ -48,6 +48,35 @@ namespace SchoolMoney.Controllers
             }
         }
 
+
+        [HttpGet("{id}/childs")]
+#if !DEBUG
+        [Authorize(Roles = Roles.User)]
+#endif
+        public async Task<ActionResult<FundraiserChildsResponse>> GetChildsById(int id)
+        {
+            try
+            {
+                var query = new GetFundraiserChildsQuery
+                {
+                    Id = id
+                };
+
+                var result = await _mediator.Send(query);
+                return Ok(result);
+            }
+            catch (FundraiserNotFoundException ex)
+            {
+                return StatusCode((int)HttpStatusCode.NotFound,
+                    string.Format(Resource.ControllerNotFound, ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                    string.Format(Resource.ControllerInternalError, ex.Message));
+            }
+        }
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
