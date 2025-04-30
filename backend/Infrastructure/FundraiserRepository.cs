@@ -43,6 +43,15 @@ namespace Infrastructure
                 .ToList();
         }
 
+        public List<Fundraiser> GetList()
+        {
+            return _appDbContext.Fundraisers
+                .Include(x => x.FinancialAccount)
+                .Include(x => x.Owner)
+                .Include(x => x.Group)
+                .ToList();
+        }
+
         public void Delete(int fundraiserId)
         {
             var fundraiser = _appDbContext.Fundraisers

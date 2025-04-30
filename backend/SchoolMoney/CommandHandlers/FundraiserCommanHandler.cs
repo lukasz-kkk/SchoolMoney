@@ -66,7 +66,7 @@ namespace SchoolMoney.CommandHandlers
             var group = _groupRepository.Get(request.GroupId)
                 ?? throw new GroupNotFoundException(request.GroupId);
             
-            var fundraiser = new Fundraiser(request.Name, request.Description, request.Goal, request.StartDate, request.EndDate, 
+            var fundraiser = new Fundraiser(request.Name, request.Description, request.AmountPerPerson, request.StartDate, request.EndDate, 
                 account, user, group);
             _fundraiserRepository.Add(fundraiser);
             await _fundraiserRepository.SaveChangesAsync();

@@ -18,11 +18,11 @@ namespace Domain
 
 
         protected Fundraiser() {}
-        public Fundraiser(string name, string description, decimal goal, DateOnly startDate, DateOnly endDate, FinancialAccount financialAccount, User owner, Group group)
+        public Fundraiser(string name, string description, decimal amountPerPerson, DateOnly startDate, DateOnly endDate, FinancialAccount financialAccount, User owner, Group group)
         {
             Name = name;
             Description = description;
-            AmountPerPerson = goal;
+            AmountPerPerson = amountPerPerson;
             StartDate = startDate;
             EndDate = endDate;
             FinancialAccount = financialAccount;

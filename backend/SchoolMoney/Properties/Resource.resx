@@ -298,7 +298,7 @@
     <value>Fundraiser end date must be greater then start date.</value>
   </data>
   <data name="ValidatorFundaiserGoalMustBeSpecified" xml:space="preserve">
-    <value>Goal must be greater then 0.</value>
+    <value>Amout per person must be greater then 0.</value>
   </data>
   <data name="ValidatorTransactionNameTooLong" xml:space="preserve">
     <value>Transaction name can be up to 100 characters long.</value>

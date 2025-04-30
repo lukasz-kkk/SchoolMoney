@@ -8,6 +8,7 @@ using MediatR;
 using SchoolMoney.Commands;
 using Domain.Exceptions;
 using SchoolMoney.Exceptions;
+using SchoolMoney.Queries;
 
 namespace SchoolMoney.Controllers
 {
@@ -22,6 +23,30 @@ namespace SchoolMoney.Controllers
             _mediator = mediator;
         }
 
+        [HttpGet]
+#if !DEBUG
+        [Authorize(Roles = Roles.User)]
+#endif
+        public async Task<ActionResult<IEnumerable<FundraiserResponse>>> Get()
+        {
+            try
+            {
+                var query = new GetAllFundraisersQuery();
+
+                var result = await _mediator.Send(query);
+                return Ok(result);
+            }
+            catch (FundraiserNotFoundException ex)
+            {
+                return StatusCode((int)HttpStatusCode.NotFound,
+                    string.Format(Resource.ControllerNotFound, ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                    string.Format(Resource.ControllerInternalError, ex.Message));
+            }
+        }
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -38,7 +63,7 @@ namespace SchoolMoney.Controllers
                 {
                     Name = dto.Name,
                     Description = dto.Description,
-                    Goal = dto.Goal,
+                    AmountPerPerson = dto.AmountPerPerson,
                     StartDate = dto.StartDate,
                     EndDate = dto.EndDate,
                     GroupId = dto.GroupId

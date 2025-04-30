@@ -295,7 +295,7 @@ namespace SchoolMoney.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Goal must be greater then 0..
+        ///   Looks up a localized string similar to Amout per person must be greater then 0..
         /// </summary>
         public static string ValidatorFundaiserGoalMustBeSpecified {
             get {
