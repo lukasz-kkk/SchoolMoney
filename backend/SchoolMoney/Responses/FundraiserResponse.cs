@@ -11,6 +11,8 @@ namespace SchoolMoney.Response
         public DateOnly StartDate { get; set; }
         public DateOnly EndDate { get; set; }
         public int FinancialAccountId { get; set; }
+        public string AccountNumber { get; set; }
+        public int AccountBalance { get; set; }
         public int OwnerId { get; set; }
         public int GroupId { get; set; }
         public bool IsBlocked { get; set; }
