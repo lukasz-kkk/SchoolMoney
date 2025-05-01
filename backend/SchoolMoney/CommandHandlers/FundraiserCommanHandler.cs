@@ -13,7 +13,8 @@ namespace SchoolMoney.CommandHandlers
         IRequestHandler<CreateFundraiserCommand, Unit>,
         IRequestHandler<ExcludeChildCommand, Unit>,
         IRequestHandler<SwitchBlockFundraiserCommand, Unit>,
-        IRequestHandler<DeleteFundraiserCommand, Unit>
+        IRequestHandler<DeleteFundraiserCommand, Unit>,
+        IRequestHandler<UpdateFundraiserCommand, Unit>
     {
         private readonly IUserRepository _userRepository;
         private readonly IFundraiserRepository _fundraiserRepository;
@@ -69,6 +70,21 @@ namespace SchoolMoney.CommandHandlers
             var fundraiser = new Fundraiser(request.Name, request.Description, request.AmountPerPerson, request.StartDate, request.EndDate, 
                 account, user, group);
             _fundraiserRepository.Add(fundraiser);
+            await _fundraiserRepository.SaveChangesAsync();
+            return Unit.Value;
+        }
+        public async Task<Unit> Handle(UpdateFundraiserCommand request, CancellationToken cancellationToken)
+        {
+            if (!_fundraiserRepository.Exists(request.Id))
+                throw new FundraiserNotFoundException(request.Id);
+            
+            var fundraiser = _fundraiserRepository.Get(request.Id);
+            
+            fundraiser.Name = request.Name;
+            fundraiser.Description = request.Description;
+            fundraiser.StartDate = request.StartDate;
+            fundraiser.EndDate = request.EndDate;
+
             await _fundraiserRepository.SaveChangesAsync();
             return Unit.Value;
         }
