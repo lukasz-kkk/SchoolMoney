@@ -73,6 +73,15 @@ namespace Infrastructure
                 .Include(x => x.Group)
                 .ToList();
         }
+        public List<Fundraiser> GetByGroup(int groupId)
+        {
+            return _appDbContext.Fundraisers
+                .Include(x => x.FinancialAccount)
+                .Include(x => x.Owner)
+                .Include(x => x.Group)
+                .Where(x => x.Group.Id == groupId)
+                .ToList();
+        }
 
         public void Delete(int fundraiserId)
         {

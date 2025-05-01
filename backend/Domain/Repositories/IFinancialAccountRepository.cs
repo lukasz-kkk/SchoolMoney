@@ -9,6 +9,7 @@ namespace Domain.Repositories
         bool Exists(int id);
         Fundraiser? FirstOrDefault(Func<Fundraiser, bool> predicate = null);
         string GetAccount(int fundraiserId);
+        List<Fundraiser> GetByGroup(int groupId);
         IEnumerable<Child> GetExcludedChilds(int fundraiserId);
         Group GetGroup(int fundraiserId);
         List<Fundraiser> GetList();

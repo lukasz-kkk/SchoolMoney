@@ -77,6 +77,34 @@ namespace SchoolMoney.Controllers
             }
         }
 
+        [HttpGet("group/{id}")]
+#if !DEBUG
+        [Authorize(Roles = Roles.User)]
+#endif
+        public async Task<ActionResult<IEnumerable<FundraiserResponse>>> GetyGroupId(int id)
+        {
+            try
+            {
+                var query = new GetFundraisersByGroupQuery
+                {
+                    Id = id
+                };
+
+                var result = await _mediator.Send(query);
+                return Ok(result);
+            }
+            catch (GroupNotFoundException ex)
+            {
+                return StatusCode((int)HttpStatusCode.NotFound,
+                    string.Format(Resource.ControllerNotFound, ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                    string.Format(Resource.ControllerInternalError, ex.Message));
+            }
+        }
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

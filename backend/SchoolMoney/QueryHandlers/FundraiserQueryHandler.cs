@@ -9,7 +9,8 @@ namespace SchoolMoney.QueryHandlers
 {
     public class FundraiserQueryHandler : 
         IRequestHandler<GetAllFundraisersQuery, IEnumerable<FundraiserResponse>>,
-        IRequestHandler<GetFundraiserChildsQuery, FundraiserChildsResponse>
+        IRequestHandler<GetFundraiserChildsQuery, FundraiserChildsResponse>,
+        IRequestHandler<GetFundraisersByGroupQuery, IEnumerable<FundraiserResponse>>
     {
         private readonly IFundraiserRepository _fundraiserRepository;
         private readonly IChildRepository _childRepository;
@@ -102,6 +103,32 @@ namespace SchoolMoney.QueryHandlers
                 PaidChilds = paidChilds,
                 UnpaidChilds = unpaidChilds
             });
+        }
+
+        public Task<IEnumerable<FundraiserResponse>> Handle(GetFundraisersByGroupQuery request, CancellationToken cancellationToken)
+        {
+            var fundraisers = _fundraiserRepository.GetByGroup(request.Id);
+
+            if (fundraisers == null)
+            {
+                return Task.FromResult(Enumerable.Empty<FundraiserResponse>());
+            }
+
+            var result = fundraisers.Select(x => new FundraiserResponse
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description,
+                AmountPerPerson = x.AmountPerPerson,
+                StartDate = x.StartDate,
+                EndDate = x.EndDate,
+                FinancialAccountId = x.FinancialAccount.Id,
+                OwnerId = x.Owner.Id,
+                GroupId = x.Group.Id,
+                IsBlocked = x.IsBlocked,
+            });
+
+            return Task.FromResult(result);
         }
     }
 }
