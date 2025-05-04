@@ -3,10 +3,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  
+
   .actions {
-    padding-inline: var(--space-2);
     display: flex;
+    padding-inline: var(--space-2);
     flex-direction: column;
     gap: var(--space-2);
   }
@@ -29,7 +29,7 @@
       gap: var(--space-6);
 
       .endDate, .amountPerPerson {
-        color: var(--gray-11);
+        color: var(--accent-11);
         font-size: var(--font-size-2);
       }
     }

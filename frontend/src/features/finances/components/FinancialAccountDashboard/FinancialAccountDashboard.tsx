@@ -12,7 +12,7 @@ type FinancialAccountDashboardProps = {
 export const FinancialAccountDashboard = ({ primaryAccount, transactions }: FinancialAccountDashboardProps) => {
     return (
         <Box className={styles.container}>
-            <FinancialAccountCard account={primaryAccount} />
+            <FinancialAccountCard account={{ ...primaryAccount, name: "Rachunek podstawowy" }} withActions />
             <TransactionsHistoryTable transactions={transactions} />
         </Box>
     );

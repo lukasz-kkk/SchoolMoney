@@ -8,10 +8,11 @@ import { FinancialAccount } from "@/features/finances/types/Finances";
 import { toast } from "sonner";
 
 type FinancialAccountCardProps = {
-    account: FinancialAccount;
+    account: FinancialAccount & { name: string };
+    withActions?: boolean;
 };
 
-export const FinancialAccountCard = ({ account }: FinancialAccountCardProps) => {
+export const FinancialAccountCard = ({ account, withActions }: FinancialAccountCardProps) => {
     const formattedBalance = formatMoney(account.balance);
 
     const onAccountNumberCopied = () => {
@@ -23,7 +24,7 @@ export const FinancialAccountCard = ({ account }: FinancialAccountCardProps) => 
             <Box className={styles.row}>
                 <Box className={classNames(styles.name, styles.group)}>
                     <Text className={styles.label}>Nazwa rachunku</Text>
-                    <Text className={styles.value}>Rachunek podstawowy</Text>
+                    <Text className={styles.value}>{account.name}</Text>
                 </Box>
 
                 <Box className={classNames(styles.balance, styles.group)}>
@@ -40,30 +41,40 @@ export const FinancialAccountCard = ({ account }: FinancialAccountCardProps) => 
                 </Box>
             </Box>
 
-            <Box className={styles.footer}>
-                <TransformMoneyDialog
-                    trigger={<Button color="jade">Wpłać</Button>}
-                    title="Wpłać środki"
-                    transferData={{
-                        targetAccountNumber: account.accountNumber,
-                        sourceAccountNumber: "External",
-                        name: "Zasilenie rachunku środkami",
-                    }}
-                />
+            {withActions && (
+                <Box className={styles.footer}>
+                    <TransformMoneyDialog
+                        trigger={
+                            <Button color="jade" variant="soft">
+                                Wpłać
+                            </Button>
+                        }
+                        title="Wpłać środki"
+                        transferData={{
+                            targetAccountNumber: account.accountNumber,
+                            sourceAccountNumber: "External",
+                            name: "Zasilenie rachunku środkami",
+                        }}
+                    />
 
-                <TransformMoneyDialog
-                    trigger={<Button color="crimson">Wypłać</Button>}
-                    title="Wypłać środki"
-                    restrictions={{
-                        maxAmount: moneyToFloatingPoint(account.balance),
-                    }}
-                    transferData={{
-                        sourceAccountNumber: account.accountNumber,
-                        targetAccountNumber: "External",
-                        name: "Wypłata pieniędzy z rachunku",
-                    }}
-                />
-            </Box>
+                    <TransformMoneyDialog
+                        trigger={
+                            <Button color="crimson" variant="soft">
+                                Wypłać
+                            </Button>
+                        }
+                        title="Wypłać środki"
+                        restrictions={{
+                            maxAmount: moneyToFloatingPoint(account.balance),
+                        }}
+                        transferData={{
+                            sourceAccountNumber: account.accountNumber,
+                            targetAccountNumber: "External",
+                            name: "Wypłata pieniędzy z rachunku",
+                        }}
+                    />
+                </Box>
+            )}
         </Card>
     );
 };

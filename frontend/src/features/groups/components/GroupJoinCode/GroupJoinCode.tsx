@@ -1,14 +1,17 @@
 import { toast } from "sonner";
-import { Box, Card, Code, Heading, Text } from "@radix-ui/themes";
+import { Box, Card, Code, Heading, IconButton, Text } from "@radix-ui/themes";
 import { CopyToClipboardButton } from "@/components/CopyToClipboardButton/CopyToClipboardButton";
 
 import styles from "./GroupJoinCode.module.scss";
+import { RefreshCwIcon } from "lucide-react";
 
 type GroupJoinCodeProps = {
     value: string;
+    onRefresh: () => void;
+    isRefreshing?: boolean;
 };
 
-export const GroupJoinCode = ({ value }: GroupJoinCodeProps) => {
+export const GroupJoinCode = ({ value, onRefresh, isRefreshing }: GroupJoinCodeProps) => {
     const onCopied = () => {
         toast.success("Skopiowano kod do schowka.");
     };
@@ -24,6 +27,17 @@ export const GroupJoinCode = ({ value }: GroupJoinCodeProps) => {
             <Box className={styles.codeContainer}>
                 <Code className={styles.code}>{value}</Code>
                 <CopyToClipboardButton value={value} onSuccess={onCopied} />
+
+                <IconButton
+                    className={styles.refreshButton}
+                    size="1"
+                    variant="ghost"
+                    color="gray"
+                    onClick={onRefresh}
+                    loading={isRefreshing}
+                >
+                    <RefreshCwIcon />
+                </IconButton>
             </Box>
         </Card>
     );

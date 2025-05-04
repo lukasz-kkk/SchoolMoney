@@ -1,13 +1,14 @@
-import { Box, Card, Heading, Text } from "@radix-ui/themes"; // Dodaj import Button
+import { Card, Heading, Text } from "@radix-ui/themes";
 import styles from "./ReceipsList.module.scss";
 import { useEffect, useState } from "react";
+import { FileIcon } from "lucide-react";
 
 type ReceiptsListProps = {
     files: File[];
 };
 
 interface FileWithPreview extends File {
-    preview: string; // Przechowuje URL do podglądu (generowany w useEffect)
+    preview: string;
 }
 
 export const ReceiptsList = ({ files }: ReceiptsListProps) => {
@@ -49,20 +50,20 @@ export const ReceiptsList = ({ files }: ReceiptsListProps) => {
             <Text as="p" className={styles.caption}>
                 {files && files.length > 0
                     ? "Wszystkie pliki dodane przez skarbnika zbiórki:"
-                    : "Wszystkie pliki dodane przez skarbnika zbiórki pojawią się tutaj."}
+                    : "Na ten moment skarbnik nie dodał jeszcze żadnego pliku. Gdy tylko się tak stanie, pliki pojawią się w tym miejscu."}
             </Text>
 
             {filesWithPreview.length > 0 && (
                 <ul className={styles.list}>
                     {filesWithPreview.map((file, index) => (
                         <li key={`${file.name}-${index}`} className={styles.listItem}>
-                            <img src={file.preview} alt={`Podgląd: ${file.name}`} className={styles.thumbnail} />
+                            <Card className={styles.fileCard}>
+                                <FileIcon className={styles.icon} />
 
-                            <Box className={styles.fileInfo}>
                                 <a className={styles.fileName} onClick={() => handleLocalDownload(file)}>
                                     {file.name}
                                 </a>
-                            </Box>
+                            </Card>
                         </li>
                     ))}
                 </ul>

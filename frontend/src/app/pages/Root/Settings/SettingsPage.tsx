@@ -1,4 +1,4 @@
-import { Box, Heading } from "@radix-ui/themes";
+import { Box, Card, Heading } from "@radix-ui/themes";
 import { ChangePasswordForm } from "@/features/users/components/ChangePasswordForm/ChangePasswordForm";
 import classes from "./SettingsPage.module.scss";
 import { useChangePassword } from "@/features/users/hooks/useChangePassword";
@@ -24,13 +24,15 @@ export const SettingsPage = () => {
             <Page.Header items={[{ label: "Ustawienia" }]} />
 
             <Page.Content>
-                <Heading as="h2" className={classes.sectionTitle}>
-                    Zmiana hasła
-                </Heading>
+                <Card className={classes.container}>
+                    <Heading as="h2" className={classes.sectionTitle}>
+                        Zmiana hasła
+                    </Heading>
 
-                <Box className={classes.formContainer}>
-                    <ChangePasswordForm onSubmit={handlePasswordChange} isLoading={isPending} />
-                </Box>
+                    <Box className={classes.formContainer}>
+                        <ChangePasswordForm onSubmit={handlePasswordChange} isLoading={isPending} />
+                    </Box>
+                </Card>
             </Page.Content>
         </Page.Root>
     );

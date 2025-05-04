@@ -1,7 +1,11 @@
-.sectionTitle {
-  font-size: var(--font-size-5);
-}
+.container {
+  padding: var(--space-6);
 
-.formContainer {
-  max-width: 400px;
+  .sectionTitle {
+    font-size: var(--font-size-5);
+  }
+
+  .formContainer {
+    max-width: 400px;
+  }
 }

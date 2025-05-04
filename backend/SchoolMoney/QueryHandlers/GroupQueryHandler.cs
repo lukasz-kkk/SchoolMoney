@@ -14,12 +14,16 @@ namespace SchoolMoney.QueryHandlers
                                      IRequestHandler<GetGroupJoinCodeQuery, GroupJoinCodeResponse>
     {
         private readonly IGroupRepository _groupRepository;
+        private readonly IChildRepository _childRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public GroupQueryHandler(IGroupRepository groupRepository, IHttpContextAccessor httpContextAccessor)
+        public GroupQueryHandler(IGroupRepository groupRepository,
+                                 IHttpContextAccessor httpContextAccessor,
+                                 IChildRepository childRepository)
         {
             _groupRepository = groupRepository;
             _httpContextAccessor = httpContextAccessor;
+            _childRepository = childRepository;
         }
 
         public Task<IEnumerable<GroupResponse>> Handle(GetAllGroupsQuery request, CancellationToken cancellationToken)
@@ -49,14 +53,19 @@ namespace SchoolMoney.QueryHandlers
             var loggedUserId = JwtHelper.GetUserIdFromCookies(_httpContextAccessor)
                 ?? throw new InvalidCookieException(Cookies.UserId);
 
-            var group = _groupRepository.GetList(x => x.Treasurer.Id == loggedUserId);
+            var children = _childRepository.GetList(x => x.Parent.Id == loggedUserId);
 
-            if (group == null || !group.Any())
+            var groups = _groupRepository.GetList(g =>
+                g.Treasurer.Id == loggedUserId ||
+                children.Any(c => c.IsAccepted && c.Group.Id == g.Id)
+            );
+
+            if (groups == null || !groups.Any())
             {
                 return Task.FromResult(Enumerable.Empty<GroupResponse>());
             }
 
-            var result = group.Select(x => new GroupResponse
+            var result = groups.Select(x => new GroupResponse
             {
                 Id = x.Id,
                 Name = x.Name,

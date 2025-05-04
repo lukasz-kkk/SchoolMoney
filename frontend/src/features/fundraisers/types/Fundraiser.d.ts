@@ -5,5 +5,6 @@ export type Fundraiser = {
     amountPerPerson: number;
     startDate: Date;
     endDate: Date;
-    classId: number;
+    groupId: number;
+    ownerId: number;
 };

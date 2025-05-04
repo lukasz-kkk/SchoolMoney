@@ -8,8 +8,22 @@ export const OwnChildrenTableActions = (child: BaseChild) => {
     return (
         <Box className={classes.container}>
             <Box className={classes.actions}>
-                <RemoveChildDialog child={child} trigger={<Button color="crimson">Usuń</Button>} />
-                <AddChildDialog child={child} trigger={<Button color="jade">Edytuj</Button>} />
+                <RemoveChildDialog
+                    child={child}
+                    trigger={
+                        <Button color="crimson" variant="soft">
+                            Usuń
+                        </Button>
+                    }
+                />
+                <AddChildDialog
+                    child={child}
+                    trigger={
+                        <Button color="jade" variant="soft">
+                            Edytuj
+                        </Button>
+                    }
+                />
             </Box>
         </Box>
     );

@@ -1,7 +1,7 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { Table } from "@/components/Table/components/Table";
 import { Transaction } from "@/features/finances/types/Finances";
-import { moneyToFloatingPoint } from "@/features/finances/utils/moneyUtils.ts";
+import { formatMoney } from "@/features/finances/utils/moneyUtils.ts";
 
 const columnHelper = createColumnHelper<Transaction>();
 
@@ -33,7 +33,7 @@ const columns = [
     }),
     columnHelper.accessor((row) => row.amount, {
         id: "amount",
-        cell: (info) => `${moneyToFloatingPoint(info.getValue())}zł`,
+        cell: (info) => formatMoney(info.getValue()),
         header: () => <span>Kwota transakcji</span>,
     }),
     columnHelper.accessor((row) => row.date, {

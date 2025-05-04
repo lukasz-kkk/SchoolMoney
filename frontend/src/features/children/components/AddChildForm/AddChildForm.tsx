@@ -50,7 +50,7 @@ export const AddChildForm = ({ onSubmit, isLoading, onCancel, initialValue }: Ad
                 <Button variant="soft" type="reset">
                     Anuluj
                 </Button>
-                <Button color="jade" loading={isLoading} type="submit">
+                <Button color="jade" loading={isLoading} type="submit" variant="soft">
                     Zapisz
                 </Button>
             </Box>

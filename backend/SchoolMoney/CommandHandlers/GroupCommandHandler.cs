@@ -11,7 +11,8 @@ namespace SchoolMoney.CommandHandlers
 {
     public class GroupCommandHandler : IRequestHandler<CreateGroupCommand, Unit>,
                                        IRequestHandler<UpdateGroupNameCommand, Unit>,
-                                       IRequestHandler<CreateRequestToJoinGroupCommand, Unit>
+                                       IRequestHandler<CreateRequestToJoinGroupCommand, Unit>,
+                                       IRequestHandler<RefreshGroupJoinCodeCommand, Unit>
     {
         private readonly IUserRepository _userRepository;
         private readonly IGroupRepository _groupRepository;
@@ -88,6 +89,24 @@ namespace SchoolMoney.CommandHandlers
             child.IsAccepted = false;
 
             await _childRepository.SaveChangesAsync();
+
+            return Unit.Value;
+        }
+
+        public async Task<Unit> Handle(RefreshGroupJoinCodeCommand request, CancellationToken cancellationToken)
+        {
+            var group = _groupRepository.Get(request.GroupId)
+                ?? throw new GroupNotFoundException(request.GroupId);
+
+            var loggedUserId = JwtHelper.GetUserIdFromCookies(_httpContextAccessor)
+                ?? throw new InvalidCookieException(Cookies.UserId);
+
+            if (group.Treasurer.Id != loggedUserId)
+                throw new UserIsNotTreasurerException(loggedUserId);
+
+            group.JoinCode = GroupsHelper.GenerateJoinCode();
+
+            await _groupRepository.SaveChangesAsync();
 
             return Unit.Value;
         }

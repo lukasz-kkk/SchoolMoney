@@ -1,11 +1,9 @@
-.contentWrapper {
-  display: flex;
-  gap: var(--space-4);
+.row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: var(--space-2);
   
-  .aside {
-    margin-left: auto;
-    display: grid;
-    grid-gap: var(--space-2);
-    width: 400px;
+  & > div {
+    width: 100%;
   }
 }
