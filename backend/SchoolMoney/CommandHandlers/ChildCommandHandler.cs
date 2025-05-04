@@ -22,6 +22,7 @@ namespace SchoolMoney.CommandHandlers
         private readonly IGroupRepository _groupRepository;
         private readonly ITransactionRepository _transactionRepository;
         private readonly IMediator _mediator;
+        private readonly IFundraiserRepository _fundraiserRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public ChildCommandHandler(IChildRepository childRepository,
@@ -29,6 +30,7 @@ namespace SchoolMoney.CommandHandlers
                                    IGroupRepository groupRepository,
                                    ITransactionRepository transactionRepository,
                                    IMediator mediator,
+                                   IFundraiserRepository fundraiserRepository,
                                    IHttpContextAccessor httpContextAccessor)
         {
             _childRepository = childRepository;
@@ -36,6 +38,7 @@ namespace SchoolMoney.CommandHandlers
             _groupRepository = groupRepository;
             _transactionRepository = transactionRepository;
             _mediator = mediator;
+            _fundraiserRepository = fundraiserRepository;
             _httpContextAccessor = httpContextAccessor;
         }
 
@@ -142,31 +145,33 @@ namespace SchoolMoney.CommandHandlers
             var child = _childRepository.Get(request.ChildId)
                 ?? throw new ChildNotFoundException(request.ChildId);
 
+            var parentChildAccount = _childRepository.GetAccount(request.ChildId);
+            var fundraiserAccounts = _fundraiserRepository.GetChildFundraisers(request.ChildId);
+            foreach (var fundraiserAccount in fundraiserAccounts)
+            {
+                var balance = _transactionRepository.GetBalanceForChild(fundraiserAccount.FinancialAccount.Number, child);
+
+                if (balance > 0)
+                {
+                    var command = new MakeTransactionCommand
+                    {
+                        Name = $"Przelew automatyczny za dziecko #{child.Id}",
+                        SourceAccountNumber = fundraiserAccount.FinancialAccount.Number,
+                        TargetAccountNumber = parentChildAccount,
+                        Amount = balance,
+                        TechnicalOperation = true
+                    };
+
+                    await _mediator.Send(command);
+                }
+            }
+
             var childTransactions = _transactionRepository.GetListByChild(request.ChildId);
             foreach (var transaction in childTransactions)
             {
                 transaction.Child = null;
             }
             _childRepository.Delete(child);
-
-            var fundraiserAccount = "";
-            var parentChildAccount = _childRepository.GetAccount(request.ChildId);
-            var balance = _transactionRepository.GetBalanceForChild(fundraiserAccount, child);
-
-            if (balance > 0)
-            {
-                var command = new MakeTransactionCommand
-                {
-                    Name = $"Przelew automatyczny za dziecko #{child.Id}",
-                    SourceAccountNumber = fundraiserAccount,
-                    TargetAccountNumber = parentChildAccount,
-                    Amount = balance,
-                    TechnicalOperation = true
-                };
-
-                await _mediator.Send(command);
-            }
-
             await _childRepository.SaveChangesAsync();
             await _transactionRepository.SaveChangesAsync();
 
