@@ -30,6 +30,15 @@ namespace Infrastructure
                 .ToList();
         }
 
+        public List<Transaction> GetListByChild(int childId)
+        {
+            return _appDbContext.Transactions
+                .Include(transaction => transaction.Sender)
+                .Include(transaction => transaction.Child)
+                .Where(x => x.Child.Id == childId)
+                .ToList();
+        }
+
         public int GetBalanceForChild(string account, Child child)
         {
             var onPlus = _appDbContext.Transactions.Where(x => x.Child == child && x.TargetAccountNumber == account).Sum(x => x.Amount);
