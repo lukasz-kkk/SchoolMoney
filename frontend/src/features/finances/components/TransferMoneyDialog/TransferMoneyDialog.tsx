@@ -25,11 +25,11 @@ export const TransformMoneyDialog = ({ trigger, title, transferData, restriction
     const { mutateAsync, isPending, error } = useTransferMoney();
 
     const transferMoney = async ({
-        amount,
-        name,
-        targetAccountNumber,
-        sourceAccountNumber,
-    }: TransferMoneyFormInputs) => {
+                                     amount,
+                                     name,
+                                     targetAccountNumber,
+                                     sourceAccountNumber,
+                                 }: TransferMoneyFormInputs) => {
         try {
             await mutateAsync({ amount: moneyToInteger(amount), name, targetAccountNumber, sourceAccountNumber });
             toast.success("Przelew środków został zlecony.");
