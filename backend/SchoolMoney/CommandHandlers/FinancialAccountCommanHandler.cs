@@ -56,7 +56,7 @@ namespace SchoolMoney.CommandHandlers
                 HandleWithdrawal(request, user.Account, amount, loggedUserId);
 
             else
-                HandleTransfer(request, user.Account, amount);
+                HandleTransfer(request, user.Account, amount, loggedUserId);
 
             var transaction = new Transaction
             {
@@ -116,7 +116,7 @@ namespace SchoolMoney.CommandHandlers
             sourceAccount.Balance -= amount;
         }
 
-        private void HandleTransfer(MakeTransactionCommand request, Domain.FinancialAccount userAccount, int amount)
+        private void HandleTransfer(MakeTransactionCommand request, Domain.FinancialAccount userAccount, int amount, int loggedUserId)
         {
             var sourceAccount = _financialAccountRepository.FirstOrDefault(x => x.Number == request.SourceAccountNumber)
                 ?? throw new TransactionAccountNotFoundException(request.SourceAccountNumber);
@@ -124,7 +124,12 @@ namespace SchoolMoney.CommandHandlers
             var targetAccount = _financialAccountRepository.FirstOrDefault(x => x.Number == request.TargetAccountNumber)
                 ?? throw new TransactionAccountNotFoundException(request.TargetAccountNumber);
 
-            if (sourceAccount.Id != userAccount.Id && !request.TechnicalOperation)
+            var fundraiser = _fundraiserRepository.FirstOrDefault(x => x.FinancialAccount == sourceAccount);
+
+            var isOwnerOfAccount = sourceAccount.Id == userAccount.Id;
+            var isFundraiserOwner = fundraiser != null && fundraiser.Owner.Id == loggedUserId;
+
+            if (!isOwnerOfAccount && !isFundraiserOwner && !request.TechnicalOperation)
                 throw new TransactionUnauthorizedException();
 
             if (sourceAccount.Balance < amount)
