@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { DialogBody } from "@/components/Dialog/components/DialogBody/DialogBody.tsx";
 import { DialogFooter } from "@/components/Dialog/components/DialogFooter/DialogFooter.tsx";
 import { useExcludeParticipantFromFundraiser } from "@/features/fundraisers/hooks/useExcludeParticipantFromFundraiser.ts";
+import { AxiosError } from "axios";
 
 type ExcludeFromFundraiserDialogProps = {
     trigger: ReactNode;
@@ -25,7 +26,6 @@ export const ExcludeFromFundraiserDialog = ({ trigger, fundraiserId, childId }: 
             toast.success("Wypisano dziecko ze zbiórki.");
         } catch (e) {
             console.log(e);
-            toast.error("Nie udało się wypisać dziecka ze zbiórki.");
         }
     };
 
@@ -55,8 +55,19 @@ export const ExcludeFromFundraiserDialog = ({ trigger, fundraiserId, childId }: 
                     </Box>
                 </DialogFooter>
 
-                {error && <Alert className={classes.alert}>{error.message}</Alert>}
+                {error && <Alert className={classes.alert}>{mapError(error)}</Alert>}
             </Dialog.Content>
         </Dialog.Root>
     );
+};
+
+const mapError = (error: Error) => {
+    if ((error as AxiosError<string>).response?.data.includes("The source account has not enough funds.")) {
+        return (
+            "Na koncie zbiórki nie ma wystarczających środków na zwrot wpłaty. Skontaktuj się ze skarbnikiem lub z" +
+            " administratorem."
+        );
+    }
+
+    return "Nieznany błąd. Spróbuj ponownie później.";
 };

@@ -47,8 +47,12 @@ export const AddChildDialog = ({ trigger, child, lastName }: AddChildDialogProps
                         lastName: child?.lastName ?? lastName,
                     }}
                 />
-                {error && <Alert className={classes.alert}>{error.message}</Alert>}
+                {error && <Alert className={classes.alert}>{mapError(error)}</Alert>}
             </Dialog.Content>
         </Dialog.Root>
     );
+};
+
+const mapError = (_error: Error) => {
+    return "Nieznany błąd. Spróbuj ponownie później.";
 };

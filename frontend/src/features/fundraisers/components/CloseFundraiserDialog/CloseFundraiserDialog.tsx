@@ -60,8 +60,12 @@ export const CloseFundraiserDialog = ({ trigger, fundraiserId }: CloseFundraiser
                     </Box>
                 </DialogFooter>
 
-                {error && <Alert className={classes.alert}>{error.message}</Alert>}
+                {error && <Alert className={classes.alert}>{mapError(error)}</Alert>}
             </Dialog.Content>
         </Dialog.Root>
     );
+};
+
+const mapError = (_error: Error) => {
+    return "Nieznany błąd. Spróbuj ponownie później.";
 };

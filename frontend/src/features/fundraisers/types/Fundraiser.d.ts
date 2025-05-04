@@ -9,6 +9,7 @@ export type Fundraiser = {
     endDate: Date;
     groupId: number;
     ownerId: number;
+    treasurerId?: number;
     isBlocked: boolean;
     hasStarted: boolean;
     hasFinished: boolean;

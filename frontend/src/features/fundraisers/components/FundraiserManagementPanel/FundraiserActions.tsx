@@ -19,7 +19,8 @@ export const FundraiserActions = ({ fundraiser }: FundraiserManagementActionsPro
     const { data } = useFinancialAccount();
     const { validateAccessLevel, validateUserIdentifier } = useAccessValidation();
     const isAdmin = validateAccessLevel("Admin");
-    const isTreasurer = validateUserIdentifier(fundraiser.ownerId);
+    const isAuthor = validateUserIdentifier(fundraiser.ownerId);
+    const isTreasurer = fundraiser.treasurerId && validateUserIdentifier(fundraiser.treasurerId);
 
     if (!data) {
         return <Spinner />;
@@ -66,9 +67,13 @@ export const FundraiserActions = ({ fundraiser }: FundraiserManagementActionsPro
         );
     }
 
-    if (isTreasurer && !fundraiser.isBlocked) {
-        return (
-            <Box className={styles.container}>
+    if (fundraiser.isBlocked) {
+        return null;
+    }
+
+    return (
+        <Box className={styles.container}>
+            {(isAuthor || isTreasurer) && (
                 <UpdateFundraiserDialog
                     fundraiser={fundraiser}
                     trigger={
@@ -77,7 +82,9 @@ export const FundraiserActions = ({ fundraiser }: FundraiserManagementActionsPro
                         </Button>
                     }
                 />
+            )}
 
+            {isTreasurer && (
                 <TransformMoneyDialog
                     trigger={
                         <Button size="1" variant="soft">
@@ -94,7 +101,9 @@ export const FundraiserActions = ({ fundraiser }: FundraiserManagementActionsPro
                         name: `Wypłata pieniędzy ze zbiórki #${fundraiser.id}`,
                     }}
                 />
+            )}
 
+            {(isAuthor || isTreasurer) && (
                 <CloseFundraiserDialog
                     trigger={
                         <Button size="1" color="crimson" variant="soft">
@@ -103,9 +112,7 @@ export const FundraiserActions = ({ fundraiser }: FundraiserManagementActionsPro
                     }
                     fundraiserId={fundraiser.id}
                 />
-            </Box>
-        );
-    }
-
-    return null;
+            )}
+        </Box>
+    );
 };

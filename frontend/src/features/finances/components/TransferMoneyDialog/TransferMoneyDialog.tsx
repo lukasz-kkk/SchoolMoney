@@ -9,6 +9,7 @@ import { useTransferMoney } from "@/features/finances/hooks/useTransferMoney.ts"
 import { TransferMoneyForm } from "@/features/finances/components/TransferMoneyForm/TransferMoneyForm.tsx";
 import { TransferMoneyFormInputs } from "@/features/finances/components/TransferMoneyForm/hooks/useTransferMoneyForm.ts";
 import { moneyToInteger } from "@/features/finances/utils/moneyUtils.ts";
+import { AxiosError } from "axios";
 
 type TransformMoneyDialogProps = {
     title: string;
@@ -35,7 +36,6 @@ export const TransformMoneyDialog = ({ trigger, title, transferData, restriction
             handleFormCancel();
         } catch (e) {
             console.log(e);
-            toast.error("Nie udało się zlecić przelewu środków.");
         }
     };
 
@@ -57,9 +57,16 @@ export const TransformMoneyDialog = ({ trigger, title, transferData, restriction
                     data={transferData}
                 />
 
-                {/* TODO: Display correct messages fore each error code */}
-                {error && <Alert className={classes.alert}>{error.message}</Alert>}
+                {error && <Alert className={classes.alert}>{mapError(error)}</Alert>}
             </Dialog.Content>
         </Dialog.Root>
     );
+};
+
+const mapError = (error: Error) => {
+    if ((error as AxiosError).status === 400) {
+        return "Brak wystarczających środków na koncie.";
+    }
+
+    return "Nieznany błąd. Spróbuj ponownie później.";
 };

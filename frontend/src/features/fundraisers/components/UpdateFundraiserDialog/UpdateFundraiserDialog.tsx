@@ -33,7 +33,6 @@ export const UpdateFundraiserDialog = ({ trigger, fundraiser }: UpdateFundraiser
             close();
         } catch (e) {
             console.log(e);
-            toast.error("Nie udało się zaktualizować zbiórki.");
         }
     };
 
@@ -54,8 +53,12 @@ export const UpdateFundraiserDialog = ({ trigger, fundraiser }: UpdateFundraiser
                     isLoading={isPending}
                     onCancel={close}
                 />
-                {error && <Alert className={classes.alert}>{error.message}</Alert>}
+                {error && <Alert className={classes.alert}>{mapError(error)}</Alert>}
             </Dialog.Content>
         </Dialog.Root>
     );
+};
+
+const mapError = (_error: Error) => {
+    return "Nieznany błąd. Spróbuj ponownie później.";
 };

@@ -5,6 +5,7 @@ import classNames from "classnames";
 import { formatMoney } from "@/features/finances/utils/moneyUtils.ts";
 import { CopyToClipboardButton } from "@/components/CopyToClipboardButton/CopyToClipboardButton.tsx";
 import { toast } from "sonner";
+import { useUserById } from "@/features/users/hooks/useUserById.ts";
 
 type FundraiserDetailsCardProps = {
     fundraiser: Fundraiser;
@@ -13,6 +14,9 @@ type FundraiserDetailsCardProps = {
 };
 
 export const FundraiserDetailsCard = ({ fundraiser, expectedPayments, payments }: FundraiserDetailsCardProps) => {
+    const { data: owner } = useUserById(fundraiser.ownerId);
+    const { data: treasurer } = useUserById(fundraiser.treasurerId);
+
     const onAccountNumberCopied = () => {
         toast.success("Skopiowano numer rachunku.");
     };
@@ -28,6 +32,36 @@ export const FundraiserDetailsCard = ({ fundraiser, expectedPayments, payments }
                 <Box className={classNames(styles.name, styles.group)}>
                     <Text className={styles.label}>Tytuł zbiórki</Text>
                     <Text className={styles.value}>{fundraiser.name}</Text>
+                </Box>
+            </Box>
+
+            <Box className={styles.row}>
+                {owner && (
+                    <Box className={classNames(styles.id, styles.group)}>
+                        <Text className={styles.label}>Autor zbiórki</Text>
+                        <Text className={styles.value}>
+                            {owner.firstName} {owner.lastName}
+                        </Text>
+                    </Box>
+                )}
+
+                <Box className={classNames(styles.name, styles.group)}>
+                    <Text className={styles.label}>ID autora zbiórki</Text>
+                    <Text className={styles.value}>#{fundraiser.ownerId}</Text>
+                </Box>
+
+                {treasurer && (
+                    <Box className={classNames(styles.id, styles.group)}>
+                        <Text className={styles.label}>Skarbnik zbiórki</Text>
+                        <Text className={styles.value}>
+                            {treasurer.firstName} {treasurer.lastName}
+                        </Text>
+                    </Box>
+                )}
+
+                <Box className={classNames(styles.name, styles.group)}>
+                    <Text className={styles.label}>ID skarbnika zbiórki</Text>
+                    <Text className={styles.value}>#{fundraiser.treasurerId}</Text>
                 </Box>
             </Box>
 

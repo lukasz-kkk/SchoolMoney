@@ -40,7 +40,6 @@ export const CreateFundraiserDialog = ({ trigger, groupId }: CreateFundraiserDia
             close();
         } catch (e) {
             console.log(e);
-            toast.error("Nie udało się utworzyć zbiórki.");
         }
     };
 
@@ -56,8 +55,12 @@ export const CreateFundraiserDialog = ({ trigger, groupId }: CreateFundraiserDia
                 <DialogHeader>Dodaj zbiórkę</DialogHeader>
 
                 <CreateFundraiserForm onSubmit={createFundraiser} isLoading={isPending} onCancel={close} />
-                {error && <Alert className={classes.alert}>{error.message}</Alert>}
+                {error && <Alert className={classes.alert}>{mapError(error)}</Alert>}
             </Dialog.Content>
         </Dialog.Root>
     );
+};
+
+const mapError = (_error: Error) => {
+    return "Nieznany błąd. Spróbuj ponownie później.";
 };
