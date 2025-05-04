@@ -105,9 +105,9 @@ namespace SchoolMoney.CommandHandlers
             var fundraiser = _fundraiserRepository.FirstOrDefault(x => x.FinancialAccount == sourceAccount);
 
             var isOwnerOfAccount = sourceAccount.Id == userAccount.Id;
-            var isFundraiserOwner = fundraiser != null && fundraiser.Owner.Id == loggedUserId;
+            var isGroupTreasurer = fundraiser != null && _fundraiserRepository.GetGroup(fundraiser.Id).Treasurer.Id == loggedUserId;
 
-            if (!isOwnerOfAccount && !isFundraiserOwner && !request.TechnicalOperation)
+            if (!isOwnerOfAccount && !isGroupTreasurer && !request.TechnicalOperation)
                 throw new TransactionUnauthorizedException();
 
             if (sourceAccount.Balance < amount)
@@ -127,9 +127,9 @@ namespace SchoolMoney.CommandHandlers
             var fundraiser = _fundraiserRepository.FirstOrDefault(x => x.FinancialAccount == sourceAccount);
 
             var isOwnerOfAccount = sourceAccount.Id == userAccount.Id;
-            var isFundraiserOwner = fundraiser != null && fundraiser.Owner.Id == loggedUserId;
+            var isGroupTreasurer = fundraiser != null && _fundraiserRepository.GetGroup(fundraiser.Id).Treasurer.Id == loggedUserId;
 
-            if (!isOwnerOfAccount && !isFundraiserOwner && !request.TechnicalOperation)
+            if (!isOwnerOfAccount && !isGroupTreasurer && !request.TechnicalOperation)
                 throw new TransactionUnauthorizedException();
 
             if (sourceAccount.Balance < amount)
