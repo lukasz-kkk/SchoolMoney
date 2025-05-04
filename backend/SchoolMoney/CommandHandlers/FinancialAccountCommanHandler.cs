@@ -18,19 +18,22 @@ namespace SchoolMoney.CommandHandlers
         private readonly ITransactionRepository _transactionRepository;
         private readonly IChildRepository _childRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IFundraiserRepository _fundraiserRepository;
 
         public FinancialAccountCommandHandler(
             IUserRepository userRepository,
             IFinancialAccountRepository financialAccountRepository,
             ITransactionRepository transactionRepository,
             IChildRepository childRepository,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor,
+            IFundraiserRepository fundraiserRepository)
         {
             _userRepository = userRepository;
             _financialAccountRepository = financialAccountRepository;
             _transactionRepository = transactionRepository;
             _childRepository = childRepository;
             _httpContextAccessor = httpContextAccessor;
+            _fundraiserRepository = fundraiserRepository;
         }
 
         public async Task<Unit> Handle(MakeTransactionCommand request, CancellationToken cancellationToken)
@@ -50,7 +53,7 @@ namespace SchoolMoney.CommandHandlers
                 HandleDeposit(request, amount);
 
             else if (IsWithdrawal(request))
-                HandleWithdrawal(request, user.Account, amount);
+                HandleWithdrawal(request, user.Account, amount, loggedUserId);
 
             else
                 HandleTransfer(request, user.Account, amount);
@@ -94,12 +97,17 @@ namespace SchoolMoney.CommandHandlers
             targetAccount.Balance += amount;
         }
 
-        private void HandleWithdrawal(MakeTransactionCommand request, Domain.FinancialAccount userAccount, int amount)
+        private void HandleWithdrawal(MakeTransactionCommand request, Domain.FinancialAccount userAccount, int amount, int loggedUserId)
         {
             var sourceAccount = _financialAccountRepository.FirstOrDefault(x => x.Number == request.SourceAccountNumber)
                 ?? throw new TransactionAccountNotFoundException(request.SourceAccountNumber);
 
-            if (sourceAccount.Id != userAccount.Id && !request.TechnicalOperation)
+            var fundraiser = _fundraiserRepository.FirstOrDefault(x => x.FinancialAccount == sourceAccount);
+
+            var isOwnerOfAccount = sourceAccount.Id == userAccount.Id;
+            var isFundraiserOwner = fundraiser != null && fundraiser.Owner.Id == loggedUserId;
+
+            if (!isOwnerOfAccount && !isFundraiserOwner && !request.TechnicalOperation)
                 throw new TransactionUnauthorizedException();
 
             if (sourceAccount.Balance < amount)
