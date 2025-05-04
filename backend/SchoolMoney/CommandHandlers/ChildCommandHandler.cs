@@ -15,7 +15,8 @@ namespace SchoolMoney.CommandHandlers
                                        IRequestHandler<UpdateChildGroupCommand, Unit>,
                                        IRequestHandler<DeleteChildCommand, Unit>,
                                        IRequestHandler<UpdateChildIsAcceptedCommand, Unit>,
-                                       IRequestHandler<UpdateChildCommand, Unit>
+                                       IRequestHandler<UpdateChildCommand, Unit>,
+                                       IRequestHandler<UnrollChildFromGroupCommand, Unit>
     { 
         private readonly IChildRepository _childRepository;
         private readonly IUserRepository _userRepository;
@@ -172,6 +173,43 @@ namespace SchoolMoney.CommandHandlers
                 transaction.Child = null;
             }
             _childRepository.Delete(child);
+            await _childRepository.SaveChangesAsync();
+            await _transactionRepository.SaveChangesAsync();
+
+            return Unit.Value;
+        }
+
+        public async Task<Unit> Handle(UnrollChildFromGroupCommand request, CancellationToken cancellationToken)
+        {
+            var child = _childRepository.Get(request.ChildId)
+                ?? throw new ChildNotFoundException(request.ChildId);
+
+            var group = _groupRepository.Get(request.GroupId)
+                ?? throw new GroupNotFoundException(request.GroupId);
+
+            var parentChildAccount = _childRepository.GetAccount(request.ChildId);
+            var fundraiserAccounts = _fundraiserRepository.GetChildFundraisers(request.ChildId);
+            foreach (var fundraiserAccount in fundraiserAccounts.Where(x => x.Group.Id == request.GroupId))
+            {
+                var balance = _transactionRepository.GetBalanceForChild(fundraiserAccount.FinancialAccount.Number, child);
+
+                if (balance > 0)
+                {
+                    var command = new MakeTransactionCommand
+                    {
+                        Name = $"Przelew automatyczny za dziecko #{child.Id}",
+                        SourceAccountNumber = fundraiserAccount.FinancialAccount.Number,
+                        TargetAccountNumber = parentChildAccount,
+                        Amount = balance,
+                        TechnicalOperation = true
+                    };
+
+                    await _mediator.Send(command);
+                }
+            }
+
+            child.Group = null;
+
             await _childRepository.SaveChangesAsync();
             await _transactionRepository.SaveChangesAsync();
 
