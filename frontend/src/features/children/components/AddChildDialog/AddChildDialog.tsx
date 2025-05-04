@@ -24,7 +24,7 @@ export const AddChildDialog = ({ trigger, child, lastName }: AddChildDialogProps
 
     const handleFormSubmit = async (inputs: AddChildFormInputs) => {
         await saveChild({ ...inputs, dateOfBirth: formatISODate(inputs.dateOfBirth) });
-        toast.success("Menu zapisane.");
+        toast.success("Zapisano.");
         setOpen(false);
     };
 
@@ -44,7 +44,6 @@ export const AddChildDialog = ({ trigger, child, lastName }: AddChildDialogProps
                     isLoading={isPending}
                     initialValue={{
                         ...child,
-                        dateOfBirth: child?.dateOfBirth,
                         lastName: child?.lastName ?? lastName,
                     }}
                 />

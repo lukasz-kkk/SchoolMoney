@@ -1,3 +1,5 @@
+import { FinancialAccount } from "@/features/finances/types/Finances";
+
 export type Fundraiser = {
     id: number;
     name: string;
@@ -7,4 +9,8 @@ export type Fundraiser = {
     endDate: Date;
     groupId: number;
     ownerId: number;
+    isBlocked: boolean;
+    hasStarted: boolean;
+    hasFinished: boolean;
+    account: FinancialAccount;
 };

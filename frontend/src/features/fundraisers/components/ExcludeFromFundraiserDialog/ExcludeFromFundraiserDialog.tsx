@@ -3,31 +3,29 @@ import { ReactNode, useState } from "react";
 import { DialogHeader } from "@/components/Dialog/components/DialogHeader/DialogHeader.tsx";
 import { Alert } from "@/components/Alert/Alert.tsx";
 
-import classes from "./CloseFundraiserDialog.module.scss";
+import classes from "./ExcludeFromFundraiserDialog.module.scss";
 import { toast } from "sonner";
-import { useCloseFundraiser } from "@/features/fundraisers/hooks/useCloseFundraiser.ts";
 import { DialogBody } from "@/components/Dialog/components/DialogBody/DialogBody.tsx";
 import { DialogFooter } from "@/components/Dialog/components/DialogFooter/DialogFooter.tsx";
-import { useNavigate } from "react-router-dom";
+import { useExcludeParticipantFromFundraiser } from "@/features/fundraisers/hooks/useExcludeParticipantFromFundraiser.ts";
 
-type CloseFundraiserDialogProps = {
+type ExcludeFromFundraiserDialogProps = {
     trigger: ReactNode;
     fundraiserId: number;
+    childId: number;
 };
 
-export const CloseFundraiserDialog = ({ trigger, fundraiserId }: CloseFundraiserDialogProps) => {
+export const ExcludeFromFundraiserDialog = ({ trigger, fundraiserId, childId }: ExcludeFromFundraiserDialogProps) => {
     const [open, setOpen] = useState(false);
-    const { mutateAsync, isPending, error } = useCloseFundraiser();
-    const navigate = useNavigate();
+    const { mutateAsync, isPending, error } = useExcludeParticipantFromFundraiser();
 
     const closeFundraiser = async () => {
         try {
-            await mutateAsync(fundraiserId);
-            toast.success("Zbiórka została zamknięta.");
-            navigate(-1);
+            await mutateAsync({ childId, fundraiserId });
+            toast.success("Wypisano dziecko ze zbiórki.");
         } catch (e) {
             console.log(e);
-            toast.error("Nie udało się zamknąć zbiórki.");
+            toast.error("Nie udało się wypisać dziecka ze zbiórki.");
         }
     };
 
@@ -40,13 +38,10 @@ export const CloseFundraiserDialog = ({ trigger, fundraiserId }: CloseFundraiser
             <Dialog.Trigger>{trigger}</Dialog.Trigger>
 
             <Dialog.Content maxWidth="450px">
-                <DialogHeader>Zamknij zbiórkę</DialogHeader>
+                <DialogHeader>Wypisz dziecko ze zbiórki</DialogHeader>
 
                 <DialogBody>
-                    <p>
-                        Po zamknięciu zbiórki nie będzie można jej ponownie otworzyć. Wszystkie pieniądze wpłacone na
-                        zbiórkę zostaną zwrócone.
-                    </p>
+                    <p>Po wypisaniu dziecka ze zbiórki, nie będzie można za nie opłacić składki.</p>
                 </DialogBody>
 
                 <DialogFooter>

@@ -1,5 +1,4 @@
 import { Fundraiser } from "@/features/fundraisers/types/Fundraiser";
-import { FinancialAccount } from "@/features/finances/types/Finances";
 import { useFinancialAccount } from "@/features/finances/hooks/useFinancialAccount.ts";
 import { Box, Button, Spinner } from "@radix-ui/themes";
 import { TransformMoneyDialog } from "@/features/finances/components/TransferMoneyDialog/TransferMoneyDialog.tsx";
@@ -9,13 +8,14 @@ import { CloseFundraiserDialog } from "@/features/fundraisers/components/CloseFu
 import styles from "./FundraiserManagementPanel.module.scss";
 import { SuspendFundraiserDialog } from "@/features/fundraisers/components/SuspendFundraiserDialog/SuspendFundraiserDialog.tsx";
 import { useAccessValidation } from "@/features/auth/hooks/useAccessLevel.tsx";
+import { UpdateFundraiserDialog } from "@/features/fundraisers/components/UpdateFundraiserDialog/UpdateFundraiserDialog.tsx";
+import { UnlockFundraiserDialog } from "@/features/fundraisers/components/UnlockFundraiserDialog/UnlockFundraiserDialog.tsx";
 
 type FundraiserManagementActionsProps = {
     fundraiser: Fundraiser;
-    fundraiserAccount: FinancialAccount;
 };
 
-export const FundraiserActions = ({ fundraiser, fundraiserAccount }: FundraiserManagementActionsProps) => {
+export const FundraiserActions = ({ fundraiser }: FundraiserManagementActionsProps) => {
     const { data } = useFinancialAccount();
     const { validateAccessLevel, validateUserIdentifier } = useAccessValidation();
     const isAdmin = validateAccessLevel("Admin");
@@ -32,14 +32,27 @@ export const FundraiserActions = ({ fundraiser, fundraiserAccount }: FundraiserM
                     Skontaktuj się ze skarbnikiem
                 </Button>
 
-                <SuspendFundraiserDialog
-                    trigger={
-                        <Button size="1" color="orange" variant="soft">
-                            Zawieś zbiórkę
-                        </Button>
-                    }
-                    fundraiserId={fundraiser.id}
-                />
+                {!fundraiser.isBlocked && (
+                    <SuspendFundraiserDialog
+                        trigger={
+                            <Button size="1" color="orange" variant="soft">
+                                Zawieś zbiórkę
+                            </Button>
+                        }
+                        fundraiserId={fundraiser.id}
+                    />
+                )}
+
+                {fundraiser.isBlocked && (
+                    <UnlockFundraiserDialog
+                        trigger={
+                            <Button size="1" color="jade" variant="soft">
+                                Odwieś zbiórkę
+                            </Button>
+                        }
+                        fundraiserId={fundraiser.id}
+                    />
+                )}
 
                 <CloseFundraiserDialog
                     trigger={
@@ -53,12 +66,17 @@ export const FundraiserActions = ({ fundraiser, fundraiserAccount }: FundraiserM
         );
     }
 
-    if (isTreasurer) {
+    if (isTreasurer && !fundraiser.isBlocked) {
         return (
             <Box className={styles.container}>
-                <Button size="1" color="jade" variant="soft">
-                    Edytuj informacje o zbiórce
-                </Button>
+                <UpdateFundraiserDialog
+                    fundraiser={fundraiser}
+                    trigger={
+                        <Button size="1" color="jade" variant="soft">
+                            Edytuj informacje o zbiórce
+                        </Button>
+                    }
+                />
 
                 <TransformMoneyDialog
                     trigger={
@@ -68,10 +86,10 @@ export const FundraiserActions = ({ fundraiser, fundraiserAccount }: FundraiserM
                     }
                     title="Przelej środki na własne konto"
                     restrictions={{
-                        maxAmount: moneyToFloatingPoint(fundraiserAccount.balance),
+                        maxAmount: moneyToFloatingPoint(fundraiser.account.balance),
                     }}
                     transferData={{
-                        sourceAccountNumber: fundraiserAccount.accountNumber,
+                        sourceAccountNumber: fundraiser.account.accountNumber,
                         targetAccountNumber: data.accountNumber,
                         name: `Wypłata pieniędzy ze zbiórki #${fundraiser.id}`,
                     }}

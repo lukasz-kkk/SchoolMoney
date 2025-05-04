@@ -3,31 +3,29 @@ import { ReactNode, useState } from "react";
 import { DialogHeader } from "@/components/Dialog/components/DialogHeader/DialogHeader.tsx";
 import { Alert } from "@/components/Alert/Alert.tsx";
 
-import classes from "./CloseFundraiserDialog.module.scss";
+import classes from "./UnlockFundraiserDialog.module.scss";
 import { toast } from "sonner";
-import { useCloseFundraiser } from "@/features/fundraisers/hooks/useCloseFundraiser.ts";
 import { DialogBody } from "@/components/Dialog/components/DialogBody/DialogBody.tsx";
 import { DialogFooter } from "@/components/Dialog/components/DialogFooter/DialogFooter.tsx";
-import { useNavigate } from "react-router-dom";
+import { useUnlockFundraiser } from "@/features/fundraisers/hooks/useUnlockFundraiser.ts";
 
-type CloseFundraiserDialogProps = {
+type UnlockFundraiserDialogProps = {
     trigger: ReactNode;
     fundraiserId: number;
 };
 
-export const CloseFundraiserDialog = ({ trigger, fundraiserId }: CloseFundraiserDialogProps) => {
+export const UnlockFundraiserDialog = ({ trigger, fundraiserId }: UnlockFundraiserDialogProps) => {
     const [open, setOpen] = useState(false);
-    const { mutateAsync, isPending, error } = useCloseFundraiser();
-    const navigate = useNavigate();
+    const { mutateAsync, isPending, error } = useUnlockFundraiser();
 
     const closeFundraiser = async () => {
         try {
             await mutateAsync(fundraiserId);
-            toast.success("Zbiórka została zamknięta.");
-            navigate(-1);
+            toast.success("Zbiórka została odwieszona.");
+            close();
         } catch (e) {
             console.log(e);
-            toast.error("Nie udało się zamknąć zbiórki.");
+            toast.error("Nie udało się odwiesić zbiórki.");
         }
     };
 
@@ -40,13 +38,10 @@ export const CloseFundraiserDialog = ({ trigger, fundraiserId }: CloseFundraiser
             <Dialog.Trigger>{trigger}</Dialog.Trigger>
 
             <Dialog.Content maxWidth="450px">
-                <DialogHeader>Zamknij zbiórkę</DialogHeader>
+                <DialogHeader>Odwieś zbiórkę</DialogHeader>
 
                 <DialogBody>
-                    <p>
-                        Po zamknięciu zbiórki nie będzie można jej ponownie otworzyć. Wszystkie pieniądze wpłacone na
-                        zbiórkę zostaną zwrócone.
-                    </p>
+                    <p>Po odwieszeniu zbiórki będzie można ją edytować oraz zarządzać jej rachunkiem bankowym.</p>
                 </DialogBody>
 
                 <DialogFooter>
@@ -54,7 +49,7 @@ export const CloseFundraiserDialog = ({ trigger, fundraiserId }: CloseFundraiser
                         <Button variant="soft" onClick={close}>
                             Anuluj
                         </Button>
-                        <Button color="crimson" loading={isPending} onClick={closeFundraiser} variant="soft">
+                        <Button color="jade" loading={isPending} onClick={closeFundraiser} variant="soft">
                             Potwierdź
                         </Button>
                     </Box>

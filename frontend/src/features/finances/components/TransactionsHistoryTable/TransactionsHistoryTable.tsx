@@ -49,5 +49,18 @@ type TransactionsHistoryTableProps = {
 };
 
 export const TransactionsHistoryTable = ({ transactions, isLoading }: TransactionsHistoryTableProps) => {
-    return <Table data={transactions} columns={columns} withPagination isLoading={isLoading} />;
+    return (
+        <Table
+            data={transactions}
+            columns={columns}
+            withPagination
+            isLoading={isLoading}
+            sortOptions={[
+                {
+                    id: "createdAt",
+                    desc: true,
+                },
+            ]}
+        />
+    );
 };

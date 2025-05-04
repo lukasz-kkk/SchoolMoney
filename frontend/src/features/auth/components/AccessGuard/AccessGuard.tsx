@@ -14,7 +14,7 @@ type AccessGuardProps = BaseAccessGuardProps &
               requiredAccess: AccessLevel;
           }
         | {
-              userId: number;
+              userId: number | number[];
           }
     );
 

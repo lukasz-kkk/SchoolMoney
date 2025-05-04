@@ -16,3 +16,7 @@ export type Child = BaseChild & {
     parent?: User;
     group?: Group;
 };
+
+export type FundraiserChild = Child & {
+    hasPaid: boolean;
+};

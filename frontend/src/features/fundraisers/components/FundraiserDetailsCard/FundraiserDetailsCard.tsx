@@ -4,15 +4,15 @@ import styles from "./FundraiserDetailsCard.module.scss";
 import classNames from "classnames";
 import { formatMoney } from "@/features/finances/utils/moneyUtils.ts";
 import { CopyToClipboardButton } from "@/components/CopyToClipboardButton/CopyToClipboardButton.tsx";
-import { FinancialAccount } from "@/features/finances/types/Finances";
 import { toast } from "sonner";
 
 type FundraiserDetailsCardProps = {
     fundraiser: Fundraiser;
-    account: FinancialAccount;
+    expectedPayments: number;
+    payments: number;
 };
 
-export const FundraiserDetailsCard = ({ fundraiser, account }: FundraiserDetailsCardProps) => {
+export const FundraiserDetailsCard = ({ fundraiser, expectedPayments, payments }: FundraiserDetailsCardProps) => {
     const onAccountNumberCopied = () => {
         toast.success("Skopiowano numer rachunku.");
     };
@@ -37,9 +37,16 @@ export const FundraiserDetailsCard = ({ fundraiser, account }: FundraiserDetails
                     <Text className={styles.value}>{formatMoney(fundraiser.amountPerPerson)}</Text>
                 </Box>
 
+                <Box className={classNames(styles.amountPerPerson, styles.group)}>
+                    <Text className={styles.label}>Liczba wpłat</Text>
+                    <Text className={styles.value}>
+                        {payments}/{expectedPayments}
+                    </Text>
+                </Box>
+
                 <Box className={classNames(styles.balance, styles.group)}>
                     <Text className={styles.label}>Saldo</Text>
-                    <Text className={styles.value}>{formatMoney(account.balance)}</Text>
+                    <Text className={styles.value}>{formatMoney(fundraiser.account.balance)}</Text>
                 </Box>
 
                 <Box className={classNames(styles.date, styles.group)}>
@@ -57,8 +64,11 @@ export const FundraiserDetailsCard = ({ fundraiser, account }: FundraiserDetails
                 <Box className={classNames(styles.number, styles.group)}>
                     <Text className={styles.label}>Numer rachunku</Text>
                     <Box className={styles.valueWrapper}>
-                        <Text className={styles.value}>{account.accountNumber}</Text>
-                        <CopyToClipboardButton value={account.accountNumber} onSuccess={onAccountNumberCopied} />
+                        <Text className={styles.value}>{fundraiser.account.accountNumber}</Text>
+                        <CopyToClipboardButton
+                            value={fundraiser.account.accountNumber}
+                            onSuccess={onAccountNumberCopied}
+                        />
                     </Box>
                 </Box>
             </Box>
