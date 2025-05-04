@@ -98,7 +98,7 @@ export const FundraiserActions = ({ fundraiser }: FundraiserManagementActionsPro
                     transferData={{
                         sourceAccountNumber: fundraiser.account.accountNumber,
                         targetAccountNumber: data.accountNumber,
-                        name: `Wypłata pieniędzy ze zbiórki #${fundraiser.id}`,
+                        name: `Wypłata pieniędzy ze zbiórki ${fundraiser.id}`,
                     }}
                 />
             )}

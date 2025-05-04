@@ -2,26 +2,26 @@ import { Dialog, Button, Strong } from "@radix-ui/themes";
 import { DialogBody } from "@/components/Dialog/components/DialogBody/DialogBody";
 import { ReactNode, useState } from "react";
 import { Alert } from "@/components/Alert/Alert";
-import classes from "./RemoveChildDialog.module.scss";
+import classes from "./WithdrawChildDialog.module.scss";
 import { toast } from "sonner";
 import { BaseChild } from "@/features/children/types/Child";
-import { useRemoveChild } from "@/features/children/hooks/useRemoveChild";
 import { DialogFooter } from "@/components/Dialog/components/DialogFooter/DialogFooter";
 import { DialogHeader } from "@/components/Dialog/components/DialogHeader/DialogHeader";
 import { AxiosError } from "axios";
+import { useWithdrawChild } from "@/features/children/hooks/useWithdrawChild.ts";
 
-type RemoveChildDialogProps = {
+type WithdrawChildDialogProps = {
     child: BaseChild;
     trigger: ReactNode;
 };
 
-export const RemoveChildDialog = ({ child, trigger }: RemoveChildDialogProps) => {
+export const WithdrawChildDialog = ({ child, trigger }: WithdrawChildDialogProps) => {
     const [open, setOpen] = useState(false);
-    const { mutateAsync: removeChild, isPending, error } = useRemoveChild();
+    const { mutateAsync: removeChild, isPending, error } = useWithdrawChild();
 
-    const handleDelete = async () => {
+    const handleWithdraw = async () => {
         await removeChild(child.id);
-        toast.success("Dziecko zostało usunięte.");
+        toast.success("Dziecko zostało wypisane z klasy.");
         setOpen(false);
     };
 
@@ -30,22 +30,23 @@ export const RemoveChildDialog = ({ child, trigger }: RemoveChildDialogProps) =>
             <Dialog.Trigger>{trigger}</Dialog.Trigger>
 
             <Dialog.Content maxWidth="450px">
-                <DialogHeader>Usuń dziecko</DialogHeader>
+                <DialogHeader>Wypisz dziecko</DialogHeader>
                 <DialogBody>
-                    Czy na pewno chcesz usunąć dziecko{" "}
+                    Czy na pewno chcesz wypisać dziecko{" "}
                     {
                         <Strong>
                             {child.firstName} {child.lastName}
                         </Strong>
-                    }
-                    ?
+                    }{" "}
+                    z klasy? Wszystkie wpłaty na dotychczasowe zbiórki zostaną automatycznie zwrócone w miarę
+                    możliwości.
                 </DialogBody>
                 <DialogFooter>
                     <Dialog.Close>
                         <Button variant="soft">Anuluj</Button>
                     </Dialog.Close>
-                    <Button color="crimson" loading={isPending} onClick={handleDelete} variant="soft">
-                        Usuń
+                    <Button color="crimson" loading={isPending} onClick={handleWithdraw} variant="soft">
+                        Wypisz
                     </Button>
                 </DialogFooter>
                 {error && <Alert className={classes.alert}>{mapError(error)}</Alert>}

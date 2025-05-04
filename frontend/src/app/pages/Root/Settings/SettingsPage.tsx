@@ -5,8 +5,9 @@ import { useChangePassword } from "@/features/users/hooks/useChangePassword";
 import { ChangePasswordFormInputs } from "@/features/users/components/ChangePasswordForm/hooks/useChangePasswordForm";
 import { toast } from "sonner";
 import { Page } from "@/components/Page/Page";
+import { onlyAsAuthenticated } from "@/features/auth/hoc/withAuthorization.tsx";
 
-export const SettingsPage = () => {
+const BaseSettingsPage = () => {
     const { mutateAsync: changePassword, isPending } = useChangePassword();
 
     const handlePasswordChange = async (inputs: ChangePasswordFormInputs, clearForm: () => void) => {
@@ -37,3 +38,5 @@ export const SettingsPage = () => {
         </Page.Root>
     );
 };
+
+export const SettingsPage = onlyAsAuthenticated(BaseSettingsPage);

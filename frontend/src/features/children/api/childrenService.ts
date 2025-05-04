@@ -51,6 +51,11 @@ export class ChildrenService {
         await requestClient.delete(`/Child/${id}/`);
     }
 
+    public static async withdraw(id: number): Promise<void> {
+        // TODO: Endpoint
+        await requestClient.delete(`/Child/${id}/`);
+    }
+
     public static async getOwn(): Promise<BaseChild[]> {
         const { data } = await requestClient.get<ChildDto[]>("/Child/ByLoggedUser");
         return data.map(ChildrenService.mapDtoToChild);
