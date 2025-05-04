@@ -73,6 +73,7 @@ namespace Infrastructure
                 .Include(x => x.Group)
                 .ToList();
         }
+
         public List<Fundraiser> GetByGroup(int groupId)
         {
             return _appDbContext.Fundraisers
@@ -91,6 +92,16 @@ namespace Infrastructure
 
             _appDbContext.FinancialAccounts.Remove(fundraiser!.FinancialAccount);
             _appDbContext.Fundraisers.Remove(fundraiser);
+        }
+
+        public List<Fundraiser> GetChildFundraisers(int childId)
+        {
+            var child = _appDbContext.Children.Include(x => x.Group).First(x => x.Id == childId);
+
+            return _appDbContext.Fundraisers
+                .Include(x => x.FinancialAccount)
+                .Where(x => x.Group == child.Group)
+                .ToList();
         }
     }
 }
