@@ -12,7 +12,13 @@ const BaseGroupsPage = () => {
     return (
         <Page.Root>
             <Page.Header items={[{ label: "Klasy" }]}>
-                <CreateGroupDialog trigger={<Button color="jade">Dodaj klasę</Button>} />
+                <CreateGroupDialog
+                    trigger={
+                        <Button color="jade" variant="soft">
+                            Dodaj klasę
+                        </Button>
+                    }
+                />
             </Page.Header>
 
             <Page.Content>

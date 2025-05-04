@@ -4,6 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 export enum QueryKey {
     Users,
     Groups,
+    GroupJoinCode,
     Fundraisers,
     FinancialAccount,
     Transaction,

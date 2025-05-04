@@ -5,14 +5,12 @@ import { Input } from "@/components/Input/Input";
 import {
     CreateFundraiserFormInputs,
     FUNDRAISER_AMOUNT_PER_PERSON_HELP,
-    FUNDRAISER_CLASS_HELP,
     FUNDRAISER_DESCRIPTION_HELP,
     FUNDRAISER_END_DATE_HELP,
     FUNDRAISER_NAME_HELP,
     FUNDRAISER_START_DATE_HELP,
     useCreateFundraiserForm,
 } from "@/features/fundraisers/components/CreateFundraiserForm/hooks/useCreateFundraiserForm.ts";
-import { Select } from "@/components/Select/Select.tsx";
 
 type CreateFundraiserFormProps = {
     onSubmit: (inputs: CreateFundraiserFormInputs) => void;
@@ -68,28 +66,11 @@ export const CreateFundraiserForm = ({ onSubmit, isLoading, onCancel }: CreateFu
                 help={FUNDRAISER_DESCRIPTION_HELP}
             />
 
-            <Select
-                {...register("classId")}
-                label="Klasa przypisana do zbiórki"
-                options={[
-                    {
-                        value: 1,
-                        label: "Mock class",
-                    },
-                    {
-                        value: 2,
-                        label: "TODO class",
-                    },
-                ]}
-                error={formState.errors?.classId?.message}
-                help={FUNDRAISER_CLASS_HELP}
-            />
-
             <Box className={classes.actions}>
                 <Button variant="soft" type="reset">
                     Anuluj
                 </Button>
-                <Button color="jade" loading={isLoading} type="submit">
+                <Button color="jade" loading={isLoading} type="submit" variant="soft">
                     Utwórz
                 </Button>
             </Box>

@@ -11,15 +11,29 @@ import { CreateFundraiserForm } from "@/features/fundraisers/components/CreateFu
 
 type CreateFundraiserDialogProps = {
     trigger: ReactNode;
+    groupId: number;
 };
 
-export const CreateFundraiserDialog = ({ trigger }: CreateFundraiserDialogProps) => {
+export const CreateFundraiserDialog = ({ trigger, groupId }: CreateFundraiserDialogProps) => {
     const [open, setOpen] = useState(false);
     const { mutateAsync, isPending, error } = useCreateFundraiser();
 
-    const createFundraiser = async ({ name }: CreateFundraiserFormInputs) => {
+    const createFundraiser = async ({
+        name,
+        description,
+        endDate,
+        startDate,
+        amountPerPerson,
+    }: CreateFundraiserFormInputs) => {
         try {
-            await mutateAsync({ name });
+            await mutateAsync({
+                name,
+                description,
+                endDate: endDate.toISOString(),
+                startDate: startDate.toISOString(),
+                amountPerPerson,
+                groupId,
+            });
             toast.success("Zbiórka została utworzona.");
         } catch (e) {
             console.log(e);

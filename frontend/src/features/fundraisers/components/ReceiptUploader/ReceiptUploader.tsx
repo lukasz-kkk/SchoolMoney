@@ -21,11 +21,11 @@ export const ReceiptUploader = ({ onUpload }: ReceiptUploaderProps) => {
 
             <FileUploader
                 name="file"
-                className={styles.dropZone}
+                classes={styles.dropZone}
                 handleChange={onUpload}
                 types={SUPPORTED_FILES}
                 label="Max. rozmiar pliku to 2MB."
-                uploadedLabel="Plik został dodany."
+                uploadedLabel="Plik został dodany, możesz dodać kolejny."
                 maxSize={MAX_FILE_SIZE_IN_MB}
             />
         </Card>

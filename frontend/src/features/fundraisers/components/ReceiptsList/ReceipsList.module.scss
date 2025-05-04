@@ -3,7 +3,6 @@
   padding: var(--space-4);
   flex-direction: column;
   gap: var(--space-2);
-  width: fit-content;
   
   .caption { 
     font-size: var(--font-size-2);
@@ -11,25 +10,35 @@
   }
   
   .list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
+    display: grid;
+    grid-template-columns: repeat(6, minmax(100px, 1fr));
+    grid-gap: var(--space-4);
+    list-style: none;
+    padding: 0;
     
     .listItem {
       display: flex;
       align-items: center;
       gap: var(--space-4);
       
-      .thumbnail {
-        max-width: 100px;
-      }
-      
-      .fileInfo {
+      .fileCard {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        gap: var(--space-1);
+        
+        .icon {
+          width: 50px;
+          height: 50px;
+          padding: var(--space-2);
+        }
+        
         .fileName {
           color: var(--accent-11);
           font-size: var(--font-size-2);
+          text-align: center;
           cursor: pointer;
-          
+
           &:hover {
             text-decoration: underline;
           }

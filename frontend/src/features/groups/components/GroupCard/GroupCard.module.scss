@@ -10,7 +10,11 @@
 
   &:hover {
     transform: scale(1.02);
-    background: var(--accent-4);
+    background: var(--accent-1);
+    
+    &:active {
+      transform: scale(0.98);
+    }
   }
 
   .name {
@@ -21,7 +25,6 @@
 
   .treasurer {
     font-size: var(--font-size-2);
-    color: var(--gray-12);
     text-align: center;
   }
 

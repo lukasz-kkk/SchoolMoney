@@ -43,7 +43,7 @@ export const RemoveChildDialog = ({ child, trigger }: RemoveChildDialogProps) =>
                     <Dialog.Close>
                         <Button variant="soft">Anuluj</Button>
                     </Dialog.Close>
-                    <Button color="crimson" loading={isPending} onClick={handleDelete}>
+                    <Button color="crimson" loading={isPending} onClick={handleDelete} variant="soft">
                         Usuń
                     </Button>
                 </DialogFooter>

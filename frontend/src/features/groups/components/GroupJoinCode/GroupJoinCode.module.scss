@@ -8,7 +8,6 @@
 
   .caption {
     font-size: var(--font-size-2);
-    color: var(--gray-12);
   }
 
   .codeContainer {
@@ -19,6 +18,10 @@
     .code {
       font-size: var(--font-size-6);
       font-weight: var(--font-weight-bold);
+    }
+    
+    .refreshButton {
+      margin-left: var(--space-1);
     }
   }
 }

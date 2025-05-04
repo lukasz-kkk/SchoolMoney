@@ -5,7 +5,7 @@ import { AccessLevel } from "@/features/auth/types/Authorization";
 export const useAccessValidation = () => {
     const { user } = useUser();
 
-    const validate = useCallback(
+    const validateAccessLevel = useCallback(
         (requiredAccessLevel: AccessLevel) => {
             switch (requiredAccessLevel) {
                 case "unauthenticated":
@@ -21,5 +21,7 @@ export const useAccessValidation = () => {
         [user]
     );
 
-    return { validate };
+    const validateUserIdentifier = useCallback((id: number) => user?.id === id, [user]);
+
+    return { validateAccessLevel, validateUserIdentifier };
 };
