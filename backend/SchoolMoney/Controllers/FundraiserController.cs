@@ -151,6 +151,34 @@ namespace SchoolMoney.Controllers
             }
         }
 
+        [HttpPost("{id:int}/UploadFile")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+#if !DEBUG
+[Authorize(Roles = Roles.User)]
+#endif
+        public async Task<IActionResult> UploadDocument(int id, string description, IFormFile file)
+        {
+            try
+            {
+                var command = new UploadFileCommand
+                {
+                    FundraiserId = id,
+                    File = file,
+                    Description = description
+                };
+
+                await _mediator.Send(command);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                    string.Format(Resource.ControllerInternalError, ex.Message));
+            }
+        }
+
 
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
