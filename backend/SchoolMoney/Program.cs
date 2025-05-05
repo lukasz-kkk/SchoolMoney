@@ -4,6 +4,11 @@ using System.Reflection;
 using Infrastructure.Extensions;
 using FluentValidation.AspNetCore;
 
+var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "fundraiser-files");
+
+if (!Directory.Exists(uploadsFolder))
+    Directory.CreateDirectory(uploadsFolder);
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
