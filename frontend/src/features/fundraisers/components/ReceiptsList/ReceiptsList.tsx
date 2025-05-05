@@ -1,68 +1,67 @@
-import { Card, Heading, Text } from "@radix-ui/themes";
+import { Card, Heading, IconButton, Text } from "@radix-ui/themes";
 import styles from "./ReceipsList.module.scss";
-import { useEffect, useState } from "react";
-import { FileIcon } from "lucide-react";
+import { DownloadIcon, FileIcon, TrashIcon } from "lucide-react";
+import { FileMetadata } from "@/features/fundraisers/types/File";
+import { FilesService } from "@/features/fundraisers/api/filesService.ts";
+import { AccessGuard } from "@/features/auth/components/AccessGuard/AccessGuard.tsx";
+import { useDeleteFile } from "@/features/fundraisers/hooks/useDeleteFile.ts";
+import { toast } from "sonner";
 
 type ReceiptsListProps = {
-    files: File[];
+    filesMetadata: FileMetadata[];
+    ownerId: number;
 };
 
-interface FileWithPreview extends File {
-    preview: string;
-}
+export const ReceiptsList = ({ filesMetadata, ownerId }: ReceiptsListProps) => {
+    const { mutateAsync: deleteFile } = useDeleteFile();
 
-export const ReceiptsList = ({ files }: ReceiptsListProps) => {
-    const [filesWithPreview, setFilesWithPreview] = useState<FileWithPreview[]>([]);
+    const handleDownload = async (filename: string) => {
+        await FilesService.downloadFile(filename);
+    };
 
-    useEffect(() => {
-        const newFilesWithPreview = files.map((file) =>
-            Object.assign(file, {
-                preview: URL.createObjectURL(file),
-            })
-        );
-        setFilesWithPreview(newFilesWithPreview);
-
-        return () => {
-            newFilesWithPreview.forEach((file) => URL.revokeObjectURL(file.preview));
-        };
-    }, [files]);
-
-    const handleLocalDownload = (file: File) => {
-        if (!file) {
-            return;
-        }
-
-        const objectUrl = URL.createObjectURL(file);
-
-        const link = document.createElement("a");
-        link.href = objectUrl;
-        link.download = file.name;
-        document.body.appendChild(link);
-
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(objectUrl);
+    const handleDelete = async (filename: string) => {
+        await deleteFile(filename);
+        toast.success("Usunięto plik.");
     };
 
     return (
         <Card className={styles.container}>
             <Heading as="h3">Pliki</Heading>
             <Text as="p" className={styles.caption}>
-                {files && files.length > 0
+                {filesMetadata && filesMetadata.length > 0
                     ? "Wszystkie pliki dodane przez skarbnika zbiórki:"
                     : "Na ten moment skarbnik nie dodał jeszcze żadnego pliku. Gdy tylko się tak stanie, pliki pojawią się w tym miejscu."}
             </Text>
 
-            {filesWithPreview.length > 0 && (
+            {filesMetadata.length > 0 && (
                 <ul className={styles.list}>
-                    {filesWithPreview.map((file, index) => (
-                        <li key={`${file.name}-${index}`} className={styles.listItem}>
+                    {filesMetadata.map((file, index) => (
+                        <li key={`${file.filename}-${index}`} className={styles.listItem}>
                             <Card className={styles.fileCard}>
                                 <FileIcon className={styles.icon} />
 
-                                <a className={styles.fileName} onClick={() => handleLocalDownload(file)}>
-                                    {file.name}
-                                </a>
+                                <div className={styles.fileMetadata}>
+                                    <a className={styles.fileName} onClick={() => handleDownload(file.filename)}>
+                                        {file.filename}
+                                    </a>
+                                    <p className={styles.fileDescription}>{file.description}</p>
+                                </div>
+
+                                <div className={styles.actions}>
+                                    <IconButton variant="soft" onClick={() => handleDownload(file.filename)}>
+                                        <DownloadIcon />
+                                    </IconButton>
+
+                                    <AccessGuard userId={ownerId}>
+                                        <IconButton
+                                            variant="soft"
+                                            color="crimson"
+                                            onClick={() => handleDelete(file.filename)}
+                                        >
+                                            <TrashIcon />
+                                        </IconButton>
+                                    </AccessGuard>
+                                </div>
                             </Card>
                         </li>
                     ))}
