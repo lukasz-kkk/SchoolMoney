@@ -14,7 +14,8 @@ namespace SchoolMoney.CommandHandlers
         IRequestHandler<ExcludeChildCommand, Unit>,
         IRequestHandler<SwitchBlockFundraiserCommand, Unit>,
         IRequestHandler<DeleteFundraiserCommand, Unit>,
-        IRequestHandler<UpdateFundraiserCommand, Unit>
+        IRequestHandler<UpdateFundraiserCommand, Unit>,
+        IRequestHandler<UploadFileCommand, Unit>
     {
         private readonly IUserRepository _userRepository;
         private readonly IFundraiserRepository _fundraiserRepository;
@@ -24,6 +25,7 @@ namespace SchoolMoney.CommandHandlers
         private readonly IGroupRepository _groupRepository;
         private readonly IMediator _mediator;
         private readonly IChildRepository _childRepository;
+        private readonly IFileRepository _fileRepository;
 
         public FundraiserCommandHandler(
             IUserRepository userRepository,
@@ -33,7 +35,8 @@ namespace SchoolMoney.CommandHandlers
             ITransactionRepository transactionRepository,
             IGroupRepository groupRepository,
             IMediator mediator,
-            IChildRepository childRepository)
+            IChildRepository childRepository,
+            IFileRepository fileRepository)
         {
             _userRepository = userRepository;
             _fundraiserRepository = FundraiserRepository;
@@ -43,6 +46,7 @@ namespace SchoolMoney.CommandHandlers
             _groupRepository = groupRepository;
             _mediator = mediator;
             _childRepository = childRepository;
+            _fileRepository = fileRepository;
         }
 
         public async Task<Unit> Handle(CreateFundraiserCommand request, CancellationToken cancellationToken)
@@ -160,6 +164,34 @@ namespace SchoolMoney.CommandHandlers
             
             _fundraiserRepository.Delete(fundraiser.Id);
             await _fundraiserRepository.SaveChangesAsync();
+            return Unit.Value;
+        }
+
+        public async Task<Unit> Handle(UploadFileCommand request, CancellationToken cancellationToken)
+        {
+            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "fundraiser-files");
+
+            if (!Directory.Exists(uploadsFolder))
+                Directory.CreateDirectory(uploadsFolder);
+
+            var uniqueFileName = $"{Guid.NewGuid()}_{Path.GetFileName(request.File.FileName)}";
+            var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await request.File.CopyToAsync(stream);
+            }
+
+            var file = new File
+            {
+                Description = request.Description,
+                FileName = uniqueFileName,
+                Fundraiser = _fundraiserRepository.Get(request.FundraiserId)
+            };
+
+            _fileRepository.Add(file);
+            await _fileRepository.SaveChangesAsync();
+
             return Unit.Value;
         }
     }
