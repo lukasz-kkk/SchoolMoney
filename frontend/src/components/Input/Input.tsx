@@ -1,4 +1,4 @@
-import { forwardRef, Ref, useState } from "react";
+import { ChangeEventHandler, forwardRef, Ref, useState } from "react";
 
 import classes from "./Input.module.scss";
 import { Box, TextArea, Text, TextField } from "@radix-ui/themes";
@@ -13,6 +13,7 @@ interface InputProps {
     disabled?: boolean;
     max?: number | string;
     min?: number | string;
+    onChange?: ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement>;
 }
 
 export const Input = forwardRef<HTMLInputElement | HTMLTextAreaElement, InputProps>(

@@ -9,6 +9,7 @@ export enum QueryKey {
     FinancialAccount,
     Transaction,
     Children,
+    Files,
 }
 
 export const useInvalidateQuery = () => {

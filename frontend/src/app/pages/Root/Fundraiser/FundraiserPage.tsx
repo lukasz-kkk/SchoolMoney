@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 import { Spinner } from "@radix-ui/themes";
 import { ReceiptUploader } from "@/features/fundraisers/components/ReceiptUploader/ReceiptUploader.tsx";
 import { ReceiptsList } from "@/features/fundraisers/components/ReceiptsList/ReceiptsList.tsx";
-import { useState } from "react";
 
 import { TransactionsHistoryTable } from "@/features/finances/components/TransactionsHistoryTable/TransactionsHistoryTable.tsx";
 
@@ -17,6 +16,9 @@ import { AccessGuard } from "@/features/auth/components/AccessGuard/AccessGuard.
 import { useGetChildrenByFundraiser } from "@/features/children/hooks/useGetChildrenByFundraiser.ts";
 import { Alert } from "@/components/Alert/Alert.tsx";
 import { useTransactionsHistory } from "@/features/finances/hooks/useTransactionsHistory.ts";
+import { useFundraiserFiles } from "@/features/fundraisers/hooks/useFundraiserFiles.ts";
+import { useState } from "react";
+import { UploadFileDialog } from "@/features/fundraisers/components/UploadFileDialog/UploadFileDialog.tsx";
 
 const BaseFundraiserPage = () => {
     const params = useParams<{ id: string }>();
@@ -25,14 +27,20 @@ const BaseFundraiserPage = () => {
     const { data: fundraiser } = useFundraiser(fundraiserId);
     const { data: transactionHistory } = useTransactionsHistory({ accountNumber: fundraiser?.account?.accountNumber });
     const { data: children } = useGetChildrenByFundraiser(fundraiserId);
+    const { data: filesMetadata } = useFundraiserFiles(fundraiserId);
+
     const acceptedChildren = (children ?? []).filter((child) => child.isAccepted);
-    const expectedPayments = acceptedChildren.length;
     const payments = acceptedChildren.filter((child) => child.hasPaid).length;
+    const expectedPayments = acceptedChildren.length;
 
-    const [files, setFiles] = useState<File[]>([]);
+    const [file, setFile] = useState<File | null>(null);
 
-    const onUploadFile = (file: File) => {
-        setFiles((prev) => [...prev, file]);
+    const onUploadFile = async (file: File) => {
+        if (!fundraiserId) {
+            return;
+        }
+
+        setFile(file);
     };
 
     const breadcrumbItems = [
@@ -80,7 +88,7 @@ const BaseFundraiserPage = () => {
                     <AccessGuard userId={fundraiser.ownerId}>
                         <ReceiptUploader onUpload={onUploadFile} />
                     </AccessGuard>
-                    <ReceiptsList files={files} />
+                    <ReceiptsList filesMetadata={filesMetadata ?? []} ownerId={fundraiser.treasurerId ?? 0} />
                 </Section>
 
                 <Section title="Lista dzieci">
@@ -91,6 +99,8 @@ const BaseFundraiserPage = () => {
                     <TransactionsHistoryTable transactions={transactionHistory ?? []} />
                 </Section>
             </Page.Content>
+
+            <UploadFileDialog isOpen={!!file} onClose={() => setFile(null)} file={file} fundraiserId={fundraiser.id} />
         </Page.Root>
     );
 };
