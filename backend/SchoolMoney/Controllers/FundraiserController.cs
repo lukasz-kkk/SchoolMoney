@@ -78,6 +78,34 @@ namespace SchoolMoney.Controllers
             }
         }
 
+        [HttpGet("DownloadFile/{fileName}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+#if !DEBUG
+[Authorize(Roles = Roles.User)]
+#endif
+        public IActionResult DownloadFile(string fileName)
+        {
+            try
+            {
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "fundraiser-files");
+                var filePath = Path.Combine(uploadsFolder, fileName);
+
+                if (!System.IO.File.Exists(filePath))
+                    return NotFound("File not found.");
+
+                var contentType = "application/octet-stream";
+                var bytes = System.IO.File.ReadAllBytes(filePath);
+                return File(bytes, contentType, fileName);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                    string.Format(Resource.ControllerInternalError, ex.Message));
+            }
+        }
+
         [HttpGet("{id}/childs")]
 #if !DEBUG
         [Authorize(Roles = Roles.User)]
