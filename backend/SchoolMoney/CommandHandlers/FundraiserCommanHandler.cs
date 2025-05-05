@@ -198,6 +198,14 @@ namespace SchoolMoney.CommandHandlers
             var file = _fileRepository.FirstOrDefault(x => x.FileName == request.FileName)
                 ?? throw new FileNotFoundException();
 
+            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "fundraiser-files");
+            var filePath = Path.Combine(uploadsFolder, request.FileName);
+
+            if (!System.IO.File.Exists(filePath))
+                throw new FileNotFoundException();
+
+            System.IO.File.Delete(filePath);
+
             _fileRepository.Delete(file);
             await _fileRepository.SaveChangesAsync();
 
