@@ -61,6 +61,15 @@ namespace Domain.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Child with id {0} doesn&apos;t belong to fundraiser with id {1}..
+        /// </summary>
+        internal static string ChildDoesntBelongToFundraiser {
+            get {
+                return ResourceManager.GetString("ChildDoesntBelongToFundraiser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Activity with ID {0} not found..
         /// </summary>
         internal static string ExceptionActivityNotFound {
@@ -93,6 +102,15 @@ namespace Domain.Properties {
         internal static string ExceptionChildNotFound {
             get {
                 return ResourceManager.GetString("ExceptionChildNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fundraiser with ID {0} not found..
+        /// </summary>
+        internal static string ExceptionFundraiserNotFound {
+            get {
+                return ResourceManager.GetString("ExceptionFundraiserNotFound", resourceCulture);
             }
         }
         
@@ -273,6 +291,15 @@ namespace Domain.Properties {
         internal static string ExceptionUserPasswordNotMatch {
             get {
                 return ResourceManager.GetString("ExceptionUserPasswordNotMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fundraiser with name {0} already exists..
+        /// </summary>
+        internal static string FundraiserNameAlreadyExists {
+            get {
+                return ResourceManager.GetString("FundraiserNameAlreadyExists", resourceCulture);
             }
         }
     }

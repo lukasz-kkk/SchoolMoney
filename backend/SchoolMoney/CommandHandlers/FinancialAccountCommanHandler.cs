@@ -7,6 +7,7 @@ using SchoolMoney.Commands;
 using SchoolMoney.Constants;
 using SchoolMoney.Exceptions;
 using SchoolMoney.Utils;
+using System.Text.RegularExpressions;
 
 namespace SchoolMoney.CommandHandlers
 {
@@ -15,18 +16,24 @@ namespace SchoolMoney.CommandHandlers
         private readonly IUserRepository _userRepository;
         private readonly IFinancialAccountRepository _financialAccountRepository;
         private readonly ITransactionRepository _transactionRepository;
+        private readonly IChildRepository _childRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IFundraiserRepository _fundraiserRepository;
 
         public FinancialAccountCommandHandler(
             IUserRepository userRepository,
             IFinancialAccountRepository financialAccountRepository,
             ITransactionRepository transactionRepository,
-            IHttpContextAccessor httpContextAccessor)
+            IChildRepository childRepository,
+            IHttpContextAccessor httpContextAccessor,
+            IFundraiserRepository fundraiserRepository)
         {
             _userRepository = userRepository;
             _financialAccountRepository = financialAccountRepository;
             _transactionRepository = transactionRepository;
+            _childRepository = childRepository;
             _httpContextAccessor = httpContextAccessor;
+            _fundraiserRepository = fundraiserRepository;
         }
 
         public async Task<Unit> Handle(MakeTransactionCommand request, CancellationToken cancellationToken)
@@ -46,10 +53,10 @@ namespace SchoolMoney.CommandHandlers
                 HandleDeposit(request, amount);
 
             else if (IsWithdrawal(request))
-                HandleWithdrawal(request, user.Account, amount);
+                HandleWithdrawal(request, user.Account, amount, loggedUserId);
 
             else
-                HandleTransfer(request, user.Account, amount);
+                HandleTransfer(request, user.Account, amount, loggedUserId);
 
             var transaction = new Transaction
             {
@@ -60,6 +67,14 @@ namespace SchoolMoney.CommandHandlers
                 Date = DateTime.UtcNow,
                 Sender = user
             };
+
+            var match = Regex.Match(request.Name, "#(?<childId>\\d+)");
+            if (match.Success)
+            {
+                var childId = match.Groups["childId"].Value;
+                var child = _childRepository.Get(int.Parse(childId));
+                transaction.Child = child;
+            }
 
             _transactionRepository.Add(transaction);
 
@@ -82,12 +97,17 @@ namespace SchoolMoney.CommandHandlers
             targetAccount.Balance += amount;
         }
 
-        private void HandleWithdrawal(MakeTransactionCommand request, Domain.FinancialAccount userAccount, int amount)
+        private void HandleWithdrawal(MakeTransactionCommand request, Domain.FinancialAccount userAccount, int amount, int loggedUserId)
         {
             var sourceAccount = _financialAccountRepository.FirstOrDefault(x => x.Number == request.SourceAccountNumber)
                 ?? throw new TransactionAccountNotFoundException(request.SourceAccountNumber);
 
-            if (sourceAccount.Id != userAccount.Id)
+            var fundraiser = _fundraiserRepository.FirstOrDefault(x => x.FinancialAccount == sourceAccount);
+
+            var isOwnerOfAccount = sourceAccount.Id == userAccount.Id;
+            var isGroupTreasurer = fundraiser != null && _fundraiserRepository.GetGroup(fundraiser.Id).Treasurer.Id == loggedUserId;
+
+            if (!isOwnerOfAccount && !isGroupTreasurer && !request.TechnicalOperation)
                 throw new TransactionUnauthorizedException();
 
             if (sourceAccount.Balance < amount)
@@ -96,7 +116,7 @@ namespace SchoolMoney.CommandHandlers
             sourceAccount.Balance -= amount;
         }
 
-        private void HandleTransfer(MakeTransactionCommand request, Domain.FinancialAccount userAccount, int amount)
+        private void HandleTransfer(MakeTransactionCommand request, Domain.FinancialAccount userAccount, int amount, int loggedUserId)
         {
             var sourceAccount = _financialAccountRepository.FirstOrDefault(x => x.Number == request.SourceAccountNumber)
                 ?? throw new TransactionAccountNotFoundException(request.SourceAccountNumber);
@@ -104,7 +124,12 @@ namespace SchoolMoney.CommandHandlers
             var targetAccount = _financialAccountRepository.FirstOrDefault(x => x.Number == request.TargetAccountNumber)
                 ?? throw new TransactionAccountNotFoundException(request.TargetAccountNumber);
 
-            if (sourceAccount.Id != userAccount.Id)
+            var fundraiser = _fundraiserRepository.FirstOrDefault(x => x.FinancialAccount == sourceAccount);
+
+            var isOwnerOfAccount = sourceAccount.Id == userAccount.Id;
+            var isGroupTreasurer = fundraiser != null && _fundraiserRepository.GetGroup(fundraiser.Id).Treasurer.Id == loggedUserId;
+
+            if (!isOwnerOfAccount && !isGroupTreasurer && !request.TechnicalOperation)
                 throw new TransactionUnauthorizedException();
 
             if (sourceAccount.Balance < amount)

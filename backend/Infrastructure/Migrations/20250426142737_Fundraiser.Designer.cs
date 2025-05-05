@@ -3,6 +3,7 @@ using System;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250426142737_Fundraiser")]
+    partial class Fundraiser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.17");
@@ -99,9 +102,6 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("AmountPerPerson")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Description")
                         .HasColumnType("TEXT");
 
@@ -110,6 +110,9 @@ namespace Infrastructure.Migrations
 
                     b.Property<int?>("FinancialAccountId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Goal")
+                        .HasColumnType("TEXT");
 
                     b.Property<int?>("GroupId")
                         .HasColumnType("INTEGER");
@@ -274,9 +277,6 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Amount")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("ChildId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<DateTime>("Date")
                         .HasColumnType("TEXT");
 
@@ -293,8 +293,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ChildId");
 
                     b.HasIndex("SenderId");
 
@@ -441,15 +439,9 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Transaction", b =>
                 {
-                    b.HasOne("Domain.Child", "Child")
-                        .WithMany()
-                        .HasForeignKey("ChildId");
-
                     b.HasOne("Domain.User", "Sender")
                         .WithMany()
                         .HasForeignKey("SenderId");
-
-                    b.Navigation("Child");
 
                     b.Navigation("Sender");
                 });

@@ -1,7 +1,19 @@
-﻿namespace Domain.Repositories
+﻿
+
+namespace Domain.Repositories
 {
-    public interface IFinancialAccountRepository : IRepository<FinancialAccount>
+    public interface IFundraiserRepository : IRepository<Fundraiser>
     {
-        FinancialAccount? FirstOrDefault(Func<FinancialAccount, bool> predicate = null);
+        void Delete(int fundraiserId);
+        bool Exists(string name);
+        bool Exists(int id);
+        Fundraiser? FirstOrDefault(Func<Fundraiser, bool> predicate = null);
+        string GetAccount(int fundraiserId);
+        List<Fundraiser> GetByGroup(int groupId);
+        List<Fundraiser> GetChildFundraisers(int childId);
+        IEnumerable<Child> GetExcludedChilds(int fundraiserId);
+        Group GetGroup(int fundraiserId);
+        List<Fundraiser> GetList();
+        List<Child> GetListOfMembers(int fundraiserId);
     }
 }

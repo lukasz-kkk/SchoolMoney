@@ -279,6 +279,27 @@
   <data name="ValidatorTransactionNameRequired" xml:space="preserve">
     <value>Transaction name is required.</value>
   </data>
+  <data name="ValidatorFundraiserNameRequired" xml:space="preserve">
+    <value>Fundraiser name is required.</value>
+  </data>
+  <data name="ValidatorFundraiserDescriptionRequired" xml:space="preserve">
+    <value>Fundraiser description is required.</value>
+  </data>
+  <data name="ValidatorFundraiserStartDateRequired" xml:space="preserve">
+    <value>Fundraiser start date is required.</value>
+  </data>
+  <data name="ValidatorFundraiserEndDateRequired" xml:space="preserve">
+    <value>Fundraiser end date is required.</value>
+  </data>
+  <data name="ValidatorFundraiserGroupIdRequired" xml:space="preserve">
+    <value>Fundraiser group id is required.</value>
+  </data>
+  <data name="ValidatorFundraiserEndDateGreaterThenStartDate" xml:space="preserve">
+    <value>Fundraiser end date must be greater then start date.</value>
+  </data>
+  <data name="ValidatorFundaiserGoalMustBeSpecified" xml:space="preserve">
+    <value>Amout per person must be greater then 0.</value>
+  </data>
   <data name="ValidatorTransactionNameTooLong" xml:space="preserve">
     <value>Transaction name can be up to 100 characters long.</value>
   </data>

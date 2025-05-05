@@ -295,6 +295,69 @@ namespace SchoolMoney.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Amout per person must be greater then 0..
+        /// </summary>
+        public static string ValidatorFundaiserGoalMustBeSpecified {
+            get {
+                return ResourceManager.GetString("ValidatorFundaiserGoalMustBeSpecified", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fundraiser description is required..
+        /// </summary>
+        public static string ValidatorFundraiserDescriptionRequired {
+            get {
+                return ResourceManager.GetString("ValidatorFundraiserDescriptionRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fundraiser end date must be greater then start date..
+        /// </summary>
+        public static string ValidatorFundraiserEndDateGreaterThenStartDate {
+            get {
+                return ResourceManager.GetString("ValidatorFundraiserEndDateGreaterThenStartDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fundraiser end date is required..
+        /// </summary>
+        public static string ValidatorFundraiserEndDateRequired {
+            get {
+                return ResourceManager.GetString("ValidatorFundraiserEndDateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fundraiser group id is required..
+        /// </summary>
+        public static string ValidatorFundraiserGroupIdRequired {
+            get {
+                return ResourceManager.GetString("ValidatorFundraiserGroupIdRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fundraiser name is required..
+        /// </summary>
+        public static string ValidatorFundraiserNameRequired {
+            get {
+                return ResourceManager.GetString("ValidatorFundraiserNameRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Fundraiser start date is required..
+        /// </summary>
+        public static string ValidatorFundraiserStartDateRequired {
+            get {
+                return ResourceManager.GetString("ValidatorFundraiserStartDateRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Group name must be at least 3 characters long..
         /// </summary>
         public static string ValidatorGroupNameLonger {
