@@ -1,11 +1,11 @@
 import { BaseChild } from "@/features/children/types/Child";
 import { useCallback } from "react";
 import { useUsers } from "@/features/users/hooks/useUsers";
-import { useGroups } from "@/features/groups/hooks/useGroups";
+import { useAllGroups } from "@/features/groups/hooks/useAllGroups.ts";
 
 export const useDecorateChildWithMetadata = () => {
     const { data: parents } = useUsers();
-    const { data: groups } = useGroups();
+    const { data: groups } = useAllGroups();
 
     return useCallback(
         (child: BaseChild) => {

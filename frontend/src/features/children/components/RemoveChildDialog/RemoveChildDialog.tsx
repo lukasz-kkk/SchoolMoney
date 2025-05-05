@@ -8,6 +8,7 @@ import { BaseChild } from "@/features/children/types/Child";
 import { useRemoveChild } from "@/features/children/hooks/useRemoveChild";
 import { DialogFooter } from "@/components/Dialog/components/DialogFooter/DialogFooter";
 import { DialogHeader } from "@/components/Dialog/components/DialogHeader/DialogHeader";
+import { AxiosError } from "axios";
 
 type RemoveChildDialogProps = {
     child: BaseChild;
@@ -47,8 +48,19 @@ export const RemoveChildDialog = ({ child, trigger }: RemoveChildDialogProps) =>
                         Usuń
                     </Button>
                 </DialogFooter>
-                {error && <Alert className={classes.alert}>{error.message}</Alert>}
+                {error && <Alert className={classes.alert}>{mapError(error)}</Alert>}
             </Dialog.Content>
         </Dialog.Root>
     );
+};
+
+const mapError = (error: Error) => {
+    if ((error as AxiosError<string>).response?.data.includes("The source account has not enough funds.")) {
+        return (
+            "Na koncie zbiórki nie ma wystarczających środków na zwrot wpłaty. Skontaktuj się ze skarbnikiem lub z" +
+            " administratorem."
+        );
+    }
+
+    return "Nieznany błąd. Spróbuj ponownie później.";
 };

@@ -5,6 +5,7 @@ import { CreateGroupDialog } from "@/features/groups/components/CreateGroupDialo
 import { Button } from "@radix-ui/themes";
 import { useGroups } from "@/features/groups/hooks/useGroups";
 import { GroupsList } from "@/features/groups/components/GroupsList/GroupsList";
+import { AccessGuard } from "@/features/auth/components/AccessGuard/AccessGuard.tsx";
 
 const BaseGroupsPage = () => {
     const { data: groups } = useGroups();
@@ -12,13 +13,15 @@ const BaseGroupsPage = () => {
     return (
         <Page.Root>
             <Page.Header items={[{ label: "Klasy" }]}>
-                <CreateGroupDialog
-                    trigger={
-                        <Button color="jade" variant="soft">
-                            Dodaj klasę
-                        </Button>
-                    }
-                />
+                <AccessGuard requiredAccess="User">
+                    <CreateGroupDialog
+                        trigger={
+                            <Button color="jade" variant="soft">
+                                Dodaj klasę
+                            </Button>
+                        }
+                    />
+                </AccessGuard>
             </Page.Header>
 
             <Page.Content>

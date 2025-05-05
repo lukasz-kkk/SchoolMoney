@@ -8,6 +8,8 @@ import { useCreateFundraiser } from "@/features/fundraisers/hooks/useCreateFundr
 import { toast } from "sonner";
 import { CreateFundraiserFormInputs } from "@/features/fundraisers/components/CreateFundraiserForm/hooks/useCreateFundraiserForm.ts";
 import { CreateFundraiserForm } from "@/features/fundraisers/components/CreateFundraiserForm/CreateFundraiserForm.tsx";
+import { formatISODate } from "@/utils/dateFormat.ts";
+import { moneyToInteger } from "@/features/finances/utils/moneyUtils.ts";
 
 type CreateFundraiserDialogProps = {
     trigger: ReactNode;
@@ -29,19 +31,19 @@ export const CreateFundraiserDialog = ({ trigger, groupId }: CreateFundraiserDia
             await mutateAsync({
                 name,
                 description,
-                endDate: endDate.toISOString(),
-                startDate: startDate.toISOString(),
-                amountPerPerson,
+                endDate: formatISODate(endDate),
+                startDate: formatISODate(startDate),
+                amountPerPerson: moneyToInteger(amountPerPerson),
                 groupId,
             });
             toast.success("Zbiórka została utworzona.");
+            close();
         } catch (e) {
             console.log(e);
-            toast.error("Nie udało się utworzyć zbiórki.");
         }
     };
 
-    const handleFormCancel = () => {
+    const close = () => {
         setOpen(false);
     };
 
@@ -52,9 +54,13 @@ export const CreateFundraiserDialog = ({ trigger, groupId }: CreateFundraiserDia
             <Dialog.Content maxWidth="450px">
                 <DialogHeader>Dodaj zbiórkę</DialogHeader>
 
-                <CreateFundraiserForm onSubmit={createFundraiser} isLoading={isPending} onCancel={handleFormCancel} />
-                {error && <Alert className={classes.alert}>{error.message}</Alert>}
+                <CreateFundraiserForm onSubmit={createFundraiser} isLoading={isPending} onCancel={close} />
+                {error && <Alert className={classes.alert}>{mapError(error)}</Alert>}
             </Dialog.Content>
         </Dialog.Root>
     );
+};
+
+const mapError = (_error: Error) => {
+    return "Nieznany błąd. Spróbuj ponownie później.";
 };

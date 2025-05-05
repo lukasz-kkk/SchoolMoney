@@ -13,21 +13,21 @@ import { FundraiserDetailsCard } from "@/features/fundraisers/components/Fundrai
 import { Section } from "@/components/Section/Section.tsx";
 import { FundraiserActions } from "@/features/fundraisers/components/FundraiserManagementPanel/FundraiserActions.tsx";
 import { FundraiserChildrenTable } from "@/features/children/components/FundraiserChildrenTable/FundraiserChildrenTable.tsx";
-import { useGetChildrenByGroup } from "@/features/children/hooks/useGetChildrenByGroup.ts";
 import { AccessGuard } from "@/features/auth/components/AccessGuard/AccessGuard.tsx";
+import { useGetChildrenByFundraiser } from "@/features/children/hooks/useGetChildrenByFundraiser.ts";
+import { Alert } from "@/components/Alert/Alert.tsx";
+import { useTransactionsHistory } from "@/features/finances/hooks/useTransactionsHistory.ts";
 
-const mockAccount = {
-    accountNumber: "PL26 1200 0000 9665 8767 5627 4104",
-    balance: 100,
-};
-
-// TODO: Remove mocks
 const BaseFundraiserPage = () => {
     const params = useParams<{ id: string }>();
+    const fundraiserId = parseInt(params.id ?? "0");
 
-    const { data: fundraiser } = useFundraiser(parseInt(params.id ?? "0"));
-    const { data: children } = useGetChildrenByGroup(fundraiser?.groupId);
+    const { data: fundraiser } = useFundraiser(fundraiserId);
+    const { data: transactionHistory } = useTransactionsHistory({ accountNumber: fundraiser?.account?.accountNumber });
+    const { data: children } = useGetChildrenByFundraiser(fundraiserId);
     const acceptedChildren = (children ?? []).filter((child) => child.isAccepted);
+    const expectedPayments = acceptedChildren.length;
+    const payments = acceptedChildren.filter((child) => child.hasPaid).length;
 
     const [files, setFiles] = useState<File[]>([]);
 
@@ -50,11 +50,30 @@ const BaseFundraiserPage = () => {
             <Page.Header items={breadcrumbItems} />
 
             <Page.Content>
-                <Section
-                    title="Informacje o zbiórce"
-                    actions={<FundraiserActions fundraiser={fundraiser} fundraiserAccount={mockAccount} />}
-                >
-                    <FundraiserDetailsCard fundraiser={fundraiser} account={mockAccount} />
+                <Section title="Informacje o zbiórce" actions={<FundraiserActions fundraiser={fundraiser} />}>
+                    {fundraiser.isBlocked && (
+                        <Alert>
+                            Ta zbiórka jest zawieszona! Zbiórka może zostać wznowiona tylko przez administratora
+                            aplikacji.
+                        </Alert>
+                    )}
+
+                    {expectedPayments === payments && payments > 0 && <Alert color="jade">Zebrano całą kwotę.</Alert>}
+
+                    {!fundraiser.hasStarted && <Alert color="amber">Ta zbiórka nie jest jeszcze aktywna.</Alert>}
+
+                    {fundraiser.hasFinished && (
+                        <Alert color="amber">
+                            Ta zbiórka nie jest już aktywna. Jeśli potrzebujesz dokonać wpłaty, skontaktuj się ze
+                            skarbnikiem.
+                        </Alert>
+                    )}
+
+                    <FundraiserDetailsCard
+                        fundraiser={fundraiser}
+                        expectedPayments={expectedPayments}
+                        payments={payments}
+                    />
                 </Section>
 
                 <Section title="Dokumenty">
@@ -65,15 +84,11 @@ const BaseFundraiserPage = () => {
                 </Section>
 
                 <Section title="Lista dzieci">
-                    <FundraiserChildrenTable
-                        childrenList={acceptedChildren}
-                        fundraiserAccount={mockAccount}
-                        fundraiser={fundraiser}
-                    />
+                    <FundraiserChildrenTable childrenList={acceptedChildren} fundraiser={fundraiser} />
                 </Section>
 
                 <Section title="Historia transakcji">
-                    <TransactionsHistoryTable transactions={[]} />
+                    <TransactionsHistoryTable transactions={transactionHistory ?? []} />
                 </Section>
             </Page.Content>
         </Page.Root>

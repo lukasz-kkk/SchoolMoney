@@ -2,14 +2,24 @@ import { FC } from "react";
 import { AppRoute } from "@/app/router";
 import { AccessLevel } from "@/features/auth/types/Authorization";
 import { AccessGuard } from "@/features/auth/components/AccessGuard/AccessGuard";
+import { useSeamlessSignIn } from "@/features/auth/hooks/useSeamlessSignIn.ts";
+import { Spinner } from "@radix-ui/themes";
 
 export default function withAuthorization<T extends object>(Component: FC<T>) {
     return (requiredAccess: AccessLevel, redirectTo: AppRoute) => {
-        const WrappedComponent = (props: T) => (
-            <AccessGuard requiredAccess={requiredAccess} redirectTo={redirectTo}>
-                <Component {...props} />
-            </AccessGuard>
-        );
+        const WrappedComponent = (props: T) => {
+            const { isPending } = useSeamlessSignIn();
+
+            if (isPending) {
+                return <Spinner />;
+            }
+
+            return (
+                <AccessGuard requiredAccess={requiredAccess} redirectTo={redirectTo}>
+                    <Component {...props} />
+                </AccessGuard>
+            );
+        };
 
         WrappedComponent.displayName = `withAuthorization(${Component.displayName || Component.name || "Component"})`;
         return WrappedComponent;

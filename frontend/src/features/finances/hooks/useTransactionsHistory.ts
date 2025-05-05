@@ -12,5 +12,10 @@ export const useTransactionsHistory = ({ accountNumber }: UseTransactionsHistory
         queryFn: async () => FinancialAccountService.getHistory(accountNumber ?? ""),
         queryKey: [QueryKey.Transaction],
         enabled: !!accountNumber,
+        select: (data) =>
+            data.map((transaction) => ({
+                ...transaction,
+                type: transaction.sourceAccountNumber === accountNumber ? ("Outgoing" as const) : ("Incoming" as const),
+            })),
     });
 };
