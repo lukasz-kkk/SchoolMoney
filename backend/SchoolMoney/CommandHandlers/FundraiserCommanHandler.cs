@@ -169,6 +169,9 @@ namespace SchoolMoney.CommandHandlers
 
         public async Task<Unit> Handle(UploadFileCommand request, CancellationToken cancellationToken)
         {
+            var fundraiser = _fundraiserRepository.Get(request.FundraiserId)
+                ?? throw new FundraiserNotFoundException(request.FundraiserId);
+
             var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "fundraiser-files");
 
             var uniqueFileName = $"{Guid.NewGuid()}_{Path.GetFileName(request.File.FileName)}";
@@ -183,7 +186,7 @@ namespace SchoolMoney.CommandHandlers
             {
                 Description = request.Description,
                 FileName = uniqueFileName,
-                Fundraiser = _fundraiserRepository.Get(request.FundraiserId)
+                Fundraiser = fundraiser
             };
 
             _fileRepository.Add(file);

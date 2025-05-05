@@ -141,6 +141,9 @@ namespace SchoolMoney.QueryHandlers
 
         public Task<IEnumerable<FileResponse>> Handle(GetFilesByFundraiserQuery request, CancellationToken cancellationToken)
         {
+            var fundraiser = _fundraiserRepository.Get(request.FundraiserId)
+                ?? throw new FundraiserNotFoundException(request.FundraiserId);
+
             var files = _fileRepository.GetList(x => x.Fundraiser.Id == request.FundraiserId);
 
             if (files == null)
