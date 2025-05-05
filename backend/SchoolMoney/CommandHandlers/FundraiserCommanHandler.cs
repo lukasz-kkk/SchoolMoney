@@ -171,9 +171,6 @@ namespace SchoolMoney.CommandHandlers
         {
             var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "fundraiser-files");
 
-            if (!Directory.Exists(uploadsFolder))
-                Directory.CreateDirectory(uploadsFolder);
-
             var uniqueFileName = $"{Guid.NewGuid()}_{Path.GetFileName(request.File.FileName)}";
             var filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
