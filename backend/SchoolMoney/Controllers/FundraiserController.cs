@@ -48,6 +48,35 @@ namespace SchoolMoney.Controllers
             }
         }
 
+        [HttpGet("{id:int}/UploadedFiles")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+#if !DEBUG
+[Authorize(Roles = Roles.User)]
+#endif
+        public async Task<ActionResult<FileResponse>> GetUploadedFiles(int id)
+        {
+            try
+            {
+                var query = new GetFilesByFundraiserQuery
+                {
+                    FundraiserId = id
+                };
+
+                var result = await _mediator.Send(query);
+                return Ok(result);
+            }
+            catch (FundraiserNotFoundException ex)
+            {
+                return StatusCode((int)HttpStatusCode.NotFound,
+                    string.Format(Resource.ControllerNotFound, ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                    string.Format(Resource.ControllerInternalError, ex.Message));
+            }
+        }
 
         [HttpGet("{id}/childs")]
 #if !DEBUG

@@ -10,22 +10,26 @@ namespace SchoolMoney.QueryHandlers
     public class FundraiserQueryHandler : 
         IRequestHandler<GetAllFundraisersQuery, IEnumerable<FundraiserResponse>>,
         IRequestHandler<GetFundraiserChildsQuery, FundraiserChildsResponse>,
-        IRequestHandler<GetFundraisersByGroupQuery, IEnumerable<FundraiserResponse>>
+        IRequestHandler<GetFundraisersByGroupQuery, IEnumerable<FundraiserResponse>>,
+        IRequestHandler<GetFilesByFundraiserQuery, IEnumerable<FileResponse>>
     {
         private readonly IFundraiserRepository _fundraiserRepository;
         private readonly IChildRepository _childRepository;
         private readonly ITransactionRepository _transactionRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IFileRepository _fileRepository;
 
         public FundraiserQueryHandler(IFundraiserRepository fundraiserRepository, 
             IChildRepository childRepository,
             ITransactionRepository transactionRepository,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor,
+            IFileRepository fileRepository)
         {
             _fundraiserRepository = fundraiserRepository;
             _childRepository = childRepository;
             _transactionRepository = transactionRepository;
             _httpContextAccessor = httpContextAccessor;
+            _fileRepository = fileRepository;
         }
 
 
@@ -130,6 +134,24 @@ namespace SchoolMoney.QueryHandlers
                 OwnerId = x.Owner.Id,
                 GroupId = x.Group.Id,
                 IsBlocked = x.IsBlocked,
+            });
+
+            return Task.FromResult(result);
+        }
+
+        public Task<IEnumerable<FileResponse>> Handle(GetFilesByFundraiserQuery request, CancellationToken cancellationToken)
+        {
+            var files = _fileRepository.GetList(x => x.Fundraiser.Id == request.FundraiserId);
+
+            if (files == null)
+            {
+                return Task.FromResult(Enumerable.Empty<FileResponse>());
+            }
+
+            var result = files.Select(x => new FileResponse
+            {
+                FileName = x.FileName,
+                Description = x.Description,
             });
 
             return Task.FromResult(result);
