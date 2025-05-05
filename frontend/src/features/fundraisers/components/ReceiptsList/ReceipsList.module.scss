@@ -10,10 +10,10 @@
   }
   
   .list {
-    display: grid;
-    grid-template-columns: repeat(6, minmax(100px, 1fr));
-    grid-gap: var(--space-4);
     list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
     padding: 0;
     
     .listItem {
@@ -24,8 +24,8 @@
       .fileCard {
         display: flex;
         align-items: center;
-        flex-direction: column;
-        gap: var(--space-1);
+        gap: var(--space-3);
+        width: 100%;
         
         .icon {
           width: 50px;
@@ -33,14 +33,25 @@
           padding: var(--space-2);
         }
         
-        .fileName {
-          color: var(--accent-11);
-          font-size: var(--font-size-2);
-          text-align: center;
-          cursor: pointer;
-
-          &:hover {
-            text-decoration: underline;
+        .actions {
+          display: flex;
+          gap: var(--space-2);
+          margin-left: auto;
+        }
+        
+        .fileMetadata {
+          .fileName {
+            color: var(--accent-11);
+            font-size: var(--font-size-2);
+            cursor: pointer;
+            
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+          
+          .fileDescription {
+            font-size: var(--font-size-1);
           }
         }
       }
