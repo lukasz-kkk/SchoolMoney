@@ -15,7 +15,8 @@ namespace SchoolMoney.CommandHandlers
         IRequestHandler<SwitchBlockFundraiserCommand, Unit>,
         IRequestHandler<DeleteFundraiserCommand, Unit>,
         IRequestHandler<UpdateFundraiserCommand, Unit>,
-        IRequestHandler<UploadFileCommand, Unit>
+        IRequestHandler<UploadFileCommand, Unit>,
+        IRequestHandler<DeleteFileCommand, Unit>
     {
         private readonly IUserRepository _userRepository;
         private readonly IFundraiserRepository _fundraiserRepository;
@@ -187,6 +188,17 @@ namespace SchoolMoney.CommandHandlers
             };
 
             _fileRepository.Add(file);
+            await _fileRepository.SaveChangesAsync();
+
+            return Unit.Value;
+        }
+
+        public async Task<Unit> Handle(DeleteFileCommand request, CancellationToken cancellationToken)
+        {
+            var file = _fileRepository.FirstOrDefault(x => x.FileName == request.FileName)
+                ?? throw new FileNotFoundException();
+
+            _fileRepository.Delete(file);
             await _fileRepository.SaveChangesAsync();
 
             return Unit.Value;

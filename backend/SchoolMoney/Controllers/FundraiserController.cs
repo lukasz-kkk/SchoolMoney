@@ -50,6 +50,7 @@ namespace SchoolMoney.Controllers
 
         [HttpGet("{id:int}/UploadedFiles")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 #if !DEBUG
 [Authorize(Roles = Roles.User)]
@@ -210,7 +211,6 @@ namespace SchoolMoney.Controllers
 
         [HttpPost("{id:int}/UploadFile")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 #if !DEBUG
 [Authorize(Roles = Roles.User)]
@@ -394,6 +394,37 @@ namespace SchoolMoney.Controllers
                 return NoContent();
             }
             catch (FundraiserNotFoundException ex)
+            {
+                return StatusCode((int)HttpStatusCode.NotFound,
+                    string.Format(Resource.ControllerNotFound, ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                    string.Format(Resource.ControllerInternalError, ex.Message));
+            }
+        }
+
+        [HttpDelete("DeleteFile/{fileName}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+#if !DEBUG
+[Authorize(Roles = Roles.User)]
+#endif
+        public async Task<IActionResult> DeleteFile(string fileName)
+        {
+            try
+            {
+                var command = new DeleteFileCommand
+                {
+                    FileName = fileName
+                };
+
+                await _mediator.Send(command);
+                return NoContent();
+            }
+            catch (FileNotFoundException ex)
             {
                 return StatusCode((int)HttpStatusCode.NotFound,
                     string.Format(Resource.ControllerNotFound, ex.Message));
