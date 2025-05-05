@@ -69,16 +69,21 @@ const BaseGroupPage = () => {
                 <Section
                     title="Informacje o klasie"
                     actions={
-                        <AccessGuard userId={group.treasurer.id}>
-                            <RenameGroupDialog
-                                groupId={group.id}
-                                trigger={
-                                    <Button variant="soft" size="1">
-                                        Edytuj nazwę klasy
-                                    </Button>
-                                }
-                            />
-                        </AccessGuard>
+                        <div className={styles.actions}>
+                            <Button size="1" variant="soft">
+                                Wygeneruj raport
+                            </Button>
+                            <AccessGuard userId={group.treasurer.id}>
+                                <RenameGroupDialog
+                                    groupId={group.id}
+                                    trigger={
+                                        <Button variant="soft" size="1" color="jade">
+                                            Edytuj nazwę klasy
+                                        </Button>
+                                    }
+                                />
+                            </AccessGuard>
+                        </div>
                     }
                 >
                     <Box className={styles.row}>

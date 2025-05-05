@@ -23,7 +23,12 @@ export const GroupDetailsCard = ({ group }: GroupDetailsCardProps) => {
             </Box>
 
             <Box className={styles.row}>
-                <Box className={classNames(styles.amountPerPerson, styles.group)}>
+                <Box className={classNames(styles.group)}>
+                    <Text className={styles.label}>ID skarbnika</Text>
+                    <Text className={styles.value}>#{group.treasurer.id}</Text>
+                </Box>
+
+                <Box className={classNames(styles.group)}>
                     <Text className={styles.label}>Skarbnik</Text>
                     <Text className={styles.value}>
                         {group.treasurer.firstName} {group.treasurer.lastName}
