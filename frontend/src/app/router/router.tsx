@@ -1,5 +1,5 @@
 import React from "react";
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 
 const RootPage = React.lazy(() => import("@/app/pages/Root/Root").then((module) => ({ default: module.RootPage })));
 
@@ -68,6 +68,10 @@ export const router = createBrowserRouter([
                 element: WithSuspense(<NotFoundPage />),
             },
         ],
+    },
+    {
+        path: AppRoute.ROOT,
+        element: <Navigate to={AppRoute.FINANCES} replace />,
     },
     {
         path: AppRoute.ROOT,

@@ -20,7 +20,7 @@ export const WithdrawChildDialog = ({ child, trigger }: WithdrawChildDialogProps
     const { mutateAsync: removeChild, isPending, error } = useWithdrawChild();
 
     const handleWithdraw = async () => {
-        await removeChild(child.id);
+        await removeChild({ childId: child.id, groupId: child.groupId });
         toast.success("Dziecko zostało wypisane z klasy.");
         setOpen(false);
     };
@@ -58,8 +58,8 @@ export const WithdrawChildDialog = ({ child, trigger }: WithdrawChildDialogProps
 const mapError = (error: Error) => {
     if ((error as AxiosError<string>).response?.data.includes("The source account has not enough funds.")) {
         return (
-            "Na koncie zbiórki nie ma wystarczających środków na zwrot wpłaty. Skontaktuj się ze skarbnikiem lub z" +
-            " administratorem."
+            "Dziecko jest członkiem zbiórki i na jej koncie widnieje wpłata, której nie można rozliczyć. Skontaktuj" +
+            " się z administratorem lub skarbnikiem."
         );
     }
 
