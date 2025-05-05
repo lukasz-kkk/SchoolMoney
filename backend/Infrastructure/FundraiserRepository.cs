@@ -33,6 +33,16 @@ namespace Infrastructure
                 .Select(x => x.FinancialAccount.Number)
                 .FirstOrDefault();
         }
+
+        public int GetBalance(int fundraiserId)
+        {
+            return _appDbContext.Fundraisers
+                .Include(x => x.FinancialAccount)
+                .Where(x => x.Id == fundraiserId)
+                .Select(x => x.FinancialAccount.Balance)
+                .FirstOrDefault();
+        }
+
         public IEnumerable<Child> GetExcludedChilds(int fundraiserId)
         {
             var fundraiser =  _appDbContext.Fundraisers

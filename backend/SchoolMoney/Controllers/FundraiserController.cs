@@ -9,6 +9,7 @@ using SchoolMoney.Commands;
 using Domain.Exceptions;
 using SchoolMoney.Exceptions;
 using SchoolMoney.Queries;
+using System.Text;
 
 namespace SchoolMoney.Controllers
 {
@@ -35,6 +36,41 @@ namespace SchoolMoney.Controllers
 
                 var result = await _mediator.Send(query);
                 return Ok(result);
+            }
+            catch (FundraiserNotFoundException ex)
+            {
+                return StatusCode((int)HttpStatusCode.NotFound,
+                    string.Format(Resource.ControllerNotFound, ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                    string.Format(Resource.ControllerInternalError, ex.Message));
+            }
+        }
+
+        [HttpGet("{id}/raport")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+#if !DEBUG
+        [Authorize(Roles = Roles.User)]
+#endif
+        public async Task<IActionResult> GetRaport(int id)
+        {
+            try
+            {
+                var query = new GetFundraiserRaport
+                {
+                    FundraiserId = id
+                };
+
+                var result = await _mediator.Send(query);
+
+                var bytes = Encoding.UTF8.GetBytes(result);
+                var fileName = $"raport_{id}.csv";
+
+                return File(bytes, "text/csv", fileName);
             }
             catch (FundraiserNotFoundException ex)
             {
