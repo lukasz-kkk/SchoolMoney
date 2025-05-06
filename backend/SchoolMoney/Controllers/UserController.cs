@@ -298,5 +298,39 @@ namespace SchoolMoney.Controllers
                     string.Format(Resource.ControllerInternalError, ex.Message));
             }
         }
+
+        [HttpPut("{id:int}/PersonalData")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+#if !DEBUG
+        [Authorize(Roles = Roles.Admin)]
+#endif
+        public async Task<IActionResult> UpdatePersonalData(int id, [FromBody] UpdateUserPersonalDataRequest dto)
+        {
+            var request = new UpdateUserPersonalData
+            {
+                UserId = id,
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                DateOfBirth = dto.DateOfBirth,
+            };
+
+            try
+            {
+                await _mediator.Send(request);
+                return NoContent();
+            }
+            catch (UserNotFoundException ex)
+            {
+                return StatusCode((int)HttpStatusCode.NotFound,
+                    string.Format(Resource.ControllerNotFound, ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                    string.Format(Resource.ControllerInternalError, ex.Message));
+            }
+        }
     }
 }
