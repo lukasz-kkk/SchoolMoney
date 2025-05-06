@@ -27,7 +27,7 @@ export const OwnChildrenTableActions = (child: BaseChild) => {
                     }
                 />
 
-                {child.isAccepted && (
+                {child.isAccepted && child.groupId && (
                     <WithdrawChildDialog
                         child={child}
                         trigger={
