@@ -26,16 +26,16 @@ type TransferMoneyRequestBody = {
 
 export class FinancialAccountService {
     public static async getAccount(): Promise<FinancialAccount> {
-        const { data } = await requestClient.get<AccountDto>("/FinancialAccount/ByLoggedUser");
+        const { data } = await requestClient.get<AccountDto>("/financialAccount/byLoggedUser");
         return FinancialAccountService.mapDtoToAccount(data);
     }
 
     public static async transferMoney(body: TransferMoneyRequestBody): Promise<void> {
-        await requestClient.post("/FinancialAccount/Transaction", body);
+        await requestClient.post("/financialAccount/transaction", body);
     }
 
     public static async getHistory(accountNumber: FinancialAccountNumber): Promise<Transaction[]> {
-        const { data } = await requestClient.get(`/FinancialAccount/TransactionsHistory/${accountNumber}`);
+        const { data } = await requestClient.get(`/financialAccount/transactionsHistory/${accountNumber}`);
         return data.map(FinancialAccountService.mapDtoToTransaction);
     }
 

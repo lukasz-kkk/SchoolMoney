@@ -18,7 +18,7 @@ export type ChangePasswordRequestBody = {
 
 export class UsersService {
     public static async getAll(): Promise<User[]> {
-        const { data } = await requestClient.get<UserDTO[]>("/User");
+        const { data } = await requestClient.get<UserDTO[]>("/user");
         return data.map(UsersService.mapDtoToUser);
     }
 
@@ -31,11 +31,11 @@ export class UsersService {
     }
 
     private static changeIsActive(userId: number, isActive: boolean): Promise<void> {
-        return requestClient.put(`/User/${userId}/IsActive?value=${isActive}`);
+        return requestClient.put(`/user/${userId}/isActive?value=${isActive}`);
     }
 
     public static async changePassword(body: ChangePasswordRequestBody, userId: number): Promise<void> {
-        await requestClient.put(`/User/${userId}/Password`, body);
+        await requestClient.put(`/user/${userId}/password`, body);
     }
 
     private static mapDtoToUser({ firstName, lastName, dateOfBirth, role, login, id, isActive }: UserDTO): User {

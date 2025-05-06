@@ -48,7 +48,7 @@ export const ReceiptsList = ({ filesMetadata, ownerId }: ReceiptsListProps) => {
                                 </div>
 
                                 <div className={styles.actions}>
-                                    <IconButton variant="soft" onClick={() => handleDownload(file.filename)}>
+                                    <IconButton variant="soft" onClick={() => handleDownload(file.filename)} size="3">
                                         <DownloadIcon />
                                     </IconButton>
 
@@ -56,6 +56,7 @@ export const ReceiptsList = ({ filesMetadata, ownerId }: ReceiptsListProps) => {
                                         <IconButton
                                             variant="soft"
                                             color="crimson"
+                                            size="3"
                                             onClick={() => handleDelete(file.filename)}
                                         >
                                             <TrashIcon />

@@ -85,7 +85,7 @@ const BaseFundraiserPage = () => {
                 </Section>
 
                 <Section title="Dokumenty">
-                    <AccessGuard userId={fundraiser.ownerId}>
+                    <AccessGuard userId={fundraiser.treasurerId ?? 0}>
                         <ReceiptUploader onUpload={onUploadFile} />
                     </AccessGuard>
                     <ReceiptsList filesMetadata={filesMetadata ?? []} ownerId={fundraiser.treasurerId ?? 0} />

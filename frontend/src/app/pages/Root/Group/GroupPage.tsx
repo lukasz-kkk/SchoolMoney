@@ -21,6 +21,8 @@ import styles from "./GroupPage.module.scss";
 import { AccessGuard } from "@/features/auth/components/AccessGuard/AccessGuard.tsx";
 import { RenameGroupDialog } from "@/features/groups/components/RenameGroupDialog/RenameGroupDialog.tsx";
 import { useFundraisersByGroup } from "@/features/fundraisers/hooks/useFundraisersByGroup.ts";
+import { GroupsService } from "@/features/groups/api/groupsService.ts";
+import { InfoIcon, PenIcon } from "lucide-react";
 
 const BaseGroupPage = () => {
     const params = useParams<{ id: string }>();
@@ -61,6 +63,10 @@ const BaseGroupPage = () => {
         return <Spinner />;
     }
 
+    const downloadReport = async () => {
+        await GroupsService.downloadReport(group.id);
+    };
+
     return (
         <Page.Root>
             <Page.Header items={breadcrumbItems}></Page.Header>
@@ -69,16 +75,21 @@ const BaseGroupPage = () => {
                 <Section
                     title="Informacje o klasie"
                     actions={
-                        <AccessGuard userId={group.treasurer.id}>
-                            <RenameGroupDialog
-                                groupId={group.id}
-                                trigger={
-                                    <Button variant="soft" size="1">
-                                        Edytuj nazwę klasy
-                                    </Button>
-                                }
-                            />
-                        </AccessGuard>
+                        <div className={styles.actions}>
+                            <Button size="1" variant="soft" onClick={downloadReport}>
+                                Wygeneruj raport <InfoIcon size="16" />
+                            </Button>
+                            <AccessGuard userId={group.treasurer.id}>
+                                <RenameGroupDialog
+                                    groupId={group.id}
+                                    trigger={
+                                        <Button variant="soft" size="1" color="jade">
+                                            Edytuj nazwę klasy <PenIcon size="16" />
+                                        </Button>
+                                    }
+                                />
+                            </AccessGuard>
+                        </div>
                     }
                 >
                     <Box className={styles.row}>

@@ -1,5 +1,6 @@
 import { requestClient } from "@/lib/request/requestClient";
 import { FileMetadata } from "@/features/fundraisers/types/File";
+import { downloadFileFromBytes } from "@/utils/fileUtils.ts";
 
 type FileMetadataDto = {
     fileName: string;
@@ -8,24 +9,16 @@ type FileMetadataDto = {
 
 export class FilesService {
     public static async getFilesMetadata(id: number): Promise<FileMetadata[]> {
-        const { data } = await requestClient.get<FileMetadataDto[]>(`/Fundraiser/${id}/UploadedFiles`);
+        const { data } = await requestClient.get<FileMetadataDto[]>(`/fundraiser/${id}/uploadedFiles`);
         return data.map(FilesService.mapDtoToMetadata);
     }
 
     public static async downloadFile(filename: string): Promise<void> {
-        const response = await requestClient.get(`/Fundraiser/DownloadFile/${filename}`, {
+        const response = await requestClient.get(`/fundraiser/downloadFile/${filename}`, {
             responseType: "blob",
         });
 
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement("a");
-        link.href = url;
-
-        link.setAttribute("download", filename);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
+        downloadFileFromBytes(filename, response.data);
     }
 
     public static async uploadFile({
@@ -42,11 +35,11 @@ export class FilesService {
         const formData = new FormData();
         const file = new Blob([bytes]);
         formData.append("file", file, filename);
-        await requestClient.post(`/Fundraiser/${fundraiserId}/UploadFile?description=${description}`, formData);
+        await requestClient.post(`/fundraiser/${fundraiserId}/uploadFile?description=${description}`, formData);
     }
 
     public static async removeFile(filename: string): Promise<void> {
-        await requestClient.delete(`/Fundraiser/DeleteFile/${filename}`);
+        await requestClient.delete(`/fundraiser/deleteFile/${filename}`);
     }
 
     private static mapDtoToMetadata(dto: FileMetadataDto): FileMetadata {

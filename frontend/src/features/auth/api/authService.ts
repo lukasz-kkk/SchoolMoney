@@ -26,21 +26,21 @@ type SignUpRequestBody = {
 
 export class AuthService {
     public static async signIn(body: SignInRequestBody): Promise<User> {
-        const { data } = await requestClient.post<UserDTO>("/Authentication/Login", body);
+        const { data } = await requestClient.post<UserDTO>("/authentication/login", body);
         return AuthService.mapDtoToUser(data);
     }
 
     public static async signUp(body: SignUpRequestBody): Promise<User> {
-        const { data } = await requestClient.post<UserDTO>("Authentication/Register", body);
+        const { data } = await requestClient.post<UserDTO>("/authentication/register", body);
         return AuthService.mapDtoToUser(data);
     }
 
     public static async logOut(): Promise<void> {
-        await requestClient.post("/Authentication/Logout");
+        await requestClient.post("/authentication/logout");
     }
 
     public static async getMyself(): Promise<User> {
-        const { data } = await requestClient.get<UserDTO>("/User/LoggedIn");
+        const { data } = await requestClient.get<UserDTO>("/user/loggedin");
         return AuthService.mapDtoToUser(data);
     }
 
