@@ -8,6 +8,7 @@ using SchoolMoney.Queries;
 using SchoolMoney.Requests;
 using SchoolMoney.Response;
 using System.Net;
+using System.Text;
 
 namespace PrzedszkolePlus.Controllers
 {
@@ -143,6 +144,41 @@ namespace PrzedszkolePlus.Controllers
             {
                 return StatusCode((int)HttpStatusCode.BadRequest,
                     string.Format(Resource.ControllerBadRequest, ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                    string.Format(Resource.ControllerInternalError, ex.Message));
+            }
+        }
+
+        [HttpGet("{id}/raport")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+#if !DEBUG
+        [Authorize(Roles = Roles.User)]
+#endif
+        public async Task<IActionResult> GetRaport(int id)
+        {
+            try
+            {
+                var query = new GetGroupRaport
+                {
+                    GroupId = id
+                };
+
+                var result = await _mediator.Send(query);
+
+                var bytes = Encoding.UTF8.GetBytes(result);
+                var fileName = $"raport_{id}.csv";
+
+                return File(bytes, "text/csv", fileName);
+            }
+            catch (GroupNotFoundException ex)
+            {
+                return StatusCode((int)HttpStatusCode.NotFound,
+                    string.Format(Resource.ControllerNotFound, ex.Message));
             }
             catch (Exception ex)
             {

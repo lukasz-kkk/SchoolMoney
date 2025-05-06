@@ -12,6 +12,7 @@ using Infrastructure.Migrations;
 using System.Globalization;
 using System.Data;
 using System.Net.Http.Json;
+using SchoolMoney.Utils;
 
 namespace SchoolMoney.QueryHandlers
 {
@@ -188,16 +189,9 @@ namespace SchoolMoney.QueryHandlers
             var result = await _mediator.Send(query);
             string jsonString = JsonSerializer.Serialize(result);
 
+            var csv = CsvHelper.GenerateFundraiserCsvReport(fundraiser, account, balance);
+
             var transactions = result.ToList();
-            var csv = new StringBuilder();
-            csv.AppendLine($"Fundraiser details:");
-            csv.AppendLine($"Name:;{fundraiser.Name};");
-            csv.AppendLine($"StartDate:;{fundraiser.StartDate};");
-            csv.AppendLine($"EndDate:;{fundraiser.EndDate};");
-            csv.AppendLine($"FinancialAccount:;{account};");
-            csv.AppendLine($"balance:;{balance} PLN;");
-            csv.AppendLine($"");
-            csv.AppendLine($"");
 
             csv.AppendLine("Name;SourceAccountNumber;TargetAccountNumber;Amount;Date;SenderFirstName;SenderLastName;SenderId");
 
