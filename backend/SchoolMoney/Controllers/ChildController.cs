@@ -202,43 +202,6 @@ namespace PrzedszkolePlus.Controllers
             }
         }
 
-        [HttpPut("{childId:int}/group/{groupId:int}/unroll")]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-#if !DEBUG
-        [Authorize(Roles = Roles.User)]
-#endif
-        public async Task<IActionResult> UnrollChild(int childId, int groupId)
-        {
-
-            var request = new UnrollChildFromGroupCommand
-            {
-                ChildId = childId,
-                GroupId = groupId
-            };
-
-            try
-            {
-                await _mediator.Send(request);
-                return NoContent();
-            }
-            catch (ChildNotFoundException ex)
-            {
-                return StatusCode((int)HttpStatusCode.NotFound,
-                    string.Format(Resource.ControllerNotFound, ex.Message));
-            }
-            catch (GroupNotFoundException ex)
-            {
-                return StatusCode((int)HttpStatusCode.NotFound,
-                    string.Format(Resource.ControllerNotFound, ex.Message));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError,
-                    string.Format(Resource.ControllerInternalError, ex.Message));
-            }
-        }
-
         [HttpPut("{id:int}/IsAccepted")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
