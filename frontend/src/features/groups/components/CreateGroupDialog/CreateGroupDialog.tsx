@@ -8,6 +8,7 @@ import { useCreateGroup } from "@/features/groups/hooks/useCreateGroup.ts";
 import { CreateGroupForm } from "@/features/groups/components/CreateGroupForm/CreateGroupForm.tsx";
 
 import classes from "./CreateGroupDialog.module.scss";
+import { AxiosError } from "axios";
 
 type CreateGroupDialogProps = {
     trigger: ReactNode;
@@ -24,7 +25,6 @@ export const CreateGroupDialog = ({ trigger }: CreateGroupDialogProps) => {
             close();
         } catch (e) {
             console.log(e);
-            toast.error("Nie udało się dodać klasy.");
         }
     };
 
@@ -41,8 +41,16 @@ export const CreateGroupDialog = ({ trigger }: CreateGroupDialogProps) => {
                 <Text as="p">Po utworzeniu klasy staniesz się jej skarbnikiem.</Text>
 
                 <CreateGroupForm onSubmit={createGroup} isLoading={isPending} onCancel={close} />
-                {error && <Alert className={classes.alert}>{error.message}</Alert>}
+                {error && <Alert className={classes.alert}>{mapError(error)}</Alert>}
             </Dialog.Content>
         </Dialog.Root>
     );
+};
+
+const mapError = (error: Error) => {
+    if ((error as AxiosError).status === 400) {
+        return "Nazwy klasy jest już zajęta.";
+    }
+
+    return "Nieznany błąd. Spróbuj ponownie później.";
 };

@@ -4,15 +4,19 @@ import styles from "./FundraiserDetailsCard.module.scss";
 import classNames from "classnames";
 import { formatMoney } from "@/features/finances/utils/moneyUtils.ts";
 import { CopyToClipboardButton } from "@/components/CopyToClipboardButton/CopyToClipboardButton.tsx";
-import { FinancialAccount } from "@/features/finances/types/Finances";
 import { toast } from "sonner";
+import { useUserById } from "@/features/users/hooks/useUserById.ts";
 
 type FundraiserDetailsCardProps = {
     fundraiser: Fundraiser;
-    account: FinancialAccount;
+    expectedPayments: number;
+    payments: number;
 };
 
-export const FundraiserDetailsCard = ({ fundraiser, account }: FundraiserDetailsCardProps) => {
+export const FundraiserDetailsCard = ({ fundraiser, expectedPayments, payments }: FundraiserDetailsCardProps) => {
+    const { data: owner } = useUserById(fundraiser.ownerId);
+    const { data: treasurer } = useUserById(fundraiser.treasurerId);
+
     const onAccountNumberCopied = () => {
         toast.success("Skopiowano numer rachunku.");
     };
@@ -32,14 +36,51 @@ export const FundraiserDetailsCard = ({ fundraiser, account }: FundraiserDetails
             </Box>
 
             <Box className={styles.row}>
+                {owner && (
+                    <Box className={classNames(styles.id, styles.group)}>
+                        <Text className={styles.label}>Autor zbiórki</Text>
+                        <Text className={styles.value}>
+                            {owner.firstName} {owner.lastName}
+                        </Text>
+                    </Box>
+                )}
+
+                <Box className={classNames(styles.name, styles.group)}>
+                    <Text className={styles.label}>ID autora zbiórki</Text>
+                    <Text className={styles.value}>#{fundraiser.ownerId}</Text>
+                </Box>
+
+                {treasurer && (
+                    <Box className={classNames(styles.id, styles.group)}>
+                        <Text className={styles.label}>Skarbnik zbiórki</Text>
+                        <Text className={styles.value}>
+                            {treasurer.firstName} {treasurer.lastName}
+                        </Text>
+                    </Box>
+                )}
+
+                <Box className={classNames(styles.name, styles.group)}>
+                    <Text className={styles.label}>ID skarbnika zbiórki</Text>
+                    <Text className={styles.value}>#{fundraiser.treasurerId}</Text>
+                </Box>
+            </Box>
+
+            <Box className={styles.row}>
                 <Box className={classNames(styles.amountPerPerson, styles.group)}>
                     <Text className={styles.label}>Kwota na osobę</Text>
                     <Text className={styles.value}>{formatMoney(fundraiser.amountPerPerson)}</Text>
                 </Box>
 
+                <Box className={classNames(styles.amountPerPerson, styles.group)}>
+                    <Text className={styles.label}>Liczba wpłat</Text>
+                    <Text className={styles.value}>
+                        {payments}/{expectedPayments}
+                    </Text>
+                </Box>
+
                 <Box className={classNames(styles.balance, styles.group)}>
                     <Text className={styles.label}>Saldo</Text>
-                    <Text className={styles.value}>{formatMoney(account.balance)}</Text>
+                    <Text className={styles.value}>{formatMoney(fundraiser.account.balance)}</Text>
                 </Box>
 
                 <Box className={classNames(styles.date, styles.group)}>
@@ -57,8 +98,11 @@ export const FundraiserDetailsCard = ({ fundraiser, account }: FundraiserDetails
                 <Box className={classNames(styles.number, styles.group)}>
                     <Text className={styles.label}>Numer rachunku</Text>
                     <Box className={styles.valueWrapper}>
-                        <Text className={styles.value}>{account.accountNumber}</Text>
-                        <CopyToClipboardButton value={account.accountNumber} onSuccess={onAccountNumberCopied} />
+                        <Text className={styles.value}>{fundraiser.account.accountNumber}</Text>
+                        <CopyToClipboardButton
+                            value={fundraiser.account.accountNumber}
+                            onSuccess={onAccountNumberCopied}
+                        />
                     </Box>
                 </Box>
             </Box>

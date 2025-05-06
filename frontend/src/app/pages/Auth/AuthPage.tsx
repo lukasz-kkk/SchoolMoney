@@ -4,11 +4,8 @@ import { onlyAsUnauthenticated } from "@/features/auth/hoc/withAuthorization";
 
 import classes from "./AuthPage.module.scss";
 import { Box } from "@radix-ui/themes";
-import { useSeamlessSignIn } from "@/features/auth/hooks/useSeamlessSignIn";
 
 const Page = () => {
-    useSeamlessSignIn();
-
     return (
         <AppProvider>
             <Box className={classes.container}>

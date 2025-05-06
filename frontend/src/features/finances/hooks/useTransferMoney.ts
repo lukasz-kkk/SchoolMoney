@@ -10,6 +10,8 @@ export const useTransferMoney = () => {
         onSuccess: () => {
             void invalidate(QueryKey.FinancialAccount);
             void invalidate(QueryKey.Transaction);
+            void invalidate(QueryKey.Fundraisers);
+            void invalidate(QueryKey.Children);
         },
     });
 };

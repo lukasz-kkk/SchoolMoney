@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { useCloseFundraiser } from "@/features/fundraisers/hooks/useCloseFundraiser.ts";
 import { DialogBody } from "@/components/Dialog/components/DialogBody/DialogBody.tsx";
 import { DialogFooter } from "@/components/Dialog/components/DialogFooter/DialogFooter.tsx";
+import { useNavigate } from "react-router-dom";
 
 type CloseFundraiserDialogProps = {
     trigger: ReactNode;
@@ -17,11 +18,13 @@ type CloseFundraiserDialogProps = {
 export const CloseFundraiserDialog = ({ trigger, fundraiserId }: CloseFundraiserDialogProps) => {
     const [open, setOpen] = useState(false);
     const { mutateAsync, isPending, error } = useCloseFundraiser();
+    const navigate = useNavigate();
 
     const closeFundraiser = async () => {
         try {
             await mutateAsync(fundraiserId);
             toast.success("Zbiórka została zamknięta.");
+            navigate(-1);
         } catch (e) {
             console.log(e);
             toast.error("Nie udało się zamknąć zbiórki.");
@@ -57,8 +60,12 @@ export const CloseFundraiserDialog = ({ trigger, fundraiserId }: CloseFundraiser
                     </Box>
                 </DialogFooter>
 
-                {error && <Alert className={classes.alert}>{error.message}</Alert>}
+                {error && <Alert className={classes.alert}>{mapError(error)}</Alert>}
             </Dialog.Content>
         </Dialog.Root>
     );
+};
+
+const mapError = (_error: Error) => {
+    return "Nieznany błąd. Spróbuj ponownie później.";
 };

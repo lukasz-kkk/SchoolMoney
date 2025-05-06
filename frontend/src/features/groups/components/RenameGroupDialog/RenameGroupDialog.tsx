@@ -8,6 +8,7 @@ import { CreateGroupForm } from "@/features/groups/components/CreateGroupForm/Cr
 
 import classes from "./RenameGroupDialog.module.scss";
 import { useRenameGroup } from "@/features/groups/hooks/useRenameGroup";
+import { AxiosError } from "axios";
 
 type RenameGroupDialogProps = {
     trigger: ReactNode;
@@ -25,7 +26,6 @@ export const RenameGroupDialog = ({ trigger, groupId }: RenameGroupDialogProps) 
             close();
         } catch (e) {
             console.log(e);
-            toast.error("Nie udało się zaktualizować klasy.");
         }
     };
 
@@ -40,8 +40,16 @@ export const RenameGroupDialog = ({ trigger, groupId }: RenameGroupDialogProps) 
             <Dialog.Content maxWidth="450px">
                 <DialogHeader>Edytuj klasę</DialogHeader>
                 <CreateGroupForm onSubmit={createGroup} isLoading={isPending} onCancel={close} />
-                {error && <Alert className={classes.alert}>{error.message}</Alert>}
+                {error && <Alert className={classes.alert}>{mapError(error)}</Alert>}
             </Dialog.Content>
         </Dialog.Root>
     );
+};
+
+const mapError = (error: Error) => {
+    if ((error as AxiosError).status === 400) {
+        return "Nazwy klasy jest już zajęta.";
+    }
+
+    return "Nieznany błąd. Spróbuj ponownie później.";
 };

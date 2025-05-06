@@ -1,12 +1,15 @@
 import { PropsWithChildren } from "react";
 import { Callout } from "@radix-ui/themes";
 import { CircleAlert } from "lucide-react";
+import classNames from "classnames";
 
-type AlertProps = PropsWithChildren<{ className?: string }>;
+import styles from "./Alert.module.scss";
 
-export const Alert = ({ children, className }: AlertProps) => {
+type AlertProps = PropsWithChildren<{ className?: string; color?: "red" | "amber" | "blue" | "jade" }>;
+
+export const Alert = ({ children, className, color = "red" }: AlertProps) => {
     return (
-        <Callout.Root color="red" role="alert" className={className} size="1">
+        <Callout.Root color={color} role="alert" className={classNames(className, styles.alert)} size="1">
             <Callout.Icon>
                 <CircleAlert />
             </Callout.Icon>

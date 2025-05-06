@@ -1,37 +1,45 @@
 .container {
   padding: var(--space-4);
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  gap: var(--space-1);
+  cursor: pointer;
+  transition: transform 0.2s, background 0.2s;
 
-  .actions {
-    display: flex;
-    padding-inline: var(--space-2);
-    flex-direction: column;
-    gap: var(--space-2);
+  &:hover {
+    transform: scale(1.01);
+    background: var(--accent-1);
+
+    &:active {
+      transform: scale(0.99);
+    }
+  }
+    
+  .alert {
+    margin-bottom: var(--space-2);
   }
   
-  .content {
+  .header {
     display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-
+    gap: var(--space-2);
+    align-items: center;
+    
     .name {
       font-size: var(--font-size-5);
     }
+  }
 
-    .description {
-      font-size: var(--font-size-3);
-    }
+  .description {
+    font-size: var(--font-size-3);
+  }
 
-    .footer {
-      display: flex;
-      gap: var(--space-6);
+  .footer {
+    display: flex;
+    gap: var(--space-6);
 
-      .endDate, .amountPerPerson {
-        color: var(--accent-11);
-        font-size: var(--font-size-2);
-      }
+    .endDate, .amountPerPerson {
+      color: var(--accent-11);
+      font-size: var(--font-size-2);
     }
   }
 }

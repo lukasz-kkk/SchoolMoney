@@ -24,7 +24,6 @@ export const SuspendFundraiserDialog = ({ trigger, fundraiserId }: SuspendFundra
             toast.success("Zbiórka została zawieszona.");
         } catch (e) {
             console.log(e);
-            toast.error("Nie udało się zawiesić zbiórki.");
         }
     };
 
@@ -57,8 +56,12 @@ export const SuspendFundraiserDialog = ({ trigger, fundraiserId }: SuspendFundra
                     </Box>
                 </DialogFooter>
 
-                {error && <Alert className={classes.alert}>{error.message}</Alert>}
+                {error && <Alert className={classes.alert}>{mapError(error)}</Alert>}
             </Dialog.Content>
         </Dialog.Root>
     );
+};
+
+const mapError = (_error: Error) => {
+    return "Nieznany błąd. Spróbuj ponownie później.";
 };

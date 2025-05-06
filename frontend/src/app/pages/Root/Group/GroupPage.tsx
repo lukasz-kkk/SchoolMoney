@@ -14,20 +14,20 @@ import { toast } from "sonner";
 import { Section } from "@/components/Section/Section.tsx";
 import { FundraiserCard } from "@/features/fundraisers/components/FundraiserCard/FundraiserCard.tsx";
 import { FundraisersList } from "@/features/fundraisers/components/FundraisersList/FundraisersList.tsx";
-import { useFundraisers } from "@/features/fundraisers/hooks/useFundraisers.ts";
 import { CreateFundraiserDialog } from "@/features/fundraisers/components/CreateFundraiserDialog/CreateFundraiserDialog.tsx";
 import { GroupDetailsCard } from "@/features/groups/components/GroupDetailsCard/GroupDetailsCard.tsx";
 
 import styles from "./GroupPage.module.scss";
 import { AccessGuard } from "@/features/auth/components/AccessGuard/AccessGuard.tsx";
 import { RenameGroupDialog } from "@/features/groups/components/RenameGroupDialog/RenameGroupDialog.tsx";
+import { useFundraisersByGroup } from "@/features/fundraisers/hooks/useFundraisersByGroup.ts";
 
 const BaseGroupPage = () => {
     const params = useParams<{ id: string }>();
     const groupId = params?.id ? parseInt(params.id) : undefined;
 
     const { data: group } = useGroup(groupId);
-    const { data: fundraisers } = useFundraisers();
+    const { data: fundraisers } = useFundraisersByGroup(groupId);
     const { data: children } = useGetChildrenByGroup(groupId);
     const { data: joinCode } = useGroupJoinCode(group?.id);
 

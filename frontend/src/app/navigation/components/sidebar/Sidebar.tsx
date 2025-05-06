@@ -27,7 +27,10 @@ const items = [
     {
         title: "Panel rodzica",
         requiredAccess: "User",
-        items: [{ label: "Moje dzieci", href: AppRoute.CHILDREN }],
+        items: [
+            { label: "Moje dzieci", href: AppRoute.CHILDREN },
+            { label: "Finanse", href: AppRoute.FINANCES },
+        ],
     },
 
     {
@@ -42,10 +45,7 @@ const items = [
     {
         title: "Osobiste",
         requiredAccess: "authenticated",
-        items: [
-            { label: "Finanse", href: AppRoute.FINANCES },
-            { label: "Ustawienia", href: AppRoute.SETTINGS },
-        ],
+        items: [{ label: "Ustawienia", href: AppRoute.SETTINGS }],
     },
 ];
 

@@ -21,7 +21,20 @@ export const useAccessValidation = () => {
         [user]
     );
 
-    const validateUserIdentifier = useCallback((id: number) => user?.id === id, [user]);
+    const validateUserIdentifier = useCallback(
+        (id: number | number[]) => {
+            if (!user) {
+                return false;
+            }
+
+            if (typeof id === "number") {
+                return user?.id === id;
+            } else {
+                return id.includes(user.id);
+            }
+        },
+        [user]
+    );
 
     return { validateAccessLevel, validateUserIdentifier };
 };

@@ -13,5 +13,6 @@ export type Transaction = {
     targetAccountNumber: FinancialAccountNumber;
     senderFirstName: string;
     senderLastName: string;
+    type?: "Incoming" | "Outgoing";
     date: Date;
 };

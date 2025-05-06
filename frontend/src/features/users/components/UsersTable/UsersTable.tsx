@@ -5,10 +5,17 @@ import { IconButton } from "@radix-ui/themes";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { AccountStatusTag } from "@/features/users/components/AccountStatusTag/AccountStatusTag";
 import { UsersTableActions } from "@/features/users/components/UsersTable/components/UsersTableActions/UsersTableActions.tsx";
+import { UserAvatar } from "@/features/users/components/UserAvatar/UserAvatar.tsx";
 
 const columnHelper = createColumnHelper<User>();
 
 const columns = [
+    columnHelper.accessor((row) => row, {
+        id: "avatar",
+        cell: (info) => <UserAvatar size="2" user={info.getValue()} />,
+        size: 20,
+        header: () => <span>Avatar</span>,
+    }),
     columnHelper.accessor((row) => row.firstName, {
         id: "firstName",
         cell: (info) => info.getValue(),
@@ -71,7 +78,6 @@ export const UsersTable = ({ users, isLoading }: UsersTableProps) => {
             columns={columns}
             onRenderSubRow={UsersTableActions}
             withPagination
-            withFilters
             isLoading={isLoading}
         />
     );

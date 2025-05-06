@@ -24,7 +24,7 @@ export const AddChildDialog = ({ trigger, child, lastName }: AddChildDialogProps
 
     const handleFormSubmit = async (inputs: AddChildFormInputs) => {
         await saveChild({ ...inputs, dateOfBirth: formatISODate(inputs.dateOfBirth) });
-        toast.success("Menu zapisane.");
+        toast.success("Zapisano.");
         setOpen(false);
     };
 
@@ -44,12 +44,15 @@ export const AddChildDialog = ({ trigger, child, lastName }: AddChildDialogProps
                     isLoading={isPending}
                     initialValue={{
                         ...child,
-                        dateOfBirth: child?.dateOfBirth,
                         lastName: child?.lastName ?? lastName,
                     }}
                 />
-                {error && <Alert className={classes.alert}>{error.message}</Alert>}
+                {error && <Alert className={classes.alert}>{mapError(error)}</Alert>}
             </Dialog.Content>
         </Dialog.Root>
     );
+};
+
+const mapError = (_error: Error) => {
+    return "Nieznany błąd. Spróbuj ponownie później.";
 };

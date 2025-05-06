@@ -1,5 +1,5 @@
 import { requestClient } from "@/lib/request/requestClient";
-import { BaseChild } from "@/features/children/types/Child";
+import { BaseChild, FundraiserChild } from "@/features/children/types/Child";
 
 type CreateChildRequestBody = {
     firstName: string;
@@ -29,6 +29,11 @@ type AcceptChildRequest = {
     accept: boolean;
 };
 
+type FundraiserChildrenDto = {
+    paidChilds: ChildDto[];
+    unpaidChilds: ChildDto[];
+};
+
 export class ChildrenService {
     public static async createOne(body: CreateChildRequestBody): Promise<void> {
         await requestClient.post("/Child", body);
@@ -46,6 +51,10 @@ export class ChildrenService {
         await requestClient.delete(`/Child/${id}/`);
     }
 
+    public static async withdraw({ childId, groupId }: { childId: number; groupId: number }): Promise<void> {
+        await requestClient.put(`/Child/${childId}/group/${groupId}/unroll`);
+    }
+
     public static async getOwn(): Promise<BaseChild[]> {
         const { data } = await requestClient.get<ChildDto[]>("/Child/ByLoggedUser");
         return data.map(ChildrenService.mapDtoToChild);
@@ -59,6 +68,16 @@ export class ChildrenService {
     public static async getByParent(id: number): Promise<BaseChild[]> {
         const { data } = await requestClient.get<ChildDto[]>(`/Child/ByParent/${id}`);
         return data.map(ChildrenService.mapDtoToChild);
+    }
+
+    public static async getByFundraiser(id: number): Promise<FundraiserChild[]> {
+        const { data } = await requestClient.get<FundraiserChildrenDto>(`/Fundraiser/${id}/childs`);
+        const paidChildren = data.paidChilds.map(ChildrenService.mapDtoToChild);
+        const unpaidChildren = data.unpaidChilds.map(ChildrenService.mapDtoToChild);
+        return [
+            ...paidChildren.map((child) => ({ ...child, hasPaid: true })),
+            ...unpaidChildren.map((child) => ({ ...child, hasPaid: false })),
+        ];
     }
 
     private static mapDtoToChild(dto: ChildDto): BaseChild {
