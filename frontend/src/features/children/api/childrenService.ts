@@ -56,22 +56,22 @@ export class ChildrenService {
     }
 
     public static async getOwn(): Promise<BaseChild[]> {
-        const { data } = await requestClient.get<ChildDto[]>("/Child/ByLoggedUser");
+        const { data } = await requestClient.get<ChildDto[]>("/child/byLoggedUser");
         return data.map(ChildrenService.mapDtoToChild);
     }
 
     public static async getByGroup(id: number): Promise<BaseChild[]> {
-        const { data } = await requestClient.get<ChildDto[]>(`/Child/ByGroup/${id}`);
+        const { data } = await requestClient.get<ChildDto[]>(`/child/byGroup/${id}`);
         return data.map(ChildrenService.mapDtoToChild);
     }
 
     public static async getByParent(id: number): Promise<BaseChild[]> {
-        const { data } = await requestClient.get<ChildDto[]>(`/Child/ByParent/${id}`);
+        const { data } = await requestClient.get<ChildDto[]>(`/child/byParent/${id}`);
         return data.map(ChildrenService.mapDtoToChild);
     }
 
     public static async getByFundraiser(id: number): Promise<FundraiserChild[]> {
-        const { data } = await requestClient.get<FundraiserChildrenDto>(`/Fundraiser/${id}/childs`);
+        const { data } = await requestClient.get<FundraiserChildrenDto>(`/fundraiser/${id}/childs`);
         const paidChildren = data.paidChilds.map(ChildrenService.mapDtoToChild);
         const unpaidChildren = data.unpaidChilds.map(ChildrenService.mapDtoToChild);
         return [

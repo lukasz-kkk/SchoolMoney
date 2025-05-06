@@ -10,6 +10,8 @@ import { SuspendFundraiserDialog } from "@/features/fundraisers/components/Suspe
 import { useAccessValidation } from "@/features/auth/hooks/useAccessLevel.tsx";
 import { UpdateFundraiserDialog } from "@/features/fundraisers/components/UpdateFundraiserDialog/UpdateFundraiserDialog.tsx";
 import { UnlockFundraiserDialog } from "@/features/fundraisers/components/UnlockFundraiserDialog/UnlockFundraiserDialog.tsx";
+import { FundraisersService } from "@/features/fundraisers/api/fundraisersService.ts";
+import { HourglassIcon, InfoIcon, MailIcon, XIcon } from "lucide-react";
 
 type FundraiserManagementActionsProps = {
     fundraiser: Fundraiser;
@@ -26,18 +28,26 @@ export const FundraiserActions = ({ fundraiser }: FundraiserManagementActionsPro
         return <Spinner />;
     }
 
+    const downloadReport = async () => {
+        await FundraisersService.downloadReport(fundraiser.id);
+    };
+
     if (isAdmin) {
         return (
             <Box className={styles.container}>
+                <Button size="1" variant="soft" onClick={downloadReport}>
+                    Wygeneruj raport <InfoIcon size="16" />
+                </Button>
+
                 <Button size="1" variant="soft">
-                    Skontaktuj się ze skarbnikiem
+                    Skontaktuj się ze skarbnikiem <MailIcon size="16" />
                 </Button>
 
                 {!fundraiser.isBlocked && (
                     <SuspendFundraiserDialog
                         trigger={
                             <Button size="1" color="orange" variant="soft">
-                                Zawieś zbiórkę
+                                Zawieś zbiórkę <HourglassIcon size="16" />
                             </Button>
                         }
                         fundraiserId={fundraiser.id}
@@ -48,7 +58,7 @@ export const FundraiserActions = ({ fundraiser }: FundraiserManagementActionsPro
                     <UnlockFundraiserDialog
                         trigger={
                             <Button size="1" color="jade" variant="soft">
-                                Odwieś zbiórkę
+                                Odwieś zbiórkę <HourglassIcon size="16" />
                             </Button>
                         }
                         fundraiserId={fundraiser.id}
@@ -58,7 +68,7 @@ export const FundraiserActions = ({ fundraiser }: FundraiserManagementActionsPro
                 <CloseFundraiserDialog
                     trigger={
                         <Button size="1" color="crimson" variant="soft">
-                            Zamknij zbiórkę
+                            Zamknij zbiórkę <XIcon size="16" />
                         </Button>
                     }
                     fundraiserId={fundraiser.id}
@@ -81,6 +91,25 @@ export const FundraiserActions = ({ fundraiser }: FundraiserManagementActionsPro
                             Edytuj informacje o zbiórce
                         </Button>
                     }
+                />
+            )}
+
+            {isTreasurer && (
+                <TransformMoneyDialog
+                    trigger={
+                        <Button size="1" variant="soft">
+                            Doładuj konto zbiórki
+                        </Button>
+                    }
+                    title="Doładuj konto zbiórki"
+                    restrictions={{
+                        maxAmount: moneyToFloatingPoint(data.balance),
+                    }}
+                    transferData={{
+                        sourceAccountNumber: data.accountNumber,
+                        targetAccountNumber: fundraiser.account.accountNumber,
+                        name: `Doładowanie konta zbiórki ${fundraiser.id}`,
+                    }}
                 />
             )}
 

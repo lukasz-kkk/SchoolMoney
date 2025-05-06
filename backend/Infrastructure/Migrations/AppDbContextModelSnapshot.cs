@@ -338,6 +338,28 @@ namespace Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("File", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("FileName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("FundraiserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FundraiserId");
+
+                    b.ToTable("Files");
+                });
+
             modelBuilder.Entity("Domain.Child", b =>
                 {
                     b.HasOne("Domain.Group", "Group")
@@ -461,6 +483,15 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("AccountId");
 
                     b.Navigation("Account");
+                });
+
+            modelBuilder.Entity("File", b =>
+                {
+                    b.HasOne("Domain.Fundraiser", "Fundraiser")
+                        .WithMany()
+                        .HasForeignKey("FundraiserId");
+
+                    b.Navigation("Fundraiser");
                 });
 
             modelBuilder.Entity("Domain.Fundraiser", b =>

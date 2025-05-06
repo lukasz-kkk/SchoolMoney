@@ -6,21 +6,30 @@ using SchoolMoney.Constants;
 using SchoolMoney.Exceptions;
 using SchoolMoney.Utils;
 using Domain.Exceptions;
+using Infrastructure;
+using System.Globalization;
+using System.Text.Json;
+using System.Text;
+using Infrastructure.Migrations;
 
 namespace SchoolMoney.QueryHandlers
 {
     public class GroupQueryHandler : IRequestHandler<GetAllGroupsQuery, IEnumerable<GroupResponse>>,
                                      IRequestHandler<GetGroupByLoggedUserQuery, IEnumerable<GroupResponse>>,
-                                     IRequestHandler<GetGroupJoinCodeQuery, GroupJoinCodeResponse>
+                                     IRequestHandler<GetGroupJoinCodeQuery, GroupJoinCodeResponse>,
+                                     IRequestHandler<GetGroupRaport, string>
     {
         private readonly IGroupRepository _groupRepository;
         private readonly IChildRepository _childRepository;
+        private readonly IFundraiserRepository _fundraiserRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public GroupQueryHandler(IGroupRepository groupRepository,
                                  IHttpContextAccessor httpContextAccessor,
-                                 IChildRepository childRepository)
+                                 IChildRepository childRepository,
+                                 IFundraiserRepository fundraiserRepository)
         {
+            _fundraiserRepository = fundraiserRepository;
             _groupRepository = groupRepository;
             _httpContextAccessor = httpContextAccessor;
             _childRepository = childRepository;
@@ -95,6 +104,25 @@ namespace SchoolMoney.QueryHandlers
             };
 
             return Task.FromResult(result);
+        }
+
+        public async Task<string> Handle(GetGroupRaport request, CancellationToken cancellationToken)
+        {
+            var fundraisers = _fundraiserRepository.GetByGroup(request.GroupId)
+                ?? throw new FundraiserNotFoundException(request.GroupId);
+
+            var fullCsv = new StringBuilder();
+
+            foreach (var fundraiser in fundraisers)
+            {
+                var account = _fundraiserRepository.GetAccount(fundraiser.Id);
+                var balance = _fundraiserRepository.GetBalance(fundraiser.Id);
+                var csvPart = CsvHelper.GenerateFundraiserCsvReport(fundraiser, account, balance);
+
+                fullCsv.AppendLine(csvPart.ToString());
+            }
+
+            return fullCsv.ToString();
         }
     }
 }

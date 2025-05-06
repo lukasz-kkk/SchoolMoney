@@ -9,6 +9,7 @@ import { useCloseFundraiser } from "@/features/fundraisers/hooks/useCloseFundrai
 import { DialogBody } from "@/components/Dialog/components/DialogBody/DialogBody.tsx";
 import { DialogFooter } from "@/components/Dialog/components/DialogFooter/DialogFooter.tsx";
 import { useNavigate } from "react-router-dom";
+import { AxiosError } from "axios";
 
 type CloseFundraiserDialogProps = {
     trigger: ReactNode;
@@ -66,6 +67,10 @@ export const CloseFundraiserDialog = ({ trigger, fundraiserId }: CloseFundraiser
     );
 };
 
-const mapError = (_error: Error) => {
+const mapError = (error: Error) => {
+    if ((error as AxiosError<string>).response?.data.includes("The source account has not enough funds.")) {
+        return "Na koncie zbiórki nie ma wystarczających środków na zwrot wpłaty.";
+    }
+
     return "Nieznany błąd. Spróbuj ponownie później.";
 };

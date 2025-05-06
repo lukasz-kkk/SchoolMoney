@@ -10,7 +10,8 @@ namespace SchoolMoney.CommandHandlers
     public class UserCommandHandler : IRequestHandler<UpdateUserRoleCommand, Unit>,
                                       IRequestHandler<DeleteUserCommand, Unit>,
                                       IRequestHandler<UpdateUserIsActiveFlagCommand, Unit>,
-                                      IRequestHandler<ChangeUserPasswordCommand, Unit>
+                                      IRequestHandler<ChangeUserPasswordCommand, Unit>,
+                                      IRequestHandler<UpdateUserPersonalData, Unit>
     {
         private readonly IUserRepository _userRepository;
 
@@ -61,6 +62,20 @@ namespace SchoolMoney.CommandHandlers
             var newPasswordHash = ShaHelper.QuickHash(request.NewPassword);
 
             user.HashedPassword = newPasswordHash;
+            await _userRepository.SaveChangesAsync();
+
+            return Unit.Value;
+        }
+
+        public async Task<Unit> Handle(UpdateUserPersonalData request, CancellationToken cancellationToken)
+        {
+            var user = _userRepository.Get(request.UserId)
+                ?? throw new UserNotFoundException(request.UserId);
+
+            user.FirstName = request.FirstName;
+            user.LastName = request.LastName;
+            user.DateOfBirth = request.DateOfBirth;
+
             await _userRepository.SaveChangesAsync();
 
             return Unit.Value;
