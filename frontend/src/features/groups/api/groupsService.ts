@@ -64,7 +64,7 @@ export class GroupsService {
 
     public static async downloadReport(id: number): Promise<void> {
         const { data } = await requestClient.get(`/group/${id}/raport`);
-        downloadFileFromBytes(`Raport z klasy #${id}.csv`, data);
+        downloadFileFromBytes(`Raport z klasy #${id}, ${new Date().toISOString()}.csv`, data);
     }
 
     private static mapDtoToGroup(dto: GroupDto): Group {

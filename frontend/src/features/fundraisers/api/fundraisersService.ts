@@ -74,7 +74,7 @@ export class FundraisersService {
 
     public static async downloadReport(id: number): Promise<void> {
         const { data } = await requestClient.get(`/fundraiser/${id}/raport`);
-        downloadFileFromBytes(`Raport ze zbiórki #${id}.csv`, data);
+        downloadFileFromBytes(`Raport ze zbiórki #${id}, ${new Date().toISOString()}.csv`, data);
     }
 
     private static mapDtoToFundraiser(dto: FundraiserDto): Fundraiser {
