@@ -51,9 +51,8 @@ export class ChildrenService {
         await requestClient.delete(`/Child/${id}/`);
     }
 
-    public static async withdraw(id: number): Promise<void> {
-        // TODO: Endpoint
-        await requestClient.delete(`/Child/${id}/`);
+    public static async withdraw({ childId, groupId }: { childId: number; groupId: number }): Promise<void> {
+        await requestClient.put(`/Child/${childId}/group/${groupId}/unroll`);
     }
 
     public static async getOwn(): Promise<BaseChild[]> {
