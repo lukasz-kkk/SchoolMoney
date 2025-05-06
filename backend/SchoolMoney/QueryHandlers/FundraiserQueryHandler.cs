@@ -4,6 +4,15 @@ using MediatR;
 using Domain.Repositories;
 using Infrastructure;
 using Domain.Exceptions;
+using Domain;
+using SchoolMoney.Commands;
+using System.Text.Json;
+using System.Text;
+using Infrastructure.Migrations;
+using System.Globalization;
+using System.Data;
+using System.Net.Http.Json;
+using SchoolMoney.Utils;
 
 namespace SchoolMoney.QueryHandlers
 {
@@ -11,25 +20,29 @@ namespace SchoolMoney.QueryHandlers
         IRequestHandler<GetAllFundraisersQuery, IEnumerable<FundraiserResponse>>,
         IRequestHandler<GetFundraiserChildsQuery, FundraiserChildsResponse>,
         IRequestHandler<GetFundraisersByGroupQuery, IEnumerable<FundraiserResponse>>,
-        IRequestHandler<GetFilesByFundraiserQuery, IEnumerable<FileResponse>>
+        IRequestHandler<GetFilesByFundraiserQuery, IEnumerable<FileResponse>>,
+        IRequestHandler<GetFundraiserRaport, string>
     {
         private readonly IFundraiserRepository _fundraiserRepository;
         private readonly IChildRepository _childRepository;
         private readonly ITransactionRepository _transactionRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IFileRepository _fileRepository;
+        private readonly IMediator _mediator;
 
         public FundraiserQueryHandler(IFundraiserRepository fundraiserRepository, 
             IChildRepository childRepository,
             ITransactionRepository transactionRepository,
             IHttpContextAccessor httpContextAccessor,
-            IFileRepository fileRepository)
+            IFileRepository fileRepository,
+            IMediator mediator)
         {
             _fundraiserRepository = fundraiserRepository;
             _childRepository = childRepository;
             _transactionRepository = transactionRepository;
             _httpContextAccessor = httpContextAccessor;
             _fileRepository = fileRepository;
+            _mediator = mediator;
         }
 
 
@@ -158,6 +171,38 @@ namespace SchoolMoney.QueryHandlers
             });
 
             return Task.FromResult(result);
+        }
+
+        public async Task<string> Handle(GetFundraiserRaport request, CancellationToken cancellationToken)
+        {
+            var fundraiser = _fundraiserRepository.Get(request.FundraiserId)
+                ?? throw new FundraiserNotFoundException(request.FundraiserId);
+
+            var account = _fundraiserRepository.GetAccount(fundraiser.Id);
+            var balance = _fundraiserRepository.GetBalance(fundraiser.Id);
+
+            var query = new GetTransactionsHistoryQuery
+            {
+                AccountNumber = account,
+            };
+
+            var result = await _mediator.Send(query);
+            string jsonString = JsonSerializer.Serialize(result);
+
+            var csv = CsvHelper.GenerateFundraiserCsvReport(fundraiser, account, balance);
+
+            var transactions = result.ToList();
+
+            csv.AppendLine("Name;SourceAccountNumber;TargetAccountNumber;Amount;Date;SenderFirstName;SenderLastName;SenderId");
+
+            foreach (var t in transactions)
+            {
+                csv.AppendLine($"{t.Name};{t.SourceAccountNumber};{t.TargetAccountNumber};{t.Amount};{t.Date.ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)};{t.SenderFirstName};{t.SenderLastName};{t.SenderId}");
+            }
+
+            Console.WriteLine(csv.ToString());
+
+            return csv.ToString();
         }
     }
 }
