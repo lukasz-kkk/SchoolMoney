@@ -85,8 +85,8 @@ namespace SchoolMoney.QueryHandlers
             var group = _groupRepository.Get(request.GroupId)
                 ?? throw new GroupNotFoundException(request.GroupId);
 
-            var children = _childRepository.GetList(x => x.Group.Id == request.GroupId);
-
+            var children = _childRepository.GetList(x => x.Group?.Id == request.GroupId);
+            
             if (children == null || !children.Any())
             {
                 return Task.FromResult(Enumerable.Empty<ChildResponse>());
