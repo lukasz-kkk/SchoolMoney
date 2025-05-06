@@ -16,6 +16,12 @@ export type ChangePasswordRequestBody = {
     newPassword: string;
 };
 
+export type ChangePersonalInformationRequestBody = {
+    firstName: string;
+    lastName: string;
+    dateOfBirth: string;
+};
+
 export class UsersService {
     public static async getAll(): Promise<User[]> {
         const { data } = await requestClient.get<UserDTO[]>("/user");
@@ -38,7 +44,14 @@ export class UsersService {
         await requestClient.put(`/user/${userId}/password`, body);
     }
 
+    public static async changePersonalInformation(
+        body: ChangePersonalInformationRequestBody,
+        userId: number
+    ): Promise<void> {
+        await requestClient.put(`/user/${userId}/personalData`, body);
+    }
+
     private static mapDtoToUser({ firstName, lastName, dateOfBirth, role, login, id, isActive }: UserDTO): User {
-        return { lastName, dateOfBirth: new Date(dateOfBirth), firstName, role, login, id, isActive };
+        return { lastName, dateOfBirth, firstName, role, login, id, isActive };
     }
 }

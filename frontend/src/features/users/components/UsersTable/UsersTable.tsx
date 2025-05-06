@@ -34,7 +34,7 @@ const columns = [
     columnHelper.accessor((row) => row.dateOfBirth, {
         id: "dateOfBirth",
         size: 60,
-        cell: (info) => info.getValue().toLocaleDateString(),
+        cell: (info) => info.getValue(),
         header: () => <span>Data urodzenia</span>,
     }),
     columnHelper.accessor((row) => row.role, {

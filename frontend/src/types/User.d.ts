@@ -5,7 +5,7 @@ export type User = {
     firstName: string;
     lastName: string;
     login: string;
-    dateOfBirth: Date;
+    dateOfBirth: string;
     role: UserRole;
     isActive: boolean;
 };

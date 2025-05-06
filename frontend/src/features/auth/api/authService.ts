@@ -51,7 +51,7 @@ export class AuthService {
             role,
             firstName,
             lastName,
-            dateOfBirth: new Date(dateOfBirth),
+            dateOfBirth,
             isActive,
         };
     }

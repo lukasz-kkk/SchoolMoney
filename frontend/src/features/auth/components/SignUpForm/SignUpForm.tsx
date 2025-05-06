@@ -27,13 +27,13 @@ export const SignUpForm = ({ onSubmit, isLoading }: SignUpFormProps) => {
                     {...register("firstName")}
                     label="Imię"
                     help={SIGN_UP_FIRST_NAME_REQUIREMENT}
-                    error={formState.errors?.login?.message}
+                    error={formState.errors?.firstName?.message}
                 />
                 <Input
                     {...register("lastName")}
                     label="Nazwisko"
                     help={SIGN_UP_LAST_NAME_REQUIREMENT}
-                    error={formState.errors?.login?.message}
+                    error={formState.errors?.lastName?.message}
                 />
             </Box>
 
