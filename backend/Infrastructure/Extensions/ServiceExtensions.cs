@@ -12,8 +12,6 @@ namespace Infrastructure.Extensions
             services.AddScoped<IUserRepository, UserRepository>()
                     .AddScoped<IChildRepository, ChildRepository>()
                     .AddScoped<IGroupRepository, GroupRepository>()
-                    .AddScoped<IMessageRepository, MessageRepository>()
-                    .AddScoped<IThreadRepository, ThreadRepository>()
                     .AddScoped<IAnnouncementRepository, AnnouncementRepository>()
                     .AddScoped<IMealRepository, MealRepository>()
                     .AddScoped<IFinancialAccountRepository, FinancialAccountRepository>()
