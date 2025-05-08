@@ -36,7 +36,7 @@ namespace PrzedszkolePlus.Controllers
 #endif
         public ActionResult<ChatListResponse> ByLoggedUser()
         {
-            var threadGroupResponseList = new List<GroupChatResponse>
+            var groupChatList = new List<GroupChatResponse>
             {
                 new GroupChatResponse
                 {
@@ -46,7 +46,7 @@ namespace PrzedszkolePlus.Controllers
                 }
             };
 
-            var threadUserResponseList = new List<UserChatResponse>
+            var userChatList = new List<UserChatResponse>
             {
                 new UserChatResponse
                 {
@@ -66,8 +66,8 @@ namespace PrzedszkolePlus.Controllers
 
             return new ChatListResponse
             {
-                GroupChatList = threadGroupResponseList,
-                UserChatList = threadUserResponseList
+                GroupChatList = groupChatList,
+                UserChatList = userChatList
 
             };
         }
