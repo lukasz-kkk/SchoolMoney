@@ -29,7 +29,7 @@ namespace PrzedszkolePlus.Controllers
         {
             var request = new CreateMessageCommand
             {
-                ReceiverGroupId = dto.ReceiverClassId,
+                ReceiverGroupId = dto.ReceiverGroupId,
                 ReceiverUserId = dto.ReceiverUserId,
                 Content = dto.Content
             };
@@ -50,42 +50,21 @@ namespace PrzedszkolePlus.Controllers
 #if !DEBUG
         [Authorize(Roles = Roles.User)]
 #endif
-        public ActionResult<ChatListResponse> ByLoggedUser()
+        public async Task<ActionResult<ChatListResponse>> ByLoggedUser()
         {
-            var groupChatList = new List<GroupChatResponse>
+            try
             {
-                new GroupChatResponse
+                var query = new GetChatListQuery
                 {
-                    GroupId = 1,
-                    GroupName = "Grupa 1",
-                    LastMessageSent = DateTime.Now,
-                }
-            };
-
-            var userChatList = new List<UserChatResponse>
+                };
+                var result = await _mediator.Send(query);
+                return Ok(result);
+            }
+            catch (Exception ex)
             {
-                new UserChatResponse
-                {
-                    UserId = 1,
-                    UserFirstName = "Andrzej",
-                    UserLastName = "Nazwisko",
-                    LastMessageSent = DateTime.Now.AddDays(-1)
-                },
-                new UserChatResponse
-                {
-                    UserId = 2,
-                    UserFirstName = "Tomek",
-                    UserLastName = "Nazwisko",
-                    LastMessageSent = DateTime.Now.AddDays(-2)
-                }
-            };
-
-            return new ChatListResponse
-            {
-                GroupChatList = groupChatList,
-                UserChatList = userChatList
-
-            };
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                    string.Format(Resource.ControllerInternalError, ex.Message));
+            }
         }
 
         [HttpGet]
