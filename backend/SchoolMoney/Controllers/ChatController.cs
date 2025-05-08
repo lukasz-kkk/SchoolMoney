@@ -27,7 +27,23 @@ namespace PrzedszkolePlus.Controllers
 #endif
         public async Task<ActionResult> Post([FromBody] MessageRequest dto)
         {
-            return NoContent();
+            var request = new CreateMessageCommand
+            {
+                ReceiverGroupId = dto.ReceiverClassId,
+                ReceiverUserId = dto.ReceiverUserId,
+                Content = dto.Content
+            };
+
+            try
+            {
+                await _mediator.Send(request);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                    string.Format(Resource.ControllerInternalError, ex.Message));
+            }
         }
 
         [HttpGet("List")]
