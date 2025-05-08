@@ -92,27 +92,23 @@ namespace PrzedszkolePlus.Controllers
 #if !DEBUG
         [Authorize(Roles = Roles.User)]
 #endif
-        public async Task<ActionResult<IEnumerable<MessageResponse>>> GetByReceiver([FromHeader] ChatRequest dto)
+        public async Task<ActionResult<IEnumerable<MessageResponse>>> GetByReceiver([FromQuery] ChatRequest dto)
         {
-            return new List<MessageResponse>
+            try
             {
-                new MessageResponse
+                var query = new GetMessagesByReceiverQuery
                 {
-                    SenderId = 1,
-                    SenderFirstName = "Jan",
-                    SenderLastName = "Kowalski",
-                    Content = "Jakas tam wiadomość",
-                    CreatedAt = DateTime.Now.AddDays(-1)
-                },
-                new MessageResponse
-                {
-                    SenderId = 1,
-                    SenderFirstName = "Jan",
-                    SenderLastName = "Kowalski",
-                    Content = "Jakas tam wiadomość 2",
-                    CreatedAt = DateTime.Now.AddDays(-2)
-                }
-            };
+                    ReceiverUserId = dto.ReceiverUserId,
+                    ReceiverGroupId = dto.ReceiverGroupId,
+                };
+                var result = await _mediator.Send(query);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                    string.Format(Resource.ControllerInternalError, ex.Message));
+            }
         }
     }
 }

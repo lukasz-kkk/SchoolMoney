@@ -2,7 +2,7 @@
 {
     public class ChatRequest
     {
-        public int ReceiverClassId { get; set; }
+        public int ReceiverGroupId { get; set; }
         public int ReceiverUserId { get; set; }
     }
 }
