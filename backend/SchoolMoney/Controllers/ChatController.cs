@@ -22,6 +22,10 @@ namespace PrzedszkolePlus.Controllers
         }
 
         [HttpPost("Message")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 #if !DEBUG
         [Authorize(Roles = Roles.User)]
 #endif
@@ -39,6 +43,16 @@ namespace PrzedszkolePlus.Controllers
                 await _mediator.Send(request);
                 return NoContent();
             }
+            catch (InvalidCookieException ex)
+            {
+                return StatusCode((int)HttpStatusCode.BadRequest,
+                    string.Format(Resource.ControllerBadRequest, ex.Message));
+            }
+            catch (UserNotFoundException ex)
+            {
+                return StatusCode((int)HttpStatusCode.NotFound,
+                    string.Format(Resource.ControllerNotFound, ex.Message));
+            }
             catch (Exception ex)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError,
@@ -47,6 +61,9 @@ namespace PrzedszkolePlus.Controllers
         }
 
         [HttpGet("List")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 #if !DEBUG
         [Authorize(Roles = Roles.User)]
 #endif
@@ -60,6 +77,11 @@ namespace PrzedszkolePlus.Controllers
                 var result = await _mediator.Send(query);
                 return Ok(result);
             }
+            catch (InvalidCookieException ex)
+            {
+                return StatusCode((int)HttpStatusCode.BadRequest,
+                    string.Format(Resource.ControllerBadRequest, ex.Message));
+            }
             catch (Exception ex)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError,
@@ -68,6 +90,9 @@ namespace PrzedszkolePlus.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 #if !DEBUG
         [Authorize(Roles = Roles.User)]
 #endif
@@ -82,6 +107,11 @@ namespace PrzedszkolePlus.Controllers
                 };
                 var result = await _mediator.Send(query);
                 return Ok(result);
+            }
+            catch (InvalidCookieException ex)
+            {
+                return StatusCode((int)HttpStatusCode.BadRequest,
+                    string.Format(Resource.ControllerBadRequest, ex.Message));
             }
             catch (Exception ex)
             {
