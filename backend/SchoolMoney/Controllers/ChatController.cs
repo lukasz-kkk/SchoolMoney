@@ -82,7 +82,7 @@ namespace PrzedszkolePlus.Controllers
             {
                 new MessageResponse
                 {
-                    SenderUserId = 1,
+                    SenderId = 1,
                     SenderFirstName = "Jan",
                     SenderLastName = "Kowalski",
                     Content = "Jakas tam wiadomość",
@@ -90,7 +90,7 @@ namespace PrzedszkolePlus.Controllers
                 },
                 new MessageResponse
                 {
-                    SenderUserId = 1,
+                    SenderId = 1,
                     SenderFirstName = "Jan",
                     SenderLastName = "Kowalski",
                     Content = "Jakas tam wiadomość 2",
