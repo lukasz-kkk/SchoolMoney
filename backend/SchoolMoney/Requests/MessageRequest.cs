@@ -1,8 +1,6 @@
-﻿using MediatR;
-
-namespace SchoolMoney.Commands
+﻿namespace SchoolMoney.Requests
 {
-    public class CreateMessageCommand : IRequest<Unit>
+    public class MessageRequest
     {
         public int ReceiverGroupId { get; set; }
         public int ReceiverUserId { get; set; }
