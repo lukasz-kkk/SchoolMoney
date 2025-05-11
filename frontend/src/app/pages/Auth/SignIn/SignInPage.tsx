@@ -14,7 +14,7 @@ export const SignInPage = () => {
     const login = async ({ password, login }: SignInFormInputs) => {
         try {
             await signIn({ password, login });
-            navigate(AppRoute.FINANCES);
+            navigate(AppRoute.GROUPS);
             toast.success("Logowanie pomyślne.");
         } catch (e) {
             console.log(e);

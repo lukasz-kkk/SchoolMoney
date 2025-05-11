@@ -11,7 +11,7 @@ export const useSignIn = () => {
 
     const onSuccess = (user: User) => {
         login(user);
-        navigate(AppRoute.FINANCES);
+        navigate(AppRoute.GROUPS);
     };
 
     return useMutation({ mutationFn: AuthService.signIn, onSuccess });

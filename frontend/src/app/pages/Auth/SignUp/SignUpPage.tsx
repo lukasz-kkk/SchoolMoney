@@ -15,7 +15,7 @@ export const SignUpPage = () => {
     const register = async ({ password, login, firstName, lastName, dateOfBirth }: SignUpFormInputs) => {
         try {
             await signUp({ password, login, firstName, lastName, dateOfBirth: dateToDateOnlyISOString(dateOfBirth) });
-            navigate(AppRoute.FINANCES);
+            navigate(AppRoute.GROUPS);
             toast.success("Rejestracja pomyślna.");
         } catch (e) {
             console.log(e);
