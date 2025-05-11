@@ -35,9 +35,9 @@ export function onlyAsAuthenticated<T extends object>(Component: FC<T>) {
 }
 
 export function onlyAsParent<T extends object>(Component: FC<T>) {
-    return withAuthorization<T>(Component)("User", AppRoute.FINANCES);
+    return withAuthorization<T>(Component)("User", AppRoute.GROUPS);
 }
 
 export function onlyAsAdmin<T extends object>(Component: FC<T>) {
-    return withAuthorization<T>(Component)("Admin", AppRoute.FINANCES);
+    return withAuthorization<T>(Component)("Admin", AppRoute.GROUPS);
 }
