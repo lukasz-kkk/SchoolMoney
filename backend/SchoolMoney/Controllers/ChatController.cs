@@ -119,5 +119,34 @@ namespace PrzedszkolePlus.Controllers
                     string.Format(Resource.ControllerInternalError, ex.Message));
             }
         }
+
+        [HttpGet("PossibleReceivers")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+#if !DEBUG
+        [Authorize(Roles = Roles.User)]
+#endif
+        public async Task<ActionResult<IEnumerable<MessageResponse>>> GetPossibleReceivers()
+        {
+            try
+            {
+                var query = new GetPossibleReceiversQuery
+                {
+                };
+                var result = await _mediator.Send(query);
+                return Ok(result);
+            }
+            catch (InvalidCookieException ex)
+            {
+                return StatusCode((int)HttpStatusCode.BadRequest,
+                    string.Format(Resource.ControllerBadRequest, ex.Message));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError,
+                    string.Format(Resource.ControllerInternalError, ex.Message));
+            }
+        }
     }
 }

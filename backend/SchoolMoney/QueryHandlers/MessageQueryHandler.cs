@@ -12,11 +12,13 @@ using System.Text.Json;
 using System.Text;
 using Infrastructure.Migrations;
 using System.Collections.Generic;
+using Domain;
 
 namespace SchoolMoney.QueryHandlers
 {
     public class MessageQueryHandler : IRequestHandler<GetMessagesByReceiverQuery, IEnumerable<MessageResponse>>,
-                                       IRequestHandler<GetChatListQuery, ChatListResponse>
+                                       IRequestHandler<GetChatListQuery, ChatListResponse>,
+                                       IRequestHandler<GetPossibleReceiversQuery, PossibleReceiversResponse>
     {
         private readonly IGroupRepository _groupRepository;
         private readonly IMessageRepository _messageRepository;
@@ -158,5 +160,63 @@ namespace SchoolMoney.QueryHandlers
                 };
             }).ToList();
         }
+
+        public Task<PossibleReceiversResponse> Handle(GetPossibleReceiversQuery request, CancellationToken cancellationToken)
+        {
+            var loggedUserId = JwtHelper.GetUserIdFromCookies(_httpContextAccessor)
+                ?? throw new InvalidCookieException(Cookies.UserId);
+
+            var children = _childRepository.GetList(x => x.Parent.Id == loggedUserId);
+
+            var userGroups = _groupRepository.GetList(g =>
+                g.Treasurer.Id == loggedUserId ||
+                children.Any(c => c.IsAccepted && c.Group.Id == g.Id)
+            );
+
+            var users = _userRepository.GetList();
+
+            var groupChatList = GetGroupChats(loggedUserId);
+            var userChatList = GetUserChats(loggedUserId);
+
+            var groupChatIds = groupChatList.Select(gc => gc.GroupId).ToHashSet();
+            var userChatIds = userChatList.Select(uc => uc.UserId).ToHashSet();
+
+            var availableGroups = userGroups
+                .Where(g => !groupChatIds.Contains(g.Id))
+                .Select(g => new GroupResponse
+                {
+                    Id = g.Id,
+                    Name = g.Name,
+                    TreasurerId = g.Treasurer.Id,
+                    TreasurerFirstName = g.Treasurer.FirstName,
+                    TreasurerLastName = g.Treasurer.LastName,
+                    CreatedAt = g.CreatedAt
+                })
+                .ToList();
+
+            var availableUsers = users
+                .Where(u => u.Id != loggedUserId && !userChatIds.Contains(u.Id))
+                .Select(u => new UserResponse
+                {
+                    Id = u.Id,
+                    Login = u.Login,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    Role = u.Role.ToString(),
+                    IsActive = u.IsActive,
+                    DateOfBirth = u.DateOfBirth,
+                    AccoutNumber = u.Account.Number
+                })
+                .ToList();
+
+            var result = new PossibleReceiversResponse
+            {
+                GroupList = availableGroups,
+                UserList = availableUsers
+            };
+
+            return Task.FromResult(result);
+        }
+
     }
 }
