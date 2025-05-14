@@ -1,0 +1,75 @@
+.chatList {
+  width: 100%;
+  max-width: 400px;
+  padding: 16px;
+  overflow-y: auto;
+}
+
+.sectionTitle {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  margin-top: 16px;
+
+  &:first-of-type {
+    margin-top: 0;
+  }
+}
+
+.chatButton {
+  width: 100%;
+  justify-content: flex-start;
+  text-align: left;
+  margin-bottom: 4px;
+}
+
+.newChatButton {
+  width: 100%;
+  margin-top: 24px;
+}
+
+.debugList {
+  margin-top: 16px;
+  font-size: 14px;
+
+  h3 {
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .debugGroupList,
+  .debugUserList {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 12px;
+  }
+
+  .debugGroupList li,
+  .debugUserList li {
+    cursor: pointer;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    margin-bottom: 4px;
+    background-color: #f9f9f9;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #e2e2e2;
+    }
+  }
+
+  .debugGroupList li,
+  .debugUserList li {
+    display: flex;
+    align-items: center;
+  }
+
+  .debugUserName,
+  .debugGroupName {
+    margin-left: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+  }
+}

@@ -1,0 +1,94 @@
+:root {
+  --background-light: #f7f7f7;
+  --background-dark: #1e1e1e;
+  --text-light: #aaa;
+  --text-dark: #ddd;
+  --border-light: #ddd;
+  --border-dark: #444;
+  --button-bg-light: #009e6d;
+  --button-bg-dark: #007f59;
+  --button-hover-light: #007f59;
+  --button-hover-dark: #006847;
+  --no-chat-bg-light: #f0f0f0;
+  --no-chat-bg-dark: #2c2c2c;
+}
+
+.chatPageContainer {
+  display: flex;
+  height: calc(100vh - 100px);
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: var(--background-dark);
+}
+
+.chatListWrapper {
+  flex: 1;
+  border-right: 1px solid var(--border-dark);
+  padding: 16px;
+  overflow-y: auto;
+  background-color: var(--background-dark);
+}
+
+.chatWindowWrapper {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  background-color: var(--background-dark);
+}
+
+.noChatSelected {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dark);
+  font-size: 16px;
+  font-weight: 500;
+  background-color: var(--no-chat-bg-dark);
+}
+
+/* Optional: If you have buttons like 'send' or 'cancel' etc. */
+.button {
+  background-color: var(--button-bg-dark);
+  color: var(--text-dark);
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: var(--button-hover-dark);
+  }
+}
+
+/* Light mode styles */
+@media (prefers-color-scheme: light) {
+  .chatPageContainer {
+    background-color: var(--background-light);
+  }
+
+  .chatListWrapper {
+    background-color: var(--background-light);
+    border-right: 1px solid var(--border-light);
+  }
+
+  .chatWindowWrapper {
+    background-color: var(--background-light);
+  }
+
+  .noChatSelected {
+    background-color: var(--no-chat-bg-light);
+    color: var(--text-light);
+  }
+
+  .button {
+    background-color: var(--button-bg-light);
+    color: var(--text-light);
+
+    &:hover {
+      background-color: var(--button-hover-light);
+    }
+  }
+}
