@@ -28,6 +28,7 @@ export const ChatWindow = ({ chat, type }: Props) => {
   };
 
   useEffect(() => {
+    fetchMessages();
     const interval = setInterval(() => {
       fetchMessages();
     }, 1000);
