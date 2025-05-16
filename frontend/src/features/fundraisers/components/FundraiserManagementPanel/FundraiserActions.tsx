@@ -83,6 +83,10 @@ export const FundraiserActions = ({ fundraiser }: FundraiserManagementActionsPro
 
     return (
         <Box className={styles.container}>
+            <Button size="1" variant="soft" onClick={downloadReport}>
+                Wygeneruj raport <InfoIcon size="16" />
+            </Button>
+
             {(isAuthor || isTreasurer) && (
                 <UpdateFundraiserDialog
                     fundraiser={fundraiser}
