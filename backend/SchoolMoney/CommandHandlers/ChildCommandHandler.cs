@@ -146,10 +146,10 @@ namespace SchoolMoney.CommandHandlers
             var child = _childRepository.Get(request.ChildId)
                 ?? throw new ChildNotFoundException(request.ChildId);
 
-            var parentChildAccount = _childRepository.GetAccount(request.ChildId);
             var fundraiserAccounts = _fundraiserRepository.GetChildFundraisers(request.ChildId);
             foreach (var fundraiserAccount in fundraiserAccounts)
             {
+                var parentChildAccount = _transactionRepository.GetAccount(request.ChildId, fundraiserAccount.FinancialAccount.Number);
                 var balance = _transactionRepository.GetBalanceForChild(fundraiserAccount.FinancialAccount.Number, child);
 
                 if (balance > 0)
@@ -187,10 +187,10 @@ namespace SchoolMoney.CommandHandlers
             var group = _groupRepository.Get(request.GroupId)
                 ?? throw new GroupNotFoundException(request.GroupId);
 
-            var parentChildAccount = _childRepository.GetAccount(request.ChildId);
             var fundraiserAccounts = _fundraiserRepository.GetChildFundraisers(request.ChildId);
             foreach (var fundraiserAccount in fundraiserAccounts.Where(x => x.Group.Id == request.GroupId))
             {
+                var parentChildAccount = _transactionRepository.GetAccount(request.ChildId, fundraiserAccount.FinancialAccount.Number);
                 var balance = _transactionRepository.GetBalanceForChild(fundraiserAccount.FinancialAccount.Number, child);
 
                 if (balance > 0)

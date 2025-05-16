@@ -102,10 +102,10 @@ namespace SchoolMoney.CommandHandlers
                 ?? throw new ChildNotFoundException(request.ChildId);
 
             var fundraiserAccount = _fundraiserRepository.GetAccount(request.FundraiserId);
-            var parentChildAccount = _childRepository.GetAccount(request.ChildId);
+            var parentChildAccount = _transactionRepository.GetAccount(request.ChildId, fundraiserAccount);
             var balance = _transactionRepository.GetBalanceForChild(fundraiserAccount, child);
 
-            if(balance > 0)
+            if (balance > 0)
             {
                 var command = new MakeTransactionCommand
                 {
@@ -145,7 +145,7 @@ namespace SchoolMoney.CommandHandlers
 
             foreach (var children in childrens)
             {
-                var parentChildAccount = _childRepository.GetAccount(children.Id);
+                var parentChildAccount = _transactionRepository.GetAccount(children.Id, fundraiserAccount);
                 var balance = _transactionRepository.GetBalanceForChild(fundraiserAccount, children);
 
                 if (balance > 0)

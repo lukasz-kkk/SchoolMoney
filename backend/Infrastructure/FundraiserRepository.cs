@@ -56,7 +56,7 @@ namespace Infrastructure
         public Group? GetGroup(int fundraiserId)
         {
             return _appDbContext.Fundraisers
-                .Include(x => x.Group)
+                .Include(x => x.Group).ThenInclude(x => x.Treasurer)
                 .Where(x => x.Id == fundraiserId)
                 .Select(x => x.Group)
                 .FirstOrDefault();

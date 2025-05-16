@@ -38,15 +38,5 @@ namespace Infrastructure
                 .Where(x => x.Group.Id == groupId)
                 .ToList();
         }
-
-        public string? GetAccount(int childId)
-        {
-            return _appDbContext.Children
-                .Include(x => x.Parent)
-                .ThenInclude(x => x.Account)
-                .Where(x => x.Id == childId)
-                .Select(x => x.Parent.Account.Number)
-                .FirstOrDefault();
-        }
     }
 }
