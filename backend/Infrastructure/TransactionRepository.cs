@@ -39,6 +39,16 @@ namespace Infrastructure
                 .ToList();
         }
 
+        public string? GetAccount(int childId, string fundraiserAccountNumber)
+        {
+            return _appDbContext.Transactions
+                .Include(transaction => transaction.Child)
+                .Where(x => x.Child.Id == childId && x.TargetAccountNumber == fundraiserAccountNumber)
+                .OrderByDescending(x => x.Date)
+                .Select(x => x.SourceAccountNumber)
+                .FirstOrDefault();
+        }
+
         public int GetBalanceForChild(string account, Child child)
         {
             var onPlus = _appDbContext.Transactions.Where(x => x.Child == child && x.TargetAccountNumber == account).Sum(x => x.Amount);
