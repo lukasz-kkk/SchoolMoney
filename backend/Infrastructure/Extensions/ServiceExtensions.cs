@@ -17,7 +17,8 @@ namespace Infrastructure.Extensions
                     .AddScoped<IFinancialAccountRepository, FinancialAccountRepository>()
                     .AddScoped<IFundraiserRepository, FundraiserRepository>()
                     .AddScoped<ITransactionRepository, TransactionRepository>()
-                    .AddScoped<IFileRepository, FileRepository>();
+                    .AddScoped<IFileRepository, FileRepository>()
+                    .AddScoped<IMessageRepository, MessageRepository>();
         }
     }
 }

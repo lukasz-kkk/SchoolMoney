@@ -18,10 +18,7 @@ const items = [
     {
         title: "Szkoła",
         requiredAccess: "authenticated",
-        items: [
-            { label: "Klasy", href: AppRoute.GROUPS },
-            { label: "Kontakt", href: AppRoute.CHAT },
-        ],
+        items: [{ label: "Klasy", href: AppRoute.GROUPS }],
     },
 
     {
@@ -45,7 +42,10 @@ const items = [
     {
         title: "Osobiste",
         requiredAccess: "authenticated",
-        items: [{ label: "Ustawienia", href: AppRoute.SETTINGS }],
+        items: [
+            { label: "Ustawienia", href: AppRoute.SETTINGS },
+            { label: "Czat", href: AppRoute.CHAT },
+        ],
     },
 ];
 

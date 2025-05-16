@@ -3,6 +3,7 @@ using System;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250508081926_AddMessage")]
+    partial class AddMessage
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "7.0.17");
@@ -312,18 +315,18 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("ReceiverGroupId")
+                    b.Property<int>("ReceiverClassId")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("ReceiverUserId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("SenderId")
+                    b.Property<int?>("senderId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SenderId");
+                    b.HasIndex("senderId");
 
                     b.ToTable("Messages");
                 });
@@ -436,11 +439,11 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Message", b =>
                 {
-                    b.HasOne("Domain.User", "Sender")
+                    b.HasOne("Domain.User", "sender")
                         .WithMany()
-                        .HasForeignKey("SenderId");
+                        .HasForeignKey("senderId");
 
-                    b.Navigation("Sender");
+                    b.Navigation("sender");
                 });
 
             modelBuilder.Entity("Domain.Fundraiser", b =>
